@@ -1,4 +1,4 @@
-## My Project
+## AWS Cloudformation Resource Providers Transit Gateway
 
 TODO: Fill this README out!
 
