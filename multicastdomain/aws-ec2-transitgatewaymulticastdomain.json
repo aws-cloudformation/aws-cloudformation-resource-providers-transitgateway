@@ -1,104 +1,64 @@
 {
     "typeName": "AWS::EC2::TransitGatewayMulticastDomain",
-    "description": "An example resource schema demonstrating some basic constructs and validation rules.",
-    "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-rpdk.git",
+    "description": "The AWS::EC2::TransitGatewayMulticastDomain type segments the multicast network into different domains and makes the transit gateway act as multiple multicast routers",
+    "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway.git",
     "definitions": {
-        "InitechDateFormat": {
-            "$comment": "Use the `definitions` block to provide shared resource property schemas",
-            "type": "string",
-            "format": "date-time"
-        },
-        "Memo": {
+        "Tag": {
+            "description": "A key-value pair to associate with a transit gateway multicast domain.",
             "type": "object",
             "properties": {
-                "Heading": {
+                "key": {
                     "type": "string"
                 },
-                "Body": {
+                "value": {
                     "type": "string"
                 }
-            },
-            "additionalProperties": false
+            }
         }
     },
     "properties": {
-        "TPSCode": {
-            "description": "A TPS Code is automatically generated on creation and assigned as the unique identifier.",
-            "type": "string",
-            "pattern": "^[A-Z]{3,5}[0-9]{8}-[0-9]{4}$"
+        "TransitGatewayId": {
+            "description": "The ID of the transit gateway",
+            "type": "string"
         },
-        "Title": {
-            "description": "The title of the TPS report is a mandatory element.",
-            "type": "string",
-            "minLength": 20,
-            "maxLength": 250
+        "TransitGatewayMulticastDomainId": {
+            "description": "The ID of the transit gateway multicast domain.",
+            "type": "string"
         },
-        "CoverSheetIncluded": {
-            "description": "Required for all TPS Reports submitted after 2/19/1999",
-            "type": "boolean"
-        },
-        "DueDate": {
-            "$ref": "#/definitions/InitechDateFormat"
-        },
-        "ApprovalDate": {
-            "$ref": "#/definitions/InitechDateFormat"
-        },
-        "Memo": {
-            "$ref": "#/definitions/Memo"
-        },
-        "SecondCopyOfMemo": {
-            "description": "In case you didn't get the first one.",
-            "$ref": "#/definitions/Memo"
-        },
-        "TestCode": {
-            "type": "string",
-            "enum": [
-                "NOT_STARTED",
-                "CANCELLED"
-            ]
-        },
-        "Authors": {
+        "TagSet": {
+            "description": "The tags for the transit gateway multicast domain.",
             "type": "array",
             "items": {
-                "type": "string"
+                "$ref": "#/definitions/Tag"
             }
         }
     },
     "additionalProperties": false,
     "required": [
-        "TestCode",
-        "Title"
+        "TransitGatewayId"
     ],
-    "readOnlyProperties": [
-        "/properties/TPSCode"
-    ],
-    "primaryIdentifier": [
-        "/properties/TPSCode"
+    "createOnlyProperties": [
+        "/properties/TransitGatewayId"
     ],
     "handlers": {
         "create": {
             "permissions": [
-                "initech:CreateReport"
+                "EC2:CreateTransitGatewayMulticastDomain"
             ]
         },
         "read": {
             "permissions": [
-                "initech:DescribeReport"
-            ]
-        },
-        "update": {
-            "permissions": [
-                "initech:UpdateReport"
+                "EC2:DescribeTransitGatewayMulticastDomains"
             ]
         },
         "delete": {
             "permissions": [
-                "initech:DeleteReport"
+                "EC2:DeleteTransitGatewayMulticastDomain"
             ]
         },
         "list": {
             "permissions": [
-                "initech:ListReports"
+                "EC2:DescribeTransitGatewayMulticastDomains"
             ]
         }
     }
