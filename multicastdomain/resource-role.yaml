@@ -23,9 +23,9 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "initech:CreateTransitGatewayMulticastDomain"
-                - "initech:DeleteTransitGatewayMulticastDomain"
-                - "initech:DescribeTransitGatewayMulticastDomains"
+                - "ec2:CreateTransitGatewayMulticastDomain"
+                - "ec2:DeleteTransitGatewayMulticastDomain"
+                - "ec2:DescribeTransitGatewayMulticastDomains"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:
