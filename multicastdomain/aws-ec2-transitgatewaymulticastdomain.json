@@ -37,6 +37,9 @@
     "required": [
         "TransitGatewayId"
     ],
+    "readOnlyProperties": [
+        "/properties/TransitGatewayMulticastDomainId"
+    ],
     "createOnlyProperties": [
         "/properties/TransitGatewayId"
     ],
