@@ -23,11 +23,9 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "initech:CreateReport"
-                - "initech:DeleteReport"
-                - "initech:DescribeReport"
-                - "initech:ListReports"
-                - "initech:UpdateReport"
+                - "initech:CreateTransitGatewayMulticastDomain"
+                - "initech:DeleteTransitGatewayMulticastDomain"
+                - "initech:DescribeTransitGatewayMulticastDomains"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:
