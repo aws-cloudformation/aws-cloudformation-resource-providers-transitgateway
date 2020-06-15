@@ -43,6 +43,10 @@
     "createOnlyProperties": [
         "/properties/TransitGatewayId"
     ],
+    "primaryIdentifier": [
+        "/properties/TransitGatewayId",
+        "/properties/TransitGatewayMulticastDomainId"
+    ],
     "handlers": {
         "create": {
             "permissions": [
