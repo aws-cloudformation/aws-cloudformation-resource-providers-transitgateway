@@ -131,4 +131,3 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### TPSCode
 
 A TPS Code is automatically generated on creation and assigned as the unique identifier.
-
