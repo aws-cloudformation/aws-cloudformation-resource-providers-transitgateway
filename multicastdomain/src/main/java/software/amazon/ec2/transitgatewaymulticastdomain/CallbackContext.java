@@ -1,10 +1,12 @@
 package software.amazon.ec2.transitgatewaymulticastdomain;
 
-import software.amazon.cloudformation.proxy.StdCallbackContext;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@lombok.Getter
-@lombok.Setter
-@lombok.ToString
-@lombok.EqualsAndHashCode(callSuper = true)
-public class CallbackContext extends StdCallbackContext {
+@Data
+@NoArgsConstructor
+@Builder
+public class CallbackContext {
+
 }
