@@ -182,7 +182,7 @@ public class CreateHandlerTest extends TestBase {
                 = handler.handleRequest(proxy, request, context, logger);
 
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.ServiceInternalError);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InternalFailure);
     }
     @Test
     public void handleRequest_ServiceUnavailable() {
