@@ -8,7 +8,6 @@ public class ClientBuilder {
     static Ec2Client getClient() {
         return Ec2Client.builder()
                 .httpClient(LambdaWrapper.HTTP_CLIENT)
-                .region(Region.US_EAST_1)
                 .build();
     }
 }
