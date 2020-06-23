@@ -22,6 +22,7 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         final ResourceModel model = request.getDesiredResourceState();
         final Ec2Client client = ClientBuilder.getClient();
 
+        //Delete the TransitGatewayMulticastDomain
         try {
             deleteTransitGatewayMulticastDomain(client, model, proxy);
         } catch (final AwsServiceException e) {

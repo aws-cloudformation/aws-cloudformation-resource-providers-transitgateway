@@ -25,6 +25,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         final Ec2Client client = ClientBuilder.getClient();
         final ResourceModel readResult;
 
+        // Describe TransitGatewayMulticastDomain
         try {
             final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = describeTransitGatewayMulticastDomain(client, model, proxy);
             final TransitGatewayMulticastDomain transitGatewayMulticastDomain = describeTransitGatewayMulticastDomainsResponse.transitGatewayMulticastDomains().get(0);
@@ -33,7 +34,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
             return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
         }
 
-        logger.log(String.format("%s list succeeded", ResourceModel.TYPE_NAME));
+        logger.log(String.format("%s read succeeded", ResourceModel.TYPE_NAME));
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(readResult)

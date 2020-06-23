@@ -23,13 +23,13 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         final Ec2Client client = ClientBuilder.getClient();
         final CreateTransitGatewayMulticastDomainResponse createTransitGatewayMulticastDomainResponse;
 
+        // Create TransitGatewayMulticastDomain
         try {
             createTransitGatewayMulticastDomainResponse = createTransitGatewayMulticastDomain(client, model, proxy);
         } catch (final AwsServiceException e) {
             return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
         }
 
-        // Configure the response CFN resource model here
         model.setTransitGatewayId(createTransitGatewayMulticastDomainResponse.transitGatewayMulticastDomain().transitGatewayId());
         model.setTransitGatewayMulticastDomainId(createTransitGatewayMulticastDomainResponse.transitGatewayMulticastDomain().transitGatewayMulticastDomainId());
 

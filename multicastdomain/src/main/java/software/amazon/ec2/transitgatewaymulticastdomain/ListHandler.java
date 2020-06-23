@@ -28,6 +28,7 @@ public class ListHandler extends BaseHandler<CallbackContext> {
         final Ec2Client client = ClientBuilder.getClient();
         String nextToken = request.getNextToken();
 
+        // List the TransitGatewayMulticastDomains
         try {
             final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = describeTransitGatewayMulticastDomains(client, nextToken, proxy);
             nextToken = describeTransitGatewayMulticastDomainsResponse.nextToken();
