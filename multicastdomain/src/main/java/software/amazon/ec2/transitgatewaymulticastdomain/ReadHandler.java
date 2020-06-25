@@ -4,7 +4,6 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayMulticastDomainsRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayMulticastDomainsResponse;
-import software.amazon.awssdk.services.ec2.model.GetTransitGatewayMulticastDomainAssociationsResponse;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomain;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;

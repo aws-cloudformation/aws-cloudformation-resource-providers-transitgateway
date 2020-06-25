@@ -1,6 +1,7 @@
 # AWS::EC2::TransitGatewayMulticastDomain
 
 The AWS::EC2::TransitGatewayMulticastDomain type segments the multicast network into different domains and makes the transit gateway act as multiple multicast routers
+An example resource schema demonstrating some basic constructs and validation rules.
 
 ## Syntax
 
@@ -61,3 +62,4 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### TransitGatewayMulticastDomainId
 
 The ID of the transit gateway multicast domain.
+

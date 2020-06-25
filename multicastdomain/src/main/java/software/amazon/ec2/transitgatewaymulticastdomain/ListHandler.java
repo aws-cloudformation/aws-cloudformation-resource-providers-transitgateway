@@ -1,6 +1,5 @@
 package software.amazon.ec2.transitgatewaymulticastdomain;
 
-import com.amazonaws.services.lambda.runtime.Client;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayMulticastDomainsRequest;

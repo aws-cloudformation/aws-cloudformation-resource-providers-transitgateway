@@ -36,9 +36,9 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         logger.log(String.format("%s [%s] creation succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
-            .resourceModel(model)
-            .status(OperationStatus.SUCCESS)
-            .build();
+                .resourceModel(model)
+                .status(OperationStatus.SUCCESS)
+                .build();
     }
 
     private CreateTransitGatewayMulticastDomainResponse createTransitGatewayMulticastDomain(final Ec2Client client,
