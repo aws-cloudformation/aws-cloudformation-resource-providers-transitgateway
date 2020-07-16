@@ -49,22 +49,24 @@
   "handlers": {
     "create": {
       "permissions": [
-        "EC2:CreateTransitGatewayMulticastDomain"
+        "ec2:*",
+        "iam:PassRole",
+        "iam:GetRole"
       ]
     },
     "read": {
       "permissions": [
-        "EC2:DescribeTransitGatewayMulticastDomains"
+        "ec2:DescribeTransitGatewayMulticastDomains"
       ]
     },
     "delete": {
       "permissions": [
-        "EC2:DeleteTransitGatewayMulticastDomain"
+        "ec2:DeleteTransitGatewayMulticastDomain"
       ]
     },
     "list": {
       "permissions": [
-        "EC2:DescribeTransitGatewayMulticastDomains"
+        "ec2:DescribeTransitGatewayMulticastDomains"
       ]
     }
   }

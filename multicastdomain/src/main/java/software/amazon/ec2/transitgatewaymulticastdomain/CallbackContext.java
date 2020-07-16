@@ -4,14 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
+@NoArgsConstructor
 @Builder
 public class CallbackContext {
-    private boolean createStarted;
-    private boolean deleteStarted;
-
-    private List<Tag> tagsToCreate;
-    private List<Tag> tagsToDelete;
 }

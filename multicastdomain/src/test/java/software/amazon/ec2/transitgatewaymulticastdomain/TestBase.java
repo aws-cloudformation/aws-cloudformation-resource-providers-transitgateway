@@ -37,7 +37,7 @@ public class TestBase {
     protected ResourceModel buildResourceModel() {
         return ResourceModel.builder()
                 .transitGatewayId(TRANSIT_GATEWAY_ID)
-                .tagSet(createCFNTagSet())
+                .tags(createCFNTagSet())
                 .build();
     }
 

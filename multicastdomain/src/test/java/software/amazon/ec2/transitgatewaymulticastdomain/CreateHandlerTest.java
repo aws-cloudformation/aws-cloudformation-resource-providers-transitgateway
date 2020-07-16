@@ -4,7 +4,6 @@ import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayMulticastDomainRequest;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayMulticastDomainResponse;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomain;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
@@ -13,11 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,30 +46,6 @@ public class CreateHandlerTest extends TestBase {
                 = handler.handleRequest(proxy, request, context, logger);
 
         assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
-    }
-
-    @Test
-    public void handleRequest_SimpleSuccess3() {
-
-//        final CreateTransitGatewayMulticastDomainResponse createTransitGatewayMulticastDomainResponse = CreateTransitGatewayMulticastDomainResponse.builder()
-//                .transitGatewayMulticastDomain(buildTransitGatewayMulticastDomain())
-//                .build();
-
-        final List<Tag> tags = createCFNTagSet();
-        final Map<String, String> tagsMap = tags.stream().collect(Collectors.toMap(tag -> tag.getKey(), tag -> tag.getValue()));
-
-        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
-                .desiredResourceState(model)
-                .desiredResourceTags(tagsMap)
-                .build();
-
-//        doReturn(createTransitGatewayMulticastDomainResponse)
-//                .when(proxy)
-//                .injectCredentialsAndInvokeV2(any(CreateTransitGatewayMulticastDomainRequest.class), any());
-
-        final ProgressEvent<ResourceModel, CallbackContext> response
-                = handler.handleRequest(proxy, request, null, logger);
-
     }
 
     @Test
