@@ -8,5 +8,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CallbackContext {
-
 }

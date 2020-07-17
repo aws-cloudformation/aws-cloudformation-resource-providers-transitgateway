@@ -7,16 +7,23 @@
       "description": "A key-value pair to associate with a transit gateway multicast domain.",
       "type": "object",
       "properties": {
-        "key": {
+        "Key": {
           "type": "string"
         },
-        "value": {
+        "Value": {
           "type": "string"
         }
       }
     }
   },
   "properties": {
+    "Tags": {
+      "description": "The tags for the transit gateway multicast domain.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
+      }
+    },
     "TransitGatewayId": {
       "description": "The ID of the transit gateway",
       "type": "string"
@@ -24,13 +31,6 @@
     "TransitGatewayMulticastDomainId": {
       "description": "The ID of the transit gateway multicast domain.",
       "type": "string"
-    },
-    "TagSet": {
-      "description": "The tags for the transit gateway multicast domain.",
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Tag"
-      }
     }
   },
   "additionalProperties": false,
@@ -49,22 +49,23 @@
   "handlers": {
     "create": {
       "permissions": [
-        "EC2:CreateTransitGatewayMulticastDomain"
+        "ec2:CreateTransitGatewayMulticastDomain",
+        "ec2:CreateTags"
       ]
     },
     "read": {
       "permissions": [
-        "EC2:DescribeTransitGatewayMulticastDomains"
+        "ec2:DescribeTransitGatewayMulticastDomains"
       ]
     },
     "delete": {
       "permissions": [
-        "EC2:DeleteTransitGatewayMulticastDomain"
+        "ec2:DeleteTransitGatewayMulticastDomain"
       ]
     },
     "list": {
       "permissions": [
-        "EC2:DescribeTransitGatewayMulticastDomains"
+        "ec2:DescribeTransitGatewayMulticastDomains"
       ]
     }
   }

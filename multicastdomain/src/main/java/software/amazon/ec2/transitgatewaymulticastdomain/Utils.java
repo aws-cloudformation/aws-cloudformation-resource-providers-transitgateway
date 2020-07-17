@@ -1,9 +1,11 @@
 package software.amazon.ec2.transitgatewaymulticastdomain;
 
+import software.amazon.awssdk.services.ec2.model.TagSpecification;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomain;
 import software.amazon.awssdk.services.ec2.model.Tag;
+import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -32,8 +34,29 @@ public class Utils {
 
         resourceModel.setTransitGatewayId(transitGatewayMulticastDomain.transitGatewayId());
         resourceModel.setTransitGatewayMulticastDomainId(transitGatewayMulticastDomain.transitGatewayMulticastDomainId());
-        resourceModel.setTagSet(Utils.sdkTagsToCfnTags(transitGatewayMulticastDomain.tags()));
+        resourceModel.setTags(Utils.sdkTagsToCfnTags(transitGatewayMulticastDomain.tags()));
 
         return resourceModel;
+    }
+
+    /**
+     * Converter method to convert stack/resource tags to EC2 TagSpecification List
+     */
+    static List<TagSpecification> translateTagsToTagSpecifications(final Map<String, String> tags) {
+        if(tags == null) {
+            return null;
+        }
+
+        List<Tag> newTags = tags.keySet()
+                .stream()
+                .map(t -> Tag.builder()
+                        .key(t).value(tags.get(t))
+                        .build())
+                .collect(Collectors.toList());
+
+        return Arrays.asList(TagSpecification.builder()
+                .resourceType("transit-gateway-multicast-domain")
+                .tags(newTags)
+                .build());
     }
 }

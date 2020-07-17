@@ -23,9 +23,10 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "EC2:CreateTransitGatewayMulticastDomain"
-                - "EC2:DeleteTransitGatewayMulticastDomain"
-                - "EC2:DescribeTransitGatewayMulticastDomains"
+                - "ec2:CreateTags"
+                - "ec2:CreateTransitGatewayMulticastDomain"
+                - "ec2:DeleteTransitGatewayMulticastDomain"
+                - "ec2:DescribeTransitGatewayMulticastDomains"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:
