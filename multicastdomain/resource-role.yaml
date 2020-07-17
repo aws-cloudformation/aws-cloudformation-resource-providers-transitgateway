@@ -23,11 +23,10 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "ec2:*"
+                - "ec2:CreateTags"
+                - "ec2:CreateTransitGatewayMulticastDomain"
                 - "ec2:DeleteTransitGatewayMulticastDomain"
                 - "ec2:DescribeTransitGatewayMulticastDomains"
-                - "iam:GetRole"
-                - "iam:PassRole"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:

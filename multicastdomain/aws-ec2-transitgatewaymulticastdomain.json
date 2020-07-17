@@ -49,9 +49,8 @@
   "handlers": {
     "create": {
       "permissions": [
-        "ec2:*",
-        "iam:PassRole",
-        "iam:GetRole"
+        "ec2:CreateTransitGatewayMulticastDomain",
+        "ec2:CreateTags"
       ]
     },
     "read": {
