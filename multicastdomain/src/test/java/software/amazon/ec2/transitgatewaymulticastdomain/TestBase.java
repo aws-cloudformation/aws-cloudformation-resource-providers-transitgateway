@@ -39,7 +39,6 @@ public class TestBase {
         return ResourceModel.builder()
                 .transitGatewayId(TRANSIT_GATEWAY_ID)
                 .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
-                //.tags(createCFNTagSet())
                 .build();
     }
 
@@ -54,13 +53,6 @@ public class TestBase {
     protected List<Tag> createTransitGatewayTags() {
         final List<Tag> tags = new ArrayList<>();
         final Tag t1 = Tag.builder().key(TAG_KEY_1).value(TAG_VALUE_1).build();
-        tags.add(t1);
-        return tags;
-    }
-
-    protected List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> createCFNTagSet() {
-        final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> tags = new ArrayList<>();
-        final software.amazon.ec2.transitgatewaymulticastdomain.Tag t1 = software.amazon.ec2.transitgatewaymulticastdomain.Tag.builder().key(TAG_KEY_1).value(TAG_VALUE_1).build();
         tags.add(t1);
         return tags;
     }

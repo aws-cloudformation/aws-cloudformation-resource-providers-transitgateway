@@ -94,10 +94,10 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
     private void deleteTransitGatewayMulticastDomain(final Ec2Client client,
                                           final ResourceModel model,
                                           final AmazonWebServicesClientProxy proxy) {
-        final DeleteTransitGatewayMulticastDomainRequest deregisterTransitGatewayRequest =
+        final DeleteTransitGatewayMulticastDomainRequest deleteTransitGatewayMulticastDomainRequest =
                 DeleteTransitGatewayMulticastDomainRequest.builder()
                         .transitGatewayMulticastDomainId(model.getTransitGatewayMulticastDomainId())
                         .build();
-        proxy.injectCredentialsAndInvokeV2(deregisterTransitGatewayRequest, client::deleteTransitGatewayMulticastDomain);
+        proxy.injectCredentialsAndInvokeV2(deleteTransitGatewayMulticastDomainRequest, client::deleteTransitGatewayMulticastDomain);
     }
 }
