@@ -1,7 +1,6 @@
 # AWS::EC2::TransitGatewayMulticastDomain
 
 The AWS::EC2::TransitGatewayMulticastDomain type segments the multicast network into different domains and makes the transit gateway act as multiple multicast routers
-An example resource schema demonstrating some basic constructs and validation rules.
 
 ## Syntax
 
@@ -13,8 +12,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "AWS::EC2::TransitGatewayMulticastDomain",
     "Properties" : {
+        "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
         "<a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>" : <i>String</i>,
-        "<a href="#tagset" title="TagSet">TagSet</a>" : <i>[ <a href="tagset.md">TagSet</a>, ... ]</i>
     }
 }
 </pre>
@@ -24,12 +23,22 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: AWS::EC2::TransitGatewayMulticastDomain
 Properties:
+    <a href="#tags" title="Tags">Tags</a>: <i>
+      - <a href="tag.md">Tag</a></i>
     <a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>: <i>String</i>
-    <a href="#tagset" title="TagSet">TagSet</a>: <i>
-      - <a href="tagset.md">TagSet</a></i>
 </pre>
 
 ## Properties
+
+#### Tags
+
+The tags for the transit gateway multicast domain.
+
+_Required_: No
+
+_Type_: List of <a href="tag.md">Tag</a>
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### TransitGatewayId
 
@@ -41,17 +50,11 @@ _Type_: String
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
-#### TagSet
-
-The tags for the transit gateway multicast domain.
-
-_Required_: No
-
-_Type_: List of <a href="tagset.md">TagSet</a>
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
 ## Return Values
+
+### Ref
+
+When you pass the logical ID of this resource to the intrinsic `Ref` function, Ref returns the TransitGatewayMulticastDomainId.
 
 ### Fn::GetAtt
 

@@ -50,7 +50,7 @@ public class CreateHandlerTest extends TestBase {
 
     @Test
     public void handleRequest_InvalidIdNotFound() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayIdNotFoundException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayID.NotFound").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -70,7 +70,7 @@ public class CreateHandlerTest extends TestBase {
 
     @Test
     public void handleRequest_InvalidIdMalformed() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayIdMalformedException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayID.Malformed").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -90,7 +90,7 @@ public class CreateHandlerTest extends TestBase {
 
     @Test
     public void handleRequest_LimitedExceeded() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("TransitGatewayMulticastDomainLimitExceededException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("TransitGatewayMulticastDomainLimitExceeded").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -110,7 +110,7 @@ public class CreateHandlerTest extends TestBase {
 
     @Test
     public void handleRequest_InvalidParam() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidParameterValueException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidParameterValue").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -129,7 +129,7 @@ public class CreateHandlerTest extends TestBase {
     }
     @Test
     public void handleRequest_IncorrectState() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("IncorrectStateException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("IncorrectState").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -144,11 +144,11 @@ public class CreateHandlerTest extends TestBase {
                 = handler.handleRequest(proxy, request, context, logger);
 
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.GeneralServiceException);
     }
     @Test
     public void handleRequest_MissingParam() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("MissingParameterException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("MissingParameter").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -167,7 +167,7 @@ public class CreateHandlerTest extends TestBase {
     }
     @Test
     public void handleRequest_ServerInternalException() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("ServerInternalException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("ServerInternal").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -186,7 +186,7 @@ public class CreateHandlerTest extends TestBase {
     }
     @Test
     public void handleRequest_ServiceUnavailable() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("ServiceUnavailableException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("ServiceUnavailable").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
@@ -205,7 +205,7 @@ public class CreateHandlerTest extends TestBase {
     }
     @Test
     public void handleRequest_TagPolicyViolation() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("TagPolicyViolationException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("TagPolicyViolation").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)

@@ -9,23 +9,23 @@ public final class ExceptionMapper {
 
     public static HandlerErrorCode mapToHandlerErrorCode(final AwsServiceException e) {
         switch (e.awsErrorDetails().errorCode()) {
-            case "InvalidTransitGatewayIdNotFoundException":
-            case "IncorrectStateException":
-            case "InvalidTransitGatewayMulticastDomainIdNotFoundException":
-            case "InvalidTransitGatewayIdMalformedException":
-            case "InvalidTransitGatewayMulticastDomainIdMalformedException":
+            case "InvalidTransitGatewayID.NotFound":
+            case "InvalidTransitGatewayMulticastDomainId.NotFound":
+            case "InvalidTransitGatewayID.Malformed":
+            case "CfnNotFoundException":
+            case "ResourceNotFoundException":
                 return HandlerErrorCode.NotFound;
-            case "TransitGatewayMulticastDomainLimitExceededException":
-            case "FilterLimitExceededException":
+            case "TransitGatewayMulticastDomainLimitExceeded":
+            case "FilterLimitExceeded":
                 return HandlerErrorCode.ServiceLimitExceeded;
-            case "InvalidParameterValueException":
-            case "MissingParameterException":
-            case "TagPolicyViolationException":
-            case "InvalidPaginationTokenException":
+            case "InvalidParameterValue":
+            case "MissingParameter":
+            case "TagPolicyViolation":
+            case "InvalidPaginationToken":
                 return HandlerErrorCode.InvalidRequest;
-            case "ServiceUnavailableException":
+            case "ServiceUnavailable":
                 return HandlerErrorCode.ServiceInternalError;
-            case "ServerInternalException":
+            case "ServerInternal":
                 return HandlerErrorCode.InternalFailure;
             default:
                 return HandlerErrorCode.GeneralServiceException;
