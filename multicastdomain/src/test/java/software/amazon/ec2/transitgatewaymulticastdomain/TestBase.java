@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomain;
 import software.amazon.awssdk.services.ec2.model.Tag;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomainState;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 
@@ -37,7 +38,8 @@ public class TestBase {
     protected ResourceModel buildResourceModel() {
         return ResourceModel.builder()
                 .transitGatewayId(TRANSIT_GATEWAY_ID)
-                .tags(createCFNTagSet())
+                .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                //.tags(createCFNTagSet())
                 .build();
     }
 
@@ -61,5 +63,29 @@ public class TestBase {
         final software.amazon.ec2.transitgatewaymulticastdomain.Tag t1 = software.amazon.ec2.transitgatewaymulticastdomain.Tag.builder().key(TAG_KEY_1).value(TAG_VALUE_1).build();
         tags.add(t1);
         return tags;
+    }
+
+    protected TransitGatewayMulticastDomain buildAvailableTransitGatewayMulticastDomain() {
+        return TransitGatewayMulticastDomain.builder()
+                .transitGatewayId(TRANSIT_GATEWAY_ID)
+                .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                .state(TransitGatewayMulticastDomainState.AVAILABLE)
+                .build();
+    }
+
+    protected TransitGatewayMulticastDomain buildDeletingTransitGatewayMulticastDomain() {
+        return TransitGatewayMulticastDomain.builder()
+                .transitGatewayId(TRANSIT_GATEWAY_ID)
+                .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                .state(TransitGatewayMulticastDomainState.DELETING)
+                .build();
+    }
+
+    protected TransitGatewayMulticastDomain buildDeletedTransitGatewayMulticastDomain() {
+        return TransitGatewayMulticastDomain.builder()
+                .transitGatewayId(TRANSIT_GATEWAY_ID)
+                .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                .state(TransitGatewayMulticastDomainState.DELETED)
+                .build();
     }
 }

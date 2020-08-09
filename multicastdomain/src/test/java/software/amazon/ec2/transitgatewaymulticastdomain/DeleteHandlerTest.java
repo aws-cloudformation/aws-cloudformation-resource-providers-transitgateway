@@ -1,19 +1,20 @@
 package software.amazon.ec2.transitgatewaymulticastdomain;
 
-import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
-import software.amazon.awssdk.awscore.exception.AwsServiceException;
-import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayMulticastDomainRequest;
-import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayMulticastDomainResponse;
-import software.amazon.cloudformation.proxy.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayMulticastDomainRequest;
+import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayMulticastDomainResponse;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayMulticastDomainsRequest;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayMulticastDomainsResponse;
+import software.amazon.cloudformation.proxy.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
+import static software.amazon.cloudformation.proxy.HandlerErrorCode.InternalFailure;
+import static software.amazon.ec2.transitgatewaymulticastdomain.Utils.TIMED_OUT_MESSAGE;
 
 @ExtendWith(MockitoExtension.class)
 public class DeleteHandlerTest extends TestBase {
@@ -27,7 +28,13 @@ public class DeleteHandlerTest extends TestBase {
     }
 
     @Test
-    public void handleRequest_SimpleSuccess() {
+    public void handleRequest_DeletionInitiated() {
+        final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder()
+                .transitGatewayMulticastDomains(buildAvailableTransitGatewayMulticastDomain())
+                .build();
+        doReturn(describeTransitGatewayMulticastDomainsResponse)
+                .when(proxy)
+                .injectCredentialsAndInvokeV2(any(DescribeTransitGatewayMulticastDomainsRequest.class), any());
         final DeleteTransitGatewayMulticastDomainResponse deleteTransitGatewayMulticastDomainResponse = DeleteTransitGatewayMulticastDomainResponse.builder()
                 .transitGatewayMulticastDomain(buildTransitGatewayMulticastDomain())
                 .build();
@@ -41,18 +48,70 @@ public class DeleteHandlerTest extends TestBase {
         final ProgressEvent<ResourceModel, CallbackContext> response
                 = handler.handleRequest(proxy, request, context, logger);
 
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
+    }
+
+    @Test
+    public void handleRequest_DeletionFinalSucceed() {
+        final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder()
+                .build();
+        doReturn(describeTransitGatewayMulticastDomainsResponse)
+                .when(proxy)
+                .injectCredentialsAndInvokeV2(any(DescribeTransitGatewayMulticastDomainsRequest.class), any());
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, CallbackContext.builder().actionStarted(true).remainingRetryCount(1).build(), logger);
+
         assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
     }
 
     @Test
-    public void handleRequest_InvalidIdNotFound() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayMulticastDomainIdNotFoundException").build();
-        final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
-
-        doThrow(awsServiceException)
+    public void handleRequest_DeletionInProgress() {
+        final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder()
+                .transitGatewayMulticastDomains(buildDeletingTransitGatewayMulticastDomain())
+                .build();
+        doReturn(describeTransitGatewayMulticastDomainsResponse)
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeleteTransitGatewayMulticastDomainRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(DescribeTransitGatewayMulticastDomainsRequest.class), any());
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
 
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, CallbackContext.builder().actionStarted(true).remainingRetryCount(1).build(), logger);
+
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
+    }
+
+    @Test
+    public void handleRequest_DeletionSuccessForDeletedState() {
+        // if Multicast Domain is in DELETED state, handler returns a SUCCESS status because DELETED is a terminated state
+        final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder()
+                .transitGatewayMulticastDomains(buildDeletedTransitGatewayMulticastDomain())
+                .build();
+        doReturn(describeTransitGatewayMulticastDomainsResponse)
+                .when(proxy)
+                .injectCredentialsAndInvokeV2(any(DescribeTransitGatewayMulticastDomainsRequest.class), any());
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, CallbackContext.builder().actionStarted(true).remainingRetryCount(1).build(), logger);
+
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+    }
+
+    @Test
+    public void handleRequest_ResourceNotFound_FirstTimeInvoke() {
+        final DescribeTransitGatewayMulticastDomainsResponse getTransitGatewayRegistrationsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder()
+                .build();
+        doReturn(getTransitGatewayRegistrationsResponse)
+                .when(proxy)
+                .injectCredentialsAndInvokeV2(any(DescribeTransitGatewayMulticastDomainsRequest.class), any());
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
                 .desiredResourceState(model)
                 .build();
@@ -65,102 +124,15 @@ public class DeleteHandlerTest extends TestBase {
     }
 
     @Test
-    public void handleRequest_InvalidIdMalformed() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayMulticastDomainIdMalformedException").build();
-        final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
-
-        doThrow(awsServiceException)
-                .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeleteTransitGatewayMulticastDomainRequest.class), any());
-
+    public void handleRequest_CreationCallBackExceededMaximumCount() {
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
                 .desiredResourceState(model)
                 .build();
-
         final ProgressEvent<ResourceModel, CallbackContext> response
-                = handler.handleRequest(proxy, request, context, logger);
+                = handler.handleRequest(proxy, request, CallbackContext.builder().actionStarted(true).remainingRetryCount(0).build(), logger);
 
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
-    }
-
-    @Test
-    public void handleRequest_IncorrectState() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("IncorrectStateException").build();
-        final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
-
-        doThrow(awsServiceException)
-                .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeleteTransitGatewayMulticastDomainRequest.class), any());
-
-        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
-                .desiredResourceState(model)
-                .build();
-
-        final ProgressEvent<ResourceModel, CallbackContext> response
-                = handler.handleRequest(proxy, request, context, logger);
-
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
-    }
-
-    @Test
-    public void handleRequest_MissingParameter() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("MissingParameterException").build();
-        final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
-
-        doThrow(awsServiceException)
-                .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeleteTransitGatewayMulticastDomainRequest.class), any());
-
-        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
-                .desiredResourceState(model)
-                .build();
-
-        final ProgressEvent<ResourceModel, CallbackContext> response
-                = handler.handleRequest(proxy, request, context, logger);
-
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InvalidRequest);
-    }
-
-    @Test
-    public void handleRequest_ServerInternalException() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("ServerInternalException").build();
-        final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
-
-        doThrow(awsServiceException)
-                .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeleteTransitGatewayMulticastDomainRequest.class), any());
-
-        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
-                .desiredResourceState(model)
-                .build();
-
-        final ProgressEvent<ResourceModel, CallbackContext> response
-                = handler.handleRequest(proxy, request, context, logger);
-
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InternalFailure);
-    }
-
-    @Test
-    public void handleRequest_ServiceUnavailable() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("ServiceUnavailableException").build();
-        final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
-
-        doThrow(awsServiceException)
-                .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeleteTransitGatewayMulticastDomainRequest.class), any());
-
-        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
-                .desiredResourceState(model)
-                .build();
-
-        final ProgressEvent<ResourceModel, CallbackContext> response
-                = handler.handleRequest(proxy, request, context, logger);
-
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.ServiceInternalError);
+        assertThat(response.getMessage()).isEqualTo(TIMED_OUT_MESSAGE);
+        assertThat(response.getErrorCode()).isEqualTo(InternalFailure);
     }
 }

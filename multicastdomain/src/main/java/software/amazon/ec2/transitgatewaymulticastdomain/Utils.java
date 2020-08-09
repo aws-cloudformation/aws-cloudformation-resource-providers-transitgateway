@@ -1,14 +1,19 @@
 package software.amazon.ec2.transitgatewaymulticastdomain;
 
-import software.amazon.awssdk.services.ec2.model.TagSpecification;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomain;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
+import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
+    final static int CALlBACK_PERIOD_30_SECONDS = 30;
+    final static int MAX_CALLBACK_COUNT = 30;
+    final static String TIMED_OUT_MESSAGE = "Timed out waiting for the request to be completed.";
+    final static String UNRECOGNIZED_STATE_MESSAGE = "MulticastDomain state is unrecognized, code: %s, message: %s";
 
     /**
      * Converter method to convert List<Tag1> to List<Tag2>
@@ -58,5 +63,15 @@ public class Utils {
                 .resourceType("transit-gateway-multicast-domain")
                 .tags(newTags)
                 .build());
+    }
+
+    static DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse(final Ec2Client client,
+                                                                                                         final ResourceModel model,
+                                                                                                         final AmazonWebServicesClientProxy proxy) {
+        final DescribeTransitGatewayMulticastDomainsRequest describeTransitGatewayMulticastDomainsRequest =
+                DescribeTransitGatewayMulticastDomainsRequest.builder()
+                .transitGatewayMulticastDomainIds(model.getTransitGatewayMulticastDomainId())
+                .build();
+        return proxy.injectCredentialsAndInvokeV2(describeTransitGatewayMulticastDomainsRequest, client::describeTransitGatewayMulticastDomains);
     }
 }

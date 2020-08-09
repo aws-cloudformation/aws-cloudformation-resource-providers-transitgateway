@@ -50,7 +50,6 @@ public class ListHandler extends BaseHandler<CallbackContext> {
     private DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomains(final Ec2Client client,
                                                                                                   final String nextToken,
                                                                                                   final AmazonWebServicesClientProxy proxy) {
-        final List<ResourceModel> readResult = new ArrayList<>();
         final DescribeTransitGatewayMulticastDomainsRequest describeTransitGatewayMulticastDomainsRequest = DescribeTransitGatewayMulticastDomainsRequest.builder()
                 .nextToken(nextToken)
                 .build();
