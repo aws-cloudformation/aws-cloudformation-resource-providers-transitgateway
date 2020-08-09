@@ -107,9 +107,9 @@ public class DeleteHandlerTest extends TestBase {
 
     @Test
     public void handleRequest_ResourceNotFound_FirstTimeInvoke() {
-        final DescribeTransitGatewayMulticastDomainsResponse getTransitGatewayRegistrationsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder()
+        final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder()
                 .build();
-        doReturn(getTransitGatewayRegistrationsResponse)
+        doReturn(describeTransitGatewayMulticastDomainsResponse)
                 .when(proxy)
                 .injectCredentialsAndInvokeV2(any(DescribeTransitGatewayMulticastDomainsRequest.class), any());
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
