@@ -54,7 +54,7 @@ public class ListHandlerTest extends TestBase{
 
     @Test
     public void handleRequest_ResourceNotFound() {
-        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayMulticastDomainIdNotFoundException").build();
+        AwsErrorDetails awsErrorDetails = AwsErrorDetails.builder().errorCode("InvalidTransitGatewayMulticastDomainId.NotFound").build();
         final AwsServiceException awsServiceException = AwsServiceException.builder().awsErrorDetails(awsErrorDetails).build();
 
         doThrow(awsServiceException)
