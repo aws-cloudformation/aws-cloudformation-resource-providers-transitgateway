@@ -83,10 +83,7 @@ _Required_: No
 _Type_: String
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-<<<<<<< HEAD
-=======
 
->>>>>>> 80e42d170720be9ac238468d27a1d3705d9e27df
 
 #### AmazonSideAsn
 
