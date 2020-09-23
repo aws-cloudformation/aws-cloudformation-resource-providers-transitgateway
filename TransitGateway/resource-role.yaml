@@ -25,7 +25,10 @@ Resources:
                 Action:
                 - "ec2:CreateTags"
                 - "ec2:CreateTransitGateway"
+                - "ec2:DeleteTags"
                 - "ec2:DeleteTransitGateway"
+                - "ec2:DescribeFlow"
+                - "ec2:DescribeTags"
                 - "ec2:DescribeTransitGateways"
                 - "ec2:ModifyTransitGateway"
                 - "ec2:ModifyTransitGatewayOptions"

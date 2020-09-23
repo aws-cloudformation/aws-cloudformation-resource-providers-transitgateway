@@ -3,6 +3,9 @@
   "description" : "Resource Type definition for AWS::EC2::TransitGateway",
   "additionalProperties" : false,
   "properties" : {
+    "creationTime": {
+      "type": "string"
+    },
     "Description" : {
       "type" : "string"
     },
@@ -19,6 +22,9 @@
     "Options": {
       "type": "object",
       "$ref" : "#/definitions/Options"
+    },
+    "transitGatewayArn": {
+      "type": "string"
     }
   },
   "definitions" : {
@@ -59,12 +65,19 @@
         },
         "AmazonSideAsn" : {
           "type" : "integer"
+        },
+        "associationDefaultRouteTableId": {
+          "type" : "string"
+        },
+        "propagationDefaultRouteTableId": {
+          "type" : "string"
         }
       }
 
     }
   },
   "primaryIdentifier" : [ "/properties/TransitGatewayId" ],
+  "createOnlyProperties": ["/properties/Options/AmazonSideAsn","/properties/Options/MulticastSupport" ],
   "readOnlyProperties" : [ "/properties/TransitGatewayId" ],
   "handlers": {
     "create": {
@@ -75,7 +88,8 @@
     },
     "read": {
       "permissions": [
-        "ec2:DescribeTransitGateways"
+        "ec2:DescribeTransitGateways",
+        "ec2:DescribeTags"
       ]
     },
     "update": {
@@ -86,12 +100,14 @@
     },
     "delete": {
       "permissions": [
-        "ec2:DeleteTransitGateway"
+        "ec2:DeleteTransitGateway",
+        "ec2:DeleteTags"
       ]
     },
     "list": {
       "permissions": [
-        "ec2:DescribeTransitGateways"
+        "ec2:DescribeTransitGateways",
+        "ec2:DescribeTags"
       ]
     }
   }

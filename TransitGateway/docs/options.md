@@ -14,7 +14,9 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "<a href="#vpnecmpsupport" title="VpnEcmpSupport">VpnEcmpSupport</a>" : <i>String</i>,
     "<a href="#dnssupport" title="DnsSupport">DnsSupport</a>" : <i>String</i>,
     "<a href="#multicastsupport" title="MulticastSupport">MulticastSupport</a>" : <i>String</i>,
-    "<a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>" : <i>Integer</i>
+    "<a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>" : <i>Integer</i>,
+    "<a href="#associationdefaultroutetableid" title="associationDefaultRouteTableId">associationDefaultRouteTableId</a>" : <i>String</i>,
+    "<a href="#propagationdefaultroutetableid" title="propagationDefaultRouteTableId">propagationDefaultRouteTableId</a>" : <i>String</i>
 }
 </pre>
 
@@ -28,6 +30,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <a href="#dnssupport" title="DnsSupport">DnsSupport</a>: <i>String</i>
 <a href="#multicastsupport" title="MulticastSupport">MulticastSupport</a>: <i>String</i>
 <a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>: <i>Integer</i>
+<a href="#associationdefaultroutetableid" title="associationDefaultRouteTableId">associationDefaultRouteTableId</a>: <i>String</i>
+<a href="#propagationdefaultroutetableid" title="propagationDefaultRouteTableId">propagationDefaultRouteTableId</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -78,13 +82,33 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 80e42d170720be9ac238468d27a1d3705d9e27df
 
 #### AmazonSideAsn
 
 _Required_: No
 
 _Type_: Integer
+
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+
+#### associationDefaultRouteTableId
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### propagationDefaultRouteTableId
+
+_Required_: No
+
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

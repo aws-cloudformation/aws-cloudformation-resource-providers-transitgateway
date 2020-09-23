@@ -29,7 +29,11 @@ public class CreateHandler extends BaseHandlerStd {
         } catch (final AwsServiceException e) {
             return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
         }
+        Options options = Utils.translateTransitGatewayOptionsToOptions(createTransitGatewayResponse.transitGateway().options());
         model.setTransitGatewayId(createTransitGatewayResponse.transitGateway().transitGatewayId());
+        model.setTransitGatewayArn(createTransitGatewayResponse.transitGateway().transitGatewayArn());
+        model.setOptions(options);
+
 
         logger.log(String.format("%s [%s] creation succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
 

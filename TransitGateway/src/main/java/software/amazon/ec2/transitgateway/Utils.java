@@ -7,10 +7,7 @@ import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -61,7 +58,7 @@ public class Utils {
 
 
     /**
-     * Converter method to convert TransitGatewayMulticastDomain to CFN ResourceModel for LIST/READ request
+     * Converter method to convert TransitGateway to CFN ResourceModel for LIST/READ request
      */
     static ResourceModel transformTransitGateway(final TransitGateway transitGateway) {
         final ResourceModel resourceModel = ResourceModel.builder().build();
@@ -84,6 +81,7 @@ public class Utils {
                 .tags(newTags).build());
     }
 
+
     static ModifyTransitGatewayOptions translateOptions(final Options options) {
         if (options == null) return null;
 
@@ -92,7 +90,10 @@ public class Utils {
                 .dnsSupport(options.getDnsSupport())
                 .defaultRouteTableAssociation(options.getDefaultRouteTableAssociation())
                 .defaultRouteTablePropagation(options.getDefaultRouteTablePropagation())
-                .vpnEcmpSupport(options.getVpnEcmpSupport()).build();
+                .vpnEcmpSupport(options.getVpnEcmpSupport())
+                .associationDefaultRouteTableId(options.getAssociationDefaultRouteTableId())
+                .propagationDefaultRouteTableId(options.getPropagationDefaultRouteTableId())
+                .build();
 
     }
 
@@ -115,8 +116,20 @@ public class Utils {
                 .dnsSupport(options.getDnsSupport())
                 .defaultRouteTableAssociation(options.getDefaultRouteTableAssociation())
                 .defaultRouteTablePropagation(options.getDefaultRouteTablePropagation())
-                .vpnEcmpSupport(options.getVpnEcmpSupport()).build();
+                .vpnEcmpSupport(options.getVpnEcmpSupport())
+                .amazonSideAsn(Long.valueOf(options.getAmazonSideAsn()))
+                .multicastSupport(options.getMulticastSupport())
+                .build();
 
+    }
+
+
+    static Options translateTransitGatewayOptionsToOptions(final TransitGatewayOptions transitGatewayOptions){
+        if (transitGatewayOptions == null) return null;
+
+        return Options.builder().propagationDefaultRouteTableId(transitGatewayOptions.propagationDefaultRouteTableId())
+                .associationDefaultRouteTableId(transitGatewayOptions.associationDefaultRouteTableId())
+                .build();
     }
 
 
