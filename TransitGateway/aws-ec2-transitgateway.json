@@ -1,84 +1,93 @@
 {
-  "typeName" : "AWS::EC2::TransitGateway",
-  "description" : "Resource Type definition for AWS::EC2::TransitGateway",
-  "additionalProperties" : false,
-  "properties" : {
+  "typeName": "AWS::EC2::TransitGateway",
+  "description": "Resource Type definition for AWS::EC2::TransitGateway",
+  "additionalProperties": false,
+  "properties": {
     "creationTime": {
       "type": "string"
     },
-    "Description" : {
-      "type" : "string"
+    "Description": {
+      "type": "string"
     },
-    "TransitGatewayId" : {
-      "type" : "string"
+    "TransitGatewayId": {
+      "type": "string"
     },
-    "Tags" : {
-      "type" : "array",
-      "uniqueItems" : false,
-      "items" : {
-        "$ref" : "#/definitions/Tag"
+    "Tags": {
+      "type": "array",
+      "uniqueItems": false,
+      "items": {
+        "$ref": "#/definitions/Tag"
       }
     },
     "Options": {
       "type": "object",
-      "$ref" : "#/definitions/Options"
+      "$ref": "#/definitions/Options"
     },
     "transitGatewayArn": {
       "type": "string"
     }
   },
-  "definitions" : {
-    "Tag" : {
-      "type" : "object",
-      "additionalProperties" : false,
-      "properties" : {
-        "Key" : {
-          "type" : "string"
+  "definitions": {
+    "Tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Key": {
+          "type": "string"
         },
-        "Value" : {
-          "type" : "string"
+        "Value": {
+          "type": "string"
         }
       },
-      "required" : [ "Key", "Value" ]
+      "required": [
+        "Key",
+        "Value"
+      ]
     },
     "Options": {
       "type": "object",
-      "additionalProperties" : false,
-      "properties" : {
-        "DefaultRouteTablePropagation" : {
-          "type" : "string"
+      "additionalProperties": false,
+      "properties": {
+        "DefaultRouteTablePropagation": {
+          "type": "string"
         },
-        "AutoAcceptSharedAttachments" : {
-          "type" : "string"
+        "AutoAcceptSharedAttachments": {
+          "type": "string"
         },
-        "DefaultRouteTableAssociation" : {
-          "type" : "string"
+        "DefaultRouteTableAssociation": {
+          "type": "string"
         },
-        "VpnEcmpSupport" : {
-          "type" : "string"
+        "VpnEcmpSupport": {
+          "type": "string"
         },
-        "DnsSupport" : {
-          "type" : "string"
+        "DnsSupport": {
+          "type": "string"
         },
-        "MulticastSupport" : {
-          "type" : "string"
+        "MulticastSupport": {
+          "type": "string"
         },
-        "AmazonSideAsn" : {
-          "type" : "integer"
+        "AmazonSideAsn": {
+          "type": "integer"
         },
         "associationDefaultRouteTableId": {
-          "type" : "string"
+          "type": "string"
         },
         "propagationDefaultRouteTableId": {
-          "type" : "string"
+          "type": "string"
         }
       }
-
     }
   },
-  "primaryIdentifier" : [ "/properties/TransitGatewayId" ],
-  "createOnlyProperties": ["/properties/Options/AmazonSideAsn","/properties/Options/MulticastSupport" ],
-  "readOnlyProperties" : [ "/properties/TransitGatewayId" ],
+  "primaryIdentifier": [
+    "/properties/TransitGatewayId"
+  ],
+  "createOnlyProperties": [
+    "/properties/Options/AmazonSideAsn",
+    "/properties/Options/MulticastSupport"
+  ],
+  "readOnlyProperties": [
+    "/properties/TransitGatewayId"
+  ],
   "handlers": {
     "create": {
       "permissions": [

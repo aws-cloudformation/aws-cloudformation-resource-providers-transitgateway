@@ -42,7 +42,7 @@ public class CreateHandler extends BaseHandlerStd {
                 .status(OperationStatus.SUCCESS)
                 .build();
     }
-    
+
     private CreateTransitGatewayResponse createTransitGateway(final Ec2Client client,
                                                         final ResourceModel model,
                                                         final AmazonWebServicesClientProxy proxy) {
