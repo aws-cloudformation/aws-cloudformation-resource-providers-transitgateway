@@ -48,6 +48,7 @@ public class CreateHandlerTest extends AbstractTestBase {
                 = handler.handleRequest(proxy, request, context, logger);
 
         assertThat(response.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
+
     }
 
 

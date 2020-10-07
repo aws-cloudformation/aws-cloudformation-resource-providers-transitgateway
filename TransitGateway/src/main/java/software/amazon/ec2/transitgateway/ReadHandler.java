@@ -29,7 +29,9 @@ public class ReadHandler extends BaseHandlerStd {
 
         // Describe TransitGateway
         try {
+
             final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = Utils.describeTransitGateways(client, model, proxy);
+
             final TransitGateway transitGateway = describeTransitGatewaysResponse.transitGateways().get(0);
             readResult = Utils.transformTransitGateway(transitGateway);
         } catch (final AwsServiceException e) {
@@ -43,6 +45,7 @@ public class ReadHandler extends BaseHandlerStd {
                 .status(OperationStatus.SUCCESS)
                 .build();
     }
+
 
 
 }

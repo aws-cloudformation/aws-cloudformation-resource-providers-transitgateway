@@ -5,15 +5,19 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
+
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
+
 import software.amazon.cloudformation.proxy.*;
 
 import java.util.List;
 import java.util.Map;
 
+
 import static software.amazon.cloudformation.proxy.OperationStatus.*;
 import static software.amazon.ec2.transitgateway.Utils.*;
+
 
 
 public class CreateHandler extends BaseHandlerStd {
@@ -30,6 +34,7 @@ public class CreateHandler extends BaseHandlerStd {
         final CreateTransitGatewayResponse createTransitGatewayResponse;
 
         try {
+
             int remainingRetryCount = MAX_CALLBACK_COUNT;
             // Call NetworkManager api to register TransitGateway
             if (callbackContext != null) {
@@ -82,7 +87,6 @@ public class CreateHandler extends BaseHandlerStd {
         } catch (final AwsServiceException e) {
             return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
         }
-
 
     }
 

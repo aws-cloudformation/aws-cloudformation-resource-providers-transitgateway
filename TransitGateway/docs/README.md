@@ -91,4 +91,3 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### TransitGatewayId
 
 Returns the <code>TransitGatewayId</code> value.
-
