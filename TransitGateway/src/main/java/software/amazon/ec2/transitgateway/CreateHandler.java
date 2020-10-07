@@ -5,15 +5,19 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
+
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
+
 import software.amazon.cloudformation.proxy.*;
 
 import java.util.List;
 import java.util.Map;
 
+
 import static software.amazon.cloudformation.proxy.OperationStatus.*;
 import static software.amazon.ec2.transitgateway.Utils.*;
+
 
 
 public class CreateHandler extends BaseHandlerStd {
@@ -28,46 +32,31 @@ public class CreateHandler extends BaseHandlerStd {
         final ResourceModel model = request.getDesiredResourceState();
         final Ec2Client client = ClientBuilder.getClient();
         final CreateTransitGatewayResponse createTransitGatewayResponse;
+        int remainingRetryCount = MAX_CALLBACK_COUNT;
 
-        try {
-            int remainingRetryCount = MAX_CALLBACK_COUNT;
-            // Call NetworkManager api to register TransitGateway
-            if (callbackContext != null) {
+
+        if (callbackContext == null || !callbackContext.isActionStarted()) {
+            try {
                 createTransitGatewayResponse = createTransitGateway(client, model, proxy);
-                Options options = Utils.translateTransitGatewayOptionsToOptions(createTransitGatewayResponse.transitGateway().options());
-                model.setTransitGatewayId(createTransitGatewayResponse.transitGateway().transitGatewayId());
-                model.setTransitGatewayArn(createTransitGatewayResponse.transitGateway().transitGatewayArn());
-                model.setOptions(options);
-                logger.log(String.format("%s [%s] creation pending", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
-                return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                        .resourceModel(model)
-                        .status(IN_PROGRESS)
-                        .callbackDelaySeconds(CALlBACK_PERIOD_30_SECONDS)
-                        .callbackContext(CallbackContext.builder().actionStarted(true).remainingRetryCount(remainingRetryCount).build())
-                        .build();
-            }
-            // Refresh remaining retry count
-            if (callbackContext == null) {
-                remainingRetryCount = callbackContext.getRemainingRetryCount();
-                if (remainingRetryCount == 0) {
-                    throw new RuntimeException(TIMED_OUT_MESSAGE);
-                }
-                remainingRetryCount--;
-            }
 
-            final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = Utils.describeTransitGateways(client, model, proxy);
+            } catch (AwsServiceException e) {
+                return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
+            }
+            model.setTransitGatewayId(createTransitGatewayResponse.transitGateway().transitGatewayId());
+            model.setTransitGatewayArn(createTransitGatewayResponse.transitGateway().transitGatewayArn());
+            Options options = translateTransitGatewayOptionsToOptions(createTransitGatewayResponse.transitGateway().options());
+            model.setOptions(options);
+        }
+
+
+            final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = describeTransitGateways(client, model, proxy);
+        try {
             if (describeTransitGatewaysResponse.transitGateways().isEmpty()) {
                 throw new CfnNotFoundException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString());
             }
             final TransitGatewayState stateCode = describeTransitGatewaysResponse.transitGateways().get(0).state();
 
             switch (stateCode) {
-                case AVAILABLE:
-                    logger.log(String.format("%s [%s] creation succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
-                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                            .resourceModel(model)
-                            .status(SUCCESS)
-                            .build();
                 case PENDING:
                     return ProgressEvent.<ResourceModel, CallbackContext>builder()
                             .resourceModel(model)
@@ -75,12 +64,25 @@ public class CreateHandler extends BaseHandlerStd {
                             .callbackDelaySeconds(CALlBACK_PERIOD_30_SECONDS)
                             .callbackContext(CallbackContext.builder().actionStarted(true).remainingRetryCount(remainingRetryCount).build())
                             .build();
+                case AVAILABLE:
+                    logger.log(String.format("%s [%s] creation succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .resourceModel(model)
+                            .status(SUCCESS)
+                            .build();
                 default:
-                    throw new RuntimeException(String.format(UNRECOGNIZED_STATE_MESSAGE, stateCode));
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .resourceModel(model)
+                            .status(OperationStatus.FAILED)
+                            .build();
             }
-
-        } catch (final AwsServiceException e) {
-            return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
+        }catch (Ec2Exception e) {
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                    .resourceModel(model)
+                    .status(OperationStatus.FAILED)
+                    .errorCode(ExceptionMapper.mapToHandlerErrorCode(e))
+                    .message(e.getMessage())
+                    .build();
         }
 
 
