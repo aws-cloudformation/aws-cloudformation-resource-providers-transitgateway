@@ -29,7 +29,7 @@ public class ReadHandler extends BaseHandlerStd {
 
         // Describe TransitGateway
         try {
-            final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = describeTransitGateways(client, model, proxy);
+            final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = Utils.describeTransitGateways(client, model, proxy);
             final TransitGateway transitGateway = describeTransitGatewaysResponse.transitGateways().get(0);
             readResult = Utils.transformTransitGateway(transitGateway);
         } catch (final AwsServiceException e) {
@@ -44,12 +44,5 @@ public class ReadHandler extends BaseHandlerStd {
                 .build();
     }
 
-    private DescribeTransitGatewaysResponse describeTransitGateways(final Ec2Client client,
-                                                                                                 final ResourceModel model,
-                                                                                                 final AmazonWebServicesClientProxy proxy) {
-        final DescribeTransitGatewaysRequest describeTransitGatewaysRequest = DescribeTransitGatewaysRequest.builder()
-                .transitGatewayIds(model.getTransitGatewayId())
-                .build();
-        return proxy.injectCredentialsAndInvokeV2(describeTransitGatewaysRequest, client::describeTransitGateways);
-    }
+
 }
