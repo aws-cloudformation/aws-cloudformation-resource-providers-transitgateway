@@ -74,5 +74,12 @@ public class AbstractTestBase {
             .build();
   }
 
+  protected TransitGateway buildPendingTransitGateway() {
+    return TransitGateway.builder()
+            .transitGatewayId(TRANSIT_GATEWAY_ID)
+            .state(TransitGatewayState.PENDING)
+            .build();
+  }
+
 
 }
