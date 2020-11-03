@@ -18,3 +18,5 @@ target/
 
 # our logs
 rpdk.log
+/build.gradle
+/sam-test-examples/
