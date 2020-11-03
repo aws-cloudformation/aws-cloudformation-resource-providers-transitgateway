@@ -1,0 +1,9 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'AWS EC2 TransitGatewayMulticastDomain Sample Template'
+Resources:
+  TransitGatewayMulticastDomain:
+    Type: AWS::EC2::TransitGatewayMulticastDomain
+    Properties:
+      Tags:
+        - Tag: String
+      TransitGatewayId: String

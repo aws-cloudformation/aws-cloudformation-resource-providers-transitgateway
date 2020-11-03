@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CallbackContext {
     private boolean actionStarted;
+    private boolean updateFailed;
     private int remainingRetryCount;
+    private String transitGatewayMulticastDomainId;
 }

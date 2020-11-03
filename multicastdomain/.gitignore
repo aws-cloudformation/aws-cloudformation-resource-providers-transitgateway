@@ -1,7 +1,7 @@
 # macOS
 .DS_Store
 ._*
-
+bash_commands.sh
 # Maven outputs
 .classpath
 
@@ -18,5 +18,6 @@ target/
 
 # our logs
 rpdk.log
-/build.gradle
-/sam-test-examples/
+sam-test-examples/
+build.gradle
+.idea/

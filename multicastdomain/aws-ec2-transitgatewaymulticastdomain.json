@@ -58,9 +58,17 @@
         "ec2:DescribeTransitGatewayMulticastDomains"
       ]
     },
+    "update": {
+      "permissions": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTransitGatewayMulticastDomains"
+      ]
+    },
     "delete": {
       "permissions": [
-        "ec2:DeleteTransitGatewayMulticastDomain"
+        "ec2:DeleteTransitGatewayMulticastDomain",
+        "ec2:DeleteTags"
       ]
     },
     "list": {

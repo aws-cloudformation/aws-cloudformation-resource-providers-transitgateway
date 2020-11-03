@@ -44,26 +44,45 @@ public class Utils {
         return resourceModel;
     }
 
+
+    /**
+     * Converter method to convert List<Tag1> to List<Tag2>
+     * where Tag1 is cloudformation Tag object and Tag2 is NetworkManager SDK Tag object
+     */
+    static List<Tag> cfnTagsToSdkTags(final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> tags) {
+        if (tags == null) {
+            return new ArrayList<Tag>();
+        }
+        for (final software.amazon.ec2.transitgatewaymulticastdomain.Tag tag : tags) {
+            if (tag.getKey() == null) {
+                throw new CfnInvalidRequestException("Tags cannot have a null key");
+            }
+            if (tag.getValue() == null) {
+                throw new CfnInvalidRequestException("Tags cannot have a null value");
+            }
+        }
+        return tags.stream()
+                .map(e -> Tag.builder()
+                        .key(e.getKey())
+                        .value(e.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
+
     /**
      * Converter method to convert stack/resource tags to EC2 TagSpecification List
      */
-    static List<TagSpecification> translateTagsToTagSpecifications(final Map<String, String> tags) {
-        if(tags == null) {
+    static List<TagSpecification> translateTagsToTagSpecifications(final List<Tag> newTags) {
+        if (newTags == null) {
             return null;
         }
-
-        List<Tag> newTags = tags.keySet()
-                .stream()
-                .map(t -> Tag.builder()
-                        .key(t).value(tags.get(t))
-                        .build())
-                .collect(Collectors.toList());
-
         return Arrays.asList(TagSpecification.builder()
                 .resourceType("transit-gateway-multicast-domain")
-                .tags(newTags)
-                .build());
+                .tags(newTags).build());
     }
+
 
     static DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse(final Ec2Client client,
                                                                                                          final ResourceModel model,

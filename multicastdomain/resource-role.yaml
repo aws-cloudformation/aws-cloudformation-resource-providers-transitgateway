@@ -25,6 +25,7 @@ Resources:
                 Action:
                 - "ec2:CreateTags"
                 - "ec2:CreateTransitGatewayMulticastDomain"
+                - "ec2:DeleteTags"
                 - "ec2:DeleteTransitGatewayMulticastDomain"
                 - "ec2:DescribeTransitGatewayMulticastDomains"
                 Resource: "*"

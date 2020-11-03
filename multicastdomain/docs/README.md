@@ -65,3 +65,4 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### TransitGatewayMulticastDomainId
 
 The ID of the transit gateway multicast domain.
+
