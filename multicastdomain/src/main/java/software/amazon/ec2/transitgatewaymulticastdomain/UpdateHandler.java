@@ -70,7 +70,6 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
             final CallbackContext callbackContext,
             Ec2Client client,
             Logger logger ) {
-        try {
             logger.log("HANDLE TAGGING");
             final ResourceModel oldModel = new ReadHandler().handleRequest(proxy, request, callbackContext, logger).getResourceModel();
             logger.log(oldModel.toString());
@@ -105,8 +104,6 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
                 proxy.injectCredentialsAndInvokeV2(deleteTagsRequest, client::deleteTags);
             }
 
-        } catch (final Exception e) {
-            throw new CfnGeneralServiceException("updateTagging", e);
-        }
+
     }
 }

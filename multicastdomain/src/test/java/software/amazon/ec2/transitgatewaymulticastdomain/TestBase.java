@@ -19,6 +19,8 @@ public class TestBase {
     protected final static String TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID = "tgw-mcast-domain-02bb79002EXAMPLE";
     protected final static String TAG_KEY_1 = "testKey1";
     protected final static String TAG_VALUE_1 = "testValue1";
+    protected final static String TAG_KEY_2 = "testKey2";
+    protected final static String TAG_VALUE_2 = "testValue2";
 
     protected CallbackContext context;
 
@@ -39,6 +41,15 @@ public class TestBase {
         return ResourceModel.builder()
                 .transitGatewayId(TRANSIT_GATEWAY_ID)
                 .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                .tags(Utils.sdkTagsToCfnTags(createTransitGatewayTags()))
+                .build();
+    }
+
+    protected ResourceModel buildResourceModelWithDifferentTags() {
+        return ResourceModel.builder()
+                .transitGatewayId(TRANSIT_GATEWAY_ID)
+                .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                .tags(Utils.sdkTagsToCfnTags(createTransitGatewayTags(TAG_KEY_2, TAG_VALUE_2)))
                 .build();
     }
 
@@ -51,8 +62,12 @@ public class TestBase {
     }
 
     protected List<Tag> createTransitGatewayTags() {
+        return createTransitGatewayTags(TAG_KEY_1, TAG_VALUE_1);
+    }
+
+    protected List<Tag> createTransitGatewayTags(String tagKey, String tagValue) {
         final List<Tag> tags = new ArrayList<>();
-        final Tag t1 = Tag.builder().key(TAG_KEY_1).value(TAG_VALUE_1).build();
+        final Tag t1 = Tag.builder().key(tagKey).value(tagValue).build();
         tags.add(t1);
         return tags;
     }
@@ -62,6 +77,23 @@ public class TestBase {
                 .transitGatewayId(TRANSIT_GATEWAY_ID)
                 .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
                 .state(TransitGatewayMulticastDomainState.AVAILABLE)
+                .build();
+    }
+
+    protected TransitGatewayMulticastDomain buildAvailableTransitGatewayMulticastDomainWithTags() {
+        return TransitGatewayMulticastDomain.builder()
+                .transitGatewayId(TRANSIT_GATEWAY_ID)
+                .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                .tags(createTransitGatewayTags())
+                .state(TransitGatewayMulticastDomainState.AVAILABLE)
+                .build();
+    }
+
+    protected TransitGatewayMulticastDomain buildPendingTransitGatewayMulticastDomain() {
+        return TransitGatewayMulticastDomain.builder()
+                .transitGatewayId(TRANSIT_GATEWAY_ID)
+                .transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID)
+                .state(TransitGatewayMulticastDomainState.PENDING)
                 .build();
     }
 

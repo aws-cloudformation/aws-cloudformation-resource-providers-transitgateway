@@ -67,6 +67,24 @@ public class CreateHandlerTest extends TestBase {
     }
 
     @Test
+    public void handleRequest_Pending() {
+        final DescribeTransitGatewayMulticastDomainsResponse describeTransitGatewayMulticastDomainsResponse = DescribeTransitGatewayMulticastDomainsResponse.builder().transitGatewayMulticastDomains(buildPendingTransitGatewayMulticastDomain())
+                .build();
+        doReturn(describeTransitGatewayMulticastDomainsResponse)
+                .when(proxy)
+                .injectCredentialsAndInvokeV2(any(DescribeTransitGatewayMulticastDomainsRequest.class), any());
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+        CallbackContext context = CallbackContext.builder().actionStarted(true).remainingRetryCount(2).transitGatewayMulticastDomainId(TRANSIT_GATEWAY_MULTICAST_DOMAIN_ID).build();
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, context, logger);
+
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
+    }
+
+    @Test
     public void handleRequest_InvalidIdNotFound() {
         this.handleError("InvalidTransitGatewayID.NotFound", HandlerErrorCode.NotFound);
     }
