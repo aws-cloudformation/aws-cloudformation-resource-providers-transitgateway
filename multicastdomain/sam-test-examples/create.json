@@ -1,0 +1,15 @@
+{
+  "credentials": {},
+  "action": "CREATE",
+  "request": {
+    "clientRequestToken": "aece7e63-e74f-4590-8408-92f9e68fe0eb",
+    "desiredResourceState": {
+      "Name": "MyTGWMulticastDomain",
+      "TransitGatewayId": "tgw-02104FAKEEXAMPLEe",
+      "TransitGatewayMulticastDomainId": null,
+      "Tags": []
+    },
+    "logicalResourceIdentifier": "MyResource"
+  },
+  "callbackContext": null
+}

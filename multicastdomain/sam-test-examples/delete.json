@@ -1,0 +1,14 @@
+{
+  "credentials": {},
+  "action": "DELETE",
+  "request": {
+    "clientRequestToken": "aece7e63-e74f-4590-8408-92f9e68fe0ea",
+    "desiredResourceState": {
+      "Name": "MyTGWMulticastDomain",
+      "TransitGatewayId": "tgw-02104FAKEEXAMPLEe",
+      "TransitGatewayMulticastDomainId": "tgw-mcast-domain-38534FAKEEXAMPLEID"
+    },
+    "logicalResourceIdentifier": "MyResource"
+  },
+  "callbackContext": null
+}
