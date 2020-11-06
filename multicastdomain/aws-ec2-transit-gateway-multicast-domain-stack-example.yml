@@ -5,5 +5,7 @@ Resources:
     Type: AWS::EC2::TransitGatewayMulticastDomain
     Properties:
       Tags:
-        - Tag: String
+        - Tag:
+          - Key: String
+            Value: String
       TransitGatewayId: String
