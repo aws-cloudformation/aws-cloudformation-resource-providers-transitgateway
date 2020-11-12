@@ -32,9 +32,10 @@ public class CreateHandlerTest extends AbstractTestBase {
     public void setup() {
         model = buildResourceModel();
         handler = new CreateHandler();
-        readHandler = new ReadHandler();
-    }
 
+        readHandler = new ReadHandler();
+
+    }
 
     @Test
     public void handleRequest_CreationPending() {
@@ -71,8 +72,12 @@ public class CreateHandlerTest extends AbstractTestBase {
                 = handler.handleRequest(proxy, request, CallbackContext.builder().actionStarted(true).remainingRetryCount(MAX_CALLBACK_COUNT).build(), logger);
 
         assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+
     }
 
+
+   
+    
 
 
 }

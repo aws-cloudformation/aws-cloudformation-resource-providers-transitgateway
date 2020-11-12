@@ -6,7 +6,9 @@ import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 
+
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
+
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 
 import software.amazon.cloudformation.proxy.*;
@@ -14,6 +16,11 @@ import software.amazon.cloudformation.proxy.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static software.amazon.cloudformation.proxy.OperationStatus.*;
+import static software.amazon.ec2.transitgateway.Utils.*;
+
+
 
 import static software.amazon.cloudformation.proxy.OperationStatus.*;
 import static software.amazon.ec2.transitgateway.Utils.*;
@@ -34,6 +41,7 @@ public class CreateHandler extends BaseHandlerStd {
         final Ec2Client client = ClientBuilder.getClient();
         final CreateTransitGatewayResponse createTransitGatewayResponse;
         int remainingRetryCount = MAX_CALLBACK_COUNT;
+
 
 
         if (callbackContext == null || !callbackContext.isActionStarted()) {
@@ -96,6 +104,7 @@ public class CreateHandler extends BaseHandlerStd {
             e.printStackTrace();
             return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.GeneralServiceException);
         }
+
 
 
     }
