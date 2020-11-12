@@ -9,12 +9,14 @@ import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
+import software.amazon.cloudformation.exceptions.CfnNotUpdatableException;
 import software.amazon.cloudformation.proxy.*;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.ec2.model.Tag;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -37,13 +39,26 @@ public class UpdateHandler extends BaseHandlerStd {
         final Ec2Client client = ClientBuilder.getClient();
         final ModifyTransitGatewayResponse modifyTransitGatewayResponse;
         final String transitGatewayId;
+        ReadHandler readHandler = new ReadHandler();
+        Integer desiredAmazonASN = request.getDesiredResourceState().getAmazonSideAsn();
+        Integer previousAmazonASN = request.getPreviousResourceState().getAmazonSideAsn();
+
+        String desiredMulticastSupport = request.getDesiredResourceState().getMulticastSupport();
+        String previousMulticastSupport = request.getPreviousResourceState().getMulticastSupport();
+        if (!Objects.equals(desiredAmazonASN, previousAmazonASN)) {
+            // cannot update domainName because it's CreateOnly
+            throw new CfnNotUpdatableException(ResourceModel.TYPE_NAME, desiredAmazonASN.toString());
+        }
+        if(!Objects.equals(desiredMulticastSupport, previousMulticastSupport)){
+            throw new CfnNotUpdatableException(ResourceModel.TYPE_NAME, desiredMulticastSupport);
+        }
+
         try {
             final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = Utils.describeTransitGateways(client, request.getPreviousResourceState(), proxy);
 
             final TransitGateway transitGateway = describeTransitGatewaysResponse.transitGateways().get(0);
             final TransitGatewayState stateCode = transitGateway.state();
             if(stateCode.equals(TransitGatewayState.DELETED)){
-                logger.log(String.format("%s here", ResourceModel.TYPE_NAME));
                 return ProgressEvent.<ResourceModel, CallbackContext>builder()
                         .status(OperationStatus.FAILED)
                         .errorCode(HandlerErrorCode.NotFound)
@@ -51,11 +66,14 @@ public class UpdateHandler extends BaseHandlerStd {
                         .build();
             }
 
+
             transitGatewayId = request.getPreviousResourceState().getTransitGatewayId();
             if (callbackContext != null && callbackContext.isUpdateFailed()) {
                 // CallBack initiated: previous update failed, reverting to the previous resource state
+
                 model = request.getPreviousResourceState();
             } else {
+
                 // Initiate the request for Update
                 model = request.getDesiredResourceState();
             }
@@ -69,9 +87,7 @@ public class UpdateHandler extends BaseHandlerStd {
 
 
         try {
-            if (hasCreateOnlyProperties(request.getDesiredResourceState(), request.getPreviousResourceState())) {
-                throw new CfnInvalidRequestException("Attempting to set a CREATE ONLY Property.");
-            }
+
             model.setTransitGatewayId(transitGatewayId);
             modifyTransitGatewayResponse = modifyTransitGateway(client, model, proxy);
             if(model.getTags() != null && !model.getTags().isEmpty()){
@@ -79,19 +95,18 @@ public class UpdateHandler extends BaseHandlerStd {
             }
 
 
-        } catch (final AwsServiceException e) {
-            return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                    .resourceModel(model)
-                    .status(FAILED)
-                    .errorCode(ExceptionMapper.mapToHandlerErrorCode(e))
-                    .message(e.getMessage())
-                    // For failure update: adding CallBackContext to revert to the previous version
-                    .callbackContext(callbackContext == null ? CallbackContext.builder().updateFailed(true).build() : null)
-                    .build();
+        } catch (final CfnNotFoundException e) {
+            //NotFound returned from Delete handler will be considered by CFN backend service as success
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.NotFound);
+        } catch (final RuntimeException e) {
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.InvalidRequest);
+        }  catch (final Exception e) {
+            e.printStackTrace();
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.GeneralServiceException);
         }
 
         final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = describeTransitGateways(client, model, proxy);
-        ReadHandler readHandler = new ReadHandler();
+
         try {
             if (describeTransitGatewaysResponse.transitGateways().isEmpty()) {
                 throw new CfnNotFoundException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString());
@@ -149,6 +164,8 @@ public class UpdateHandler extends BaseHandlerStd {
     }
 
     static ModifyTransitGatewayOptions modifyTransitGatewayOptions(ResourceModel model){
+
+        if(model == null) return null;
         return ModifyTransitGatewayOptions.builder()
                 .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
                 .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
@@ -204,10 +221,6 @@ public class UpdateHandler extends BaseHandlerStd {
             throw new CfnGeneralServiceException("updateTagging", e);
         }
 
-    }
-
-    private boolean hasCreateOnlyProperties(final ResourceModel previousModel, final ResourceModel currentModel) {
-        return (!previousModel.getAmazonSideAsn().equals(currentModel.getAmazonSideAsn()) || (!previousModel.getMulticastSupport().equals(currentModel.getMulticastSupport())));
     }
 
 

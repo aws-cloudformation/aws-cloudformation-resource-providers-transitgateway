@@ -37,7 +37,6 @@ public class ReadHandler extends BaseHandlerStd {
             readResult = Utils.transformTransitGateway(transitGateway);
             final TransitGatewayState stateCode = transitGateway.state();
             if(stateCode.equals(TransitGatewayState.DELETED)){
-                logger.log(String.format("%s here", ResourceModel.TYPE_NAME));
                 return ProgressEvent.<ResourceModel, CallbackContext>builder()
                         .status(OperationStatus.FAILED)
                         .errorCode(HandlerErrorCode.NotFound)

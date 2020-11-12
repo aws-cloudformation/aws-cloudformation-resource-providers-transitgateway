@@ -36,8 +36,6 @@ public class CreateHandler extends BaseHandlerStd {
         int remainingRetryCount = MAX_CALLBACK_COUNT;
 
 
-        logger.log(String.valueOf(model));
-
         if (callbackContext == null || !callbackContext.isActionStarted()) {
 
             if (hasReadOnlyProperties(request.getDesiredResourceState())) {
@@ -56,7 +54,7 @@ public class CreateHandler extends BaseHandlerStd {
 
         }
 
-        System.out.println(String.valueOf(model));
+
 
         final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = describeTransitGateways(client, model, proxy);
 

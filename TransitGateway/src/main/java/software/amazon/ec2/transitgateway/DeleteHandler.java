@@ -51,16 +51,13 @@ public class DeleteHandler extends BaseHandlerStd {
                             .status(IN_PROGRESS)
                             .build();
                 case DELETED: // return success because DELETED is a terminated state
-                    logger.log("callback valueee" + String.valueOf(callbackContext));
                     if (callbackContext == null || !callbackContext.isActionStarted()) {
-                        logger.log("here where cc is null");
                         return ProgressEvent.<ResourceModel, CallbackContext>builder()
                                 .status(OperationStatus.FAILED)
                                 .errorCode(HandlerErrorCode.NotFound)
                                 .message(HandlerErrorCode.NotFound.getMessage())
                                 .build();
                     }else{
-                        logger.log("here where is hsould not be");
                         logger.log(String.format("%s [%s] deletion succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
                         return ProgressEvent.<ResourceModel, CallbackContext>builder()
                                 .status(SUCCESS)

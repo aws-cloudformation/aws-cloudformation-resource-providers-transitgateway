@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 
+import software.amazon.awssdk.core.SdkClient;
+import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
@@ -20,11 +22,15 @@ public class AbstractTestBase {
 
   protected CallbackContext context;
 
-  @Mock
+  @Mock(lenient = true)
+  ProxyClient<SdkClient> proxyClient;
+
+  @Mock(lenient = true)
   protected AmazonWebServicesClientProxy proxy;
 
-  @Mock
+  @Mock(lenient = true)
   protected Logger logger;
+
 
   @BeforeEach
   public void setup() {
@@ -33,16 +39,45 @@ public class AbstractTestBase {
     context = null;
   }
 
+  ResourceModel model = buildResourceModel();
   protected ResourceModel buildResourceModel() {
     return ResourceModel.builder()
             .transitGatewayId(TRANSIT_GATEWAY_ID)
+            .amazonSideAsn(6124)
+            .autoAcceptSharedAttachments("enable")
+            .description("test")
+            .defaultRouteTableAssociation("enable")
+            .defaultRouteTablePropagation("enable")
+            .dnsSupport("enable")
+            .multicastSupport("disable")
+            .vpnEcmpSupport("enable")
             .build();
   }
+
+  TransitGatewayOptions transitGatewayOptions = TransitGatewayOptions.builder()
+          .amazonSideAsn(model.getAmazonSideAsn().longValue())
+          .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+          .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+          .defaultRouteTablePropagation(model.getDefaultRouteTablePropagation())
+          .dnsSupport(model.getDnsSupport())
+          .multicastSupport(model.getMulticastSupport())
+          .vpnEcmpSupport(model.getVpnEcmpSupport())
+          .build();
+
+  ModifyTransitGatewayOptions modifyTransitGatewayOptions = ModifyTransitGatewayOptions.builder()
+          .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+          .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+          .defaultRouteTablePropagation(model.getDefaultRouteTablePropagation())
+          .dnsSupport(model.getDnsSupport())
+          .vpnEcmpSupport(model.getVpnEcmpSupport())
+          .build();
+
 
   protected TransitGateway buildTransitGateway() {
     return TransitGateway.builder()
             .transitGatewayId(TRANSIT_GATEWAY_ID)
-            .tags(createTransitGatewayTags())
+            .options(transitGatewayOptions)
+            .state(TransitGatewayState.AVAILABLE)
             .build();
   }
 
@@ -59,6 +94,7 @@ public class AbstractTestBase {
             .state(TransitGatewayState.AVAILABLE)
             .build();
   }
+
 
   protected TransitGateway buildDeletingTransitGateway() {
     return TransitGateway.builder()
