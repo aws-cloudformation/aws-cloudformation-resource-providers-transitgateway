@@ -155,4 +155,3 @@ Returns the <code>TransitGatewayId</code> value.
 #### TransitGatewayArn
 
 Returns the <code>TransitGatewayArn</code> value.
-
