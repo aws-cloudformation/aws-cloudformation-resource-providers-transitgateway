@@ -1,6 +1,5 @@
 package software.amazon.ec2.transitgateway;
 
-import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.LambdaWrapper;
 

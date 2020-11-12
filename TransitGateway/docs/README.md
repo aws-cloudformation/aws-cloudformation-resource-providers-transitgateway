@@ -12,11 +12,17 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "AWS::EC2::TransitGateway",
     "Properties" : {
-        "<a href="#creationtime" title="creationTime">creationTime</a>" : <i>String</i>,
         "<a href="#description" title="Description">Description</a>" : <i>String</i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
-        "<a href="#options" title="Options">Options</a>" : <i><a href="options.md">Options</a></i>,
-        "<a href="#transitgatewayarn" title="transitGatewayArn">transitGatewayArn</a>" : <i>String</i>
+        "<a href="#defaultroutetablepropagation" title="DefaultRouteTablePropagation">DefaultRouteTablePropagation</a>" : <i>String</i>,
+        "<a href="#autoacceptsharedattachments" title="AutoAcceptSharedAttachments">AutoAcceptSharedAttachments</a>" : <i>String</i>,
+        "<a href="#defaultroutetableassociation" title="DefaultRouteTableAssociation">DefaultRouteTableAssociation</a>" : <i>String</i>,
+        "<a href="#vpnecmpsupport" title="VpnEcmpSupport">VpnEcmpSupport</a>" : <i>String</i>,
+        "<a href="#dnssupport" title="DnsSupport">DnsSupport</a>" : <i>String</i>,
+        "<a href="#multicastsupport" title="MulticastSupport">MulticastSupport</a>" : <i>String</i>,
+        "<a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>" : <i>Integer</i>,
+        "<a href="#associationdefaultroutetableid" title="associationDefaultRouteTableId">associationDefaultRouteTableId</a>" : <i>String</i>,
+        "<a href="#propagationdefaultroutetableid" title="propagationDefaultRouteTableId">propagationDefaultRouteTableId</a>" : <i>String</i>
     }
 }
 </pre>
@@ -26,23 +32,21 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: AWS::EC2::TransitGateway
 Properties:
-    <a href="#creationtime" title="creationTime">creationTime</a>: <i>String</i>
     <a href="#description" title="Description">Description</a>: <i>String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
-    <a href="#options" title="Options">Options</a>: <i><a href="options.md">Options</a></i>
-    <a href="#transitgatewayarn" title="transitGatewayArn">transitGatewayArn</a>: <i>String</i>
+    <a href="#defaultroutetablepropagation" title="DefaultRouteTablePropagation">DefaultRouteTablePropagation</a>: <i>String</i>
+    <a href="#autoacceptsharedattachments" title="AutoAcceptSharedAttachments">AutoAcceptSharedAttachments</a>: <i>String</i>
+    <a href="#defaultroutetableassociation" title="DefaultRouteTableAssociation">DefaultRouteTableAssociation</a>: <i>String</i>
+    <a href="#vpnecmpsupport" title="VpnEcmpSupport">VpnEcmpSupport</a>: <i>String</i>
+    <a href="#dnssupport" title="DnsSupport">DnsSupport</a>: <i>String</i>
+    <a href="#multicastsupport" title="MulticastSupport">MulticastSupport</a>: <i>String</i>
+    <a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>: <i>Integer</i>
+    <a href="#associationdefaultroutetableid" title="associationDefaultRouteTableId">associationDefaultRouteTableId</a>: <i>String</i>
+    <a href="#propagationdefaultroutetableid" title="propagationDefaultRouteTableId">propagationDefaultRouteTableId</a>: <i>String</i>
 </pre>
 
 ## Properties
-
-#### creationTime
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### Description
 
@@ -60,15 +64,71 @@ _Type_: List of <a href="tag.md">Tag</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### Options
+#### DefaultRouteTablePropagation
 
 _Required_: No
 
-_Type_: <a href="options.md">Options</a>
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### transitGatewayArn
+#### AutoAcceptSharedAttachments
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### DefaultRouteTableAssociation
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### VpnEcmpSupport
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### DnsSupport
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### MulticastSupport
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### AmazonSideAsn
+
+_Required_: No
+
+_Type_: Integer
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### associationDefaultRouteTableId
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### propagationDefaultRouteTableId
 
 _Required_: No
 
@@ -91,3 +151,8 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### TransitGatewayId
 
 Returns the <code>TransitGatewayId</code> value.
+
+#### TransitGatewayArn
+
+Returns the <code>TransitGatewayArn</code> value.
+

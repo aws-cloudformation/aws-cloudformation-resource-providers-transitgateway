@@ -11,8 +11,7 @@ import software.amazon.cloudformation.proxy.*;
 import java.util.List;
 
 
-import static software.amazon.cloudformation.proxy.OperationStatus.IN_PROGRESS;
-import static software.amazon.cloudformation.proxy.OperationStatus.SUCCESS;
+import static software.amazon.cloudformation.proxy.OperationStatus.*;
 import static software.amazon.ec2.transitgateway.Utils.*;
 
 public class DeleteHandler extends BaseHandlerStd {
@@ -31,19 +30,7 @@ public class DeleteHandler extends BaseHandlerStd {
             int remainingRetryCount = MAX_CALLBACK_COUNT;
             final List<TransitGateway> transitGateways = Utils.describeTransitGatewaysResponse(client, model, proxy).transitGateways();
 
-            // if no TransitGateways found
-            if (transitGateways.isEmpty()) {
-                if (callbackContext == null) {
-                    throw new CfnNotFoundException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString());
-                } else {
-                    // if this is a callback from a previous deletion request, return deletion success
-                    logger.log(String.format("%s [%s] deletion succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
-                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                            .resourceModel(request.getDesiredResourceState())
-                            .status(SUCCESS)
-                            .build();
-                }
-            }
+
             final TransitGatewayState stateCode = transitGateways.get(0).state();
             switch (stateCode) {
                 case AVAILABLE:
@@ -64,11 +51,22 @@ public class DeleteHandler extends BaseHandlerStd {
                             .status(IN_PROGRESS)
                             .build();
                 case DELETED: // return success because DELETED is a terminated state
-                    logger.log(String.format("%s [%s] deletion succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
-                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                            .resourceModel(request.getDesiredResourceState())
-                            .status(SUCCESS)
-                            .build();
+                    logger.log("callback valueee" + String.valueOf(callbackContext));
+                    if (callbackContext == null || !callbackContext.isActionStarted()) {
+                        logger.log("here where cc is null");
+                        return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                                .status(OperationStatus.FAILED)
+                                .errorCode(HandlerErrorCode.NotFound)
+                                .message(HandlerErrorCode.NotFound.getMessage())
+                                .build();
+                    }else{
+                        logger.log("here where is hsould not be");
+                        logger.log(String.format("%s [%s] deletion succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
+                        return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                                .status(SUCCESS)
+                                .build();
+                    }
+
                 default:
                     throw new RuntimeException(String.format(UNRECOGNIZED_STATE_MESSAGE, stateCode));
             }
