@@ -44,9 +44,6 @@ public class Utils {
             if (tag.getKey() == null) {
                 throw new CfnInvalidRequestException("Tags cannot have a null key");
             }
-            if (tag.getValue() == null) {
-                throw new CfnInvalidRequestException("Tags cannot have a null value");
-            }
         }
         return tags.stream()
                 .map(e -> Tag.builder()
@@ -61,41 +58,44 @@ public class Utils {
      * Converter method to convert TransitGateway to CFN ResourceModel for LIST/READ request
      */
     static ResourceModel transformTransitGateway(final TransitGateway transitGateway) {
-        final ResourceModel resourceModel = ResourceModel.builder().build();
-
-        resourceModel.setTransitGatewayId(transitGateway.transitGatewayId());
-        resourceModel.setTags(Utils.sdkTagsToCfnTags(transitGateway.tags()));
+        final ResourceModel resourceModel = ResourceModel.builder().
+                transitGatewayId(transitGateway.transitGatewayId())
+                .amazonSideAsn(transitGateway.options().amazonSideAsn().intValue())
+                .associationDefaultRouteTableId(transitGateway.options().associationDefaultRouteTableId())
+                .autoAcceptSharedAttachments(transitGateway.options().autoAcceptSharedAttachmentsAsString())
+                .defaultRouteTableAssociation(transitGateway.options().defaultRouteTableAssociationAsString())
+                .defaultRouteTablePropagation(transitGateway.options().defaultRouteTablePropagationAsString())
+                .description(transitGateway.description())
+                .dnsSupport(transitGateway.options().dnsSupportAsString())
+                .multicastSupport(transitGateway.options().multicastSupportAsString())
+                .propagationDefaultRouteTableId(transitGateway.options().propagationDefaultRouteTableId())
+                .tags(Utils.sdkTagsToCfnTags(transitGateway.tags()))
+                .transitGatewayArn(transitGateway.transitGatewayArn())
+                .vpnEcmpSupport(transitGateway.options().vpnEcmpSupportAsString())
+                .build();
 
         return resourceModel;
     }
 
+
+
     /**
      * Converter method to convert stack/resource tags to EC2 TagSpecification List
      */
-    static List<TagSpecification> translateTagsToTagSpecifications(final List<Tag> newTags) {
-        if (newTags == null) {
+    static List<TagSpecification> translateTagsToTagSpecifications(final List<software.amazon.ec2.transitgateway.Tag> tags) {
+
+        if (tags == null) {
             return null;
+        }else{
+            List<software.amazon.awssdk.services.ec2.model.Tag> listTags = Utils.cfnTagsToSdkTags(tags);
+            return Arrays.asList(TagSpecification.builder()
+                    .resourceType("transit-gateway")
+                    .tags(listTags).build());
         }
-        return Arrays.asList(TagSpecification.builder()
-                .resourceType("transit-gateway")
-                .tags(newTags).build());
-    }
-
-
-    static ModifyTransitGatewayOptions translateOptions(final Options options) {
-        if (options == null) return null;
-
-        return ModifyTransitGatewayOptions.builder()
-                .autoAcceptSharedAttachments(options.getAutoAcceptSharedAttachments())
-                .dnsSupport(options.getDnsSupport())
-                .defaultRouteTableAssociation(options.getDefaultRouteTableAssociation())
-                .defaultRouteTablePropagation(options.getDefaultRouteTablePropagation())
-                .vpnEcmpSupport(options.getVpnEcmpSupport())
-                .associationDefaultRouteTableId(options.getAssociationDefaultRouteTableId())
-                .propagationDefaultRouteTableId(options.getPropagationDefaultRouteTableId())
-                .build();
 
     }
+
+
 
     static DescribeTransitGatewaysResponse describeTransitGatewaysResponse(final Ec2Client client,
                                                                            final ResourceModel model,
@@ -108,27 +108,30 @@ public class Utils {
     }
 
 
-    static TransitGatewayRequestOptions translateOptionsToTransitGatewayRequestOptions(final Options options) {
-        if (options == null) return null;
 
-        return TransitGatewayRequestOptions.builder()
-                .autoAcceptSharedAttachments(options.getAutoAcceptSharedAttachments())
-                .dnsSupport(options.getDnsSupport())
-                .defaultRouteTableAssociation(options.getDefaultRouteTableAssociation())
-                .defaultRouteTablePropagation(options.getDefaultRouteTablePropagation())
-                .vpnEcmpSupport(options.getVpnEcmpSupport())
-                .amazonSideAsn(Long.valueOf(options.getAmazonSideAsn()))
-                .multicastSupport(options.getMulticastSupport())
+
+
+    static DescribeTransitGatewaysResponse describeTransitGateways(final Ec2Client client,
+                                                                    final ResourceModel model,
+                                                                    final AmazonWebServicesClientProxy proxy) {
+        final DescribeTransitGatewaysRequest describeTransitGatewaysRequest = DescribeTransitGatewaysRequest.builder()
+                .transitGatewayIds(model.getTransitGatewayId())
                 .build();
-
+        return proxy.injectCredentialsAndInvokeV2(describeTransitGatewaysRequest, client::describeTransitGateways);
     }
 
+    static TransitGatewayRequestOptions transitGatewayRequestOptions(ResourceModel model){
 
-    static Options translateTransitGatewayOptionsToOptions(final TransitGatewayOptions transitGatewayOptions){
-        if (transitGatewayOptions == null) return null;
+        if(model == null) return null;
 
-        return Options.builder().propagationDefaultRouteTableId(transitGatewayOptions.propagationDefaultRouteTableId())
-                .associationDefaultRouteTableId(transitGatewayOptions.associationDefaultRouteTableId())
+          return TransitGatewayRequestOptions.builder()
+                .amazonSideAsn(model.getAmazonSideAsn().longValue())
+                .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                .defaultRouteTablePropagation(model.getDefaultRouteTablePropagation())
+                .dnsSupport(model.getDnsSupport())
+                .multicastSupport(model.getMulticastSupport())
+                .vpnEcmpSupport(model.getVpnEcmpSupport())
                 .build();
     }
 
@@ -140,6 +143,7 @@ public class Utils {
                 .build();
         return proxy.injectCredentialsAndInvokeV2(describeTransitGatewaysRequest, client::describeTransitGateways);
     }
+
 
 
 }

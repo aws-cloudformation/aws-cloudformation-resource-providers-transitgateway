@@ -1,11 +1,7 @@
 {
   "typeName": "AWS::EC2::TransitGateway",
   "description": "Resource Type definition for AWS::EC2::TransitGateway",
-  "additionalProperties": false,
   "properties": {
-    "creationTime": {
-      "type": "string"
-    },
     "Description": {
       "type": "string"
     },
@@ -15,18 +11,43 @@
     "Tags": {
       "type": "array",
       "uniqueItems": false,
+      "default": {},
       "items": {
         "$ref": "#/definitions/Tag"
       }
     },
-    "Options": {
-      "type": "object",
-      "$ref": "#/definitions/Options"
+    "TransitGatewayArn": {
+      "type": "string"
     },
-    "transitGatewayArn": {
+    "DefaultRouteTablePropagation": {
+      "type": "string"
+    },
+    "AutoAcceptSharedAttachments": {
+      "type": "string"
+    },
+    "DefaultRouteTableAssociation": {
+      "type": "string"
+    },
+    "VpnEcmpSupport": {
+      "type": "string"
+    },
+    "DnsSupport": {
+      "type": "string"
+    },
+    "MulticastSupport": {
+      "type": "string"
+    },
+    "AmazonSideAsn": {
+      "type": "integer"
+    },
+    "associationDefaultRouteTableId": {
+      "type": "string"
+    },
+    "propagationDefaultRouteTableId": {
       "type": "string"
     }
   },
+  "additionalProperties": false,
   "definitions": {
     "Tag": {
       "type": "object",
@@ -43,39 +64,6 @@
         "Key",
         "Value"
       ]
-    },
-    "Options": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "DefaultRouteTablePropagation": {
-          "type": "string"
-        },
-        "AutoAcceptSharedAttachments": {
-          "type": "string"
-        },
-        "DefaultRouteTableAssociation": {
-          "type": "string"
-        },
-        "VpnEcmpSupport": {
-          "type": "string"
-        },
-        "DnsSupport": {
-          "type": "string"
-        },
-        "MulticastSupport": {
-          "type": "string"
-        },
-        "AmazonSideAsn": {
-          "type": "integer"
-        },
-        "associationDefaultRouteTableId": {
-          "type": "string"
-        },
-        "propagationDefaultRouteTableId": {
-          "type": "string"
-        }
-      }
     }
   },
   "primaryIdentifier": [
@@ -86,7 +74,8 @@
     "/properties/Options/MulticastSupport"
   ],
   "readOnlyProperties": [
-    "/properties/TransitGatewayId"
+    "/properties/TransitGatewayId",
+    "/properties/TransitGatewayArn"
   ],
   "handlers": {
     "create": {

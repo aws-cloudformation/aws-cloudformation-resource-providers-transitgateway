@@ -3,12 +3,13 @@ package software.amazon.ec2.transitgateway;
 // TODO: replace all usage of SdkClient with your service client type, e.g; YourServiceAsyncClient
 // import software.amazon.awssdk.services.yourservice.YourServiceAsyncClient;
 
-import software.amazon.awssdk.awscore.AwsResponse;
+
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
+import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.*;
 
 public class ReadHandler extends BaseHandlerStd {
@@ -34,8 +35,22 @@ public class ReadHandler extends BaseHandlerStd {
 
             final TransitGateway transitGateway = describeTransitGatewaysResponse.transitGateways().get(0);
             readResult = Utils.transformTransitGateway(transitGateway);
+            final TransitGatewayState stateCode = transitGateway.state();
+            if(stateCode.equals(TransitGatewayState.DELETED)){
+                return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                        .status(OperationStatus.FAILED)
+                        .errorCode(HandlerErrorCode.NotFound)
+                        .message(HandlerErrorCode.NotFound.getMessage())
+                        .build();
+            }
+
         } catch (final AwsServiceException e) {
             return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
+        } catch (final CfnNotFoundException e) {
+            //NotFound returned from Delete handler will be considered by CFN backend service as success
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.NotFound);
+        } catch (final RuntimeException e) {
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.InvalidRequest);
         }
 
         logger.log(String.format("%s read succeeded", ResourceModel.TYPE_NAME));

@@ -1,12 +1,11 @@
 package software.amazon.ec2.transitgateway;
 
-import software.amazon.awssdk.awscore.AwsRequest;
-import software.amazon.awssdk.awscore.AwsResponse;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysResponse;
 import software.amazon.awssdk.services.ec2.model.TransitGateway;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.ProgressEvent;
@@ -35,7 +34,7 @@ public class ListHandler extends BaseHandler<CallbackContext> {
             nextToken = describeTransitGatewaysResponse.nextToken();
 
             for (final TransitGateway transitGateway : describeTransitGatewaysResponse.transitGateways()) {
-                models.add(Utils.transformTransitGateway(transitGateway));
+                if(!transitGateway.state().equals(TransitGatewayState.DELETED)) models.add(Utils.transformTransitGateway(transitGateway));
             }
         } catch (final AwsServiceException e) {
             return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));

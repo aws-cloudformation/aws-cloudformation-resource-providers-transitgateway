@@ -61,6 +61,7 @@ public class DeleteHandlerTest extends AbstractTestBase {
     @Test
     public void handleRequest_DeletionFinalSucceed() {
         final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = DescribeTransitGatewaysResponse.builder()
+                .transitGateways(buildDeletedTransitGateway())
                 .build();
         doReturn(describeTransitGatewaysResponse)
                 .when(proxy)

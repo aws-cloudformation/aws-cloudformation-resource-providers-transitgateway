@@ -30,10 +30,10 @@ public class ListHandlerTest extends AbstractTestBase {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-        final DescribeTransitGatewaysResponse describeGlobalNetworksResponse = DescribeTransitGatewaysResponse.builder()
+        final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = DescribeTransitGatewaysResponse.builder()
                 .transitGateways(buildTransitGateway())
                 .build();
-        doReturn(describeGlobalNetworksResponse)
+        doReturn(describeTransitGatewaysResponse)
                 .when(proxy)
                 .injectCredentialsAndInvokeV2(any(DescribeTransitGatewaysRequest.class), any());
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()

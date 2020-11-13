@@ -7,21 +7,21 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
-import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
-import software.amazon.cloudformation.proxy.Logger;
-import software.amazon.cloudformation.proxy.ProgressEvent;
-import software.amazon.cloudformation.proxy.ProxyClient;
-import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
+import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
+import software.amazon.cloudformation.exceptions.CfnNotFoundException;
+import software.amazon.cloudformation.exceptions.CfnNotUpdatableException;
+import software.amazon.cloudformation.proxy.*;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.ec2.model.Tag;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
-import static software.amazon.cloudformation.proxy.OperationStatus.FAILED;
-import static software.amazon.cloudformation.proxy.OperationStatus.SUCCESS;
+import static software.amazon.cloudformation.proxy.OperationStatus.*;
+import static software.amazon.ec2.transitgateway.Utils.*;
 
 
 public class UpdateHandler extends BaseHandlerStd {
@@ -35,54 +35,147 @@ public class UpdateHandler extends BaseHandlerStd {
         final Logger logger) {
 
         final ResourceModel model;
-        if (callbackContext != null && callbackContext.isUpdateFailed()) {
-            // CallBack initiated: previous update failed, reverting to the previous resource state
-            model = request.getPreviousResourceState();
-        } else {
-            // Initiate the request for Update
-            model = request.getDesiredResourceState();
-        }
+        int remainingRetryCount = MAX_CALLBACK_COUNT;
         final Ec2Client client = ClientBuilder.getClient();
         final ModifyTransitGatewayResponse modifyTransitGatewayResponse;
+        final String transitGatewayId;
+        ReadHandler readHandler = new ReadHandler();
+        Integer desiredAmazonASN = request.getDesiredResourceState().getAmazonSideAsn();
+        Integer previousAmazonASN = request.getPreviousResourceState().getAmazonSideAsn();
+
+        String desiredMulticastSupport = request.getDesiredResourceState().getMulticastSupport();
+        String previousMulticastSupport = request.getPreviousResourceState().getMulticastSupport();
+        if (!Objects.equals(desiredAmazonASN, previousAmazonASN)) {
+            // cannot update domainName because it's CreateOnly
+            throw new CfnNotUpdatableException(ResourceModel.TYPE_NAME, desiredAmazonASN.toString());
+        }
+        if(!Objects.equals(desiredMulticastSupport, previousMulticastSupport)){
+            throw new CfnNotUpdatableException(ResourceModel.TYPE_NAME, desiredMulticastSupport);
+        }
 
         try {
+            final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = Utils.describeTransitGateways(client, request.getPreviousResourceState(), proxy);
+
+            final TransitGateway transitGateway = describeTransitGatewaysResponse.transitGateways().get(0);
+            final TransitGatewayState stateCode = transitGateway.state();
+            if(stateCode.equals(TransitGatewayState.DELETED)){
+                return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                        .status(OperationStatus.FAILED)
+                        .errorCode(HandlerErrorCode.NotFound)
+                        .message(HandlerErrorCode.NotFound.getMessage())
+                        .build();
+            }
+
+
+            transitGatewayId = request.getPreviousResourceState().getTransitGatewayId();
+            if (callbackContext != null && callbackContext.isUpdateFailed()) {
+                // CallBack initiated: previous update failed, reverting to the previous resource state
+
+                model = request.getPreviousResourceState();
+            } else {
+
+                // Initiate the request for Update
+                model = request.getDesiredResourceState();
+            }
+        }catch (final CfnNotFoundException e) {
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.NotFound);
+        }catch (AwsServiceException e) {
+            return ProgressEvent.defaultFailureHandler(e, ExceptionMapper.mapToHandlerErrorCode(e));
+        } catch (final RuntimeException e) {
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.InvalidRequest);
+        }
+
+
+        try {
+
+            model.setTransitGatewayId(transitGatewayId);
             modifyTransitGatewayResponse = modifyTransitGateway(client, model, proxy);
             if(model.getTags() != null && !model.getTags().isEmpty()){
                 handleTagging(proxy, request, client);
             }
 
 
-        } catch (final AwsServiceException e) {
-            return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                    .resourceModel(model)
-                    .status(FAILED)
-                    .errorCode(ExceptionMapper.mapToHandlerErrorCode(e))
-                    .message(e.getMessage())
-                    // For failure update: adding CallBackContext to revert to the previous version
-                    .callbackContext(callbackContext == null ? CallbackContext.builder().updateFailed(true).build() : null)
-                    .build();
+        } catch (final CfnNotFoundException e) {
+            //NotFound returned from Delete handler will be considered by CFN backend service as success
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.NotFound);
+        } catch (final RuntimeException e) {
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.InvalidRequest);
+        }  catch (final Exception e) {
+            e.printStackTrace();
+            return ProgressEvent.defaultFailureHandler(e, HandlerErrorCode.GeneralServiceException);
         }
 
-        logger.log(String.format("%s [%s] update succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
-        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                .resourceModel(model)
-                .status(SUCCESS)
-                .build();
+        final DescribeTransitGatewaysResponse describeTransitGatewaysResponse = describeTransitGateways(client, model, proxy);
+
+        try {
+            if (describeTransitGatewaysResponse.transitGateways().isEmpty()) {
+                throw new CfnNotFoundException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString());
+            }
+            final TransitGatewayState stateCode = describeTransitGatewaysResponse.transitGateways().get(0).state();
+
+            switch (stateCode) {
+                case DELETED:
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .status(OperationStatus.FAILED)
+                            .errorCode(HandlerErrorCode.NotFound)
+                            .message(HandlerErrorCode.NotFound.getMessage())
+                            .build();
+                case MODIFYING:
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .resourceModel(model)
+                            .status(IN_PROGRESS)
+                            .callbackDelaySeconds(CALlBACK_PERIOD_30_SECONDS)
+                            .callbackContext(CallbackContext.builder().actionStarted(true).remainingRetryCount(remainingRetryCount).build())
+                            .build();
+                case AVAILABLE:
+                    logger.log(String.format("%s [%s] modify succeeded", ResourceModel.TYPE_NAME, model.getPrimaryIdentifier()));
+                    return readHandler.handleRequest(proxy, request, null, logger);
+                default:
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .resourceModel(model)
+                            .status(OperationStatus.FAILED)
+                            .build();
+            }
+        }catch (Ec2Exception e) {
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                    .resourceModel(model)
+                    .status(OperationStatus.FAILED)
+                    .errorCode(ExceptionMapper.mapToHandlerErrorCode(e))
+                    .message(e.getMessage())
+                    .build();
+        }
 
     }
 
     private ModifyTransitGatewayResponse modifyTransitGateway(final Ec2Client client,
                                           final ResourceModel model,
                                           final AmazonWebServicesClientProxy proxy) {
+
+
         final ModifyTransitGatewayRequest modifyTransitGatewayRequest =
                 ModifyTransitGatewayRequest.builder()
                         .transitGatewayId(model.getTransitGatewayId())
                         .description(model.getDescription())
-                        .options(Utils.translateOptions(model.getOptions()))
+                        .options(modifyTransitGatewayOptions(model))
                         .build();
 
 
         return proxy.injectCredentialsAndInvokeV2(modifyTransitGatewayRequest, client::modifyTransitGateway);
+    }
+
+    static ModifyTransitGatewayOptions modifyTransitGatewayOptions(ResourceModel model){
+
+        if(model == null) return null;
+        return ModifyTransitGatewayOptions.builder()
+                .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
+                .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
+                .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                .defaultRouteTablePropagation(model.getDefaultRouteTablePropagation())
+                .dnsSupport(model.getDnsSupport())
+                .vpnEcmpSupport(model.getVpnEcmpSupport())
+                .build();
+
     }
 
 
