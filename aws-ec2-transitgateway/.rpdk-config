@@ -1,0 +1,22 @@
+{
+    "typeName": "Aws::EC2::TransitGateway",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "com.aws.ec2.transitgateway.HandlerWrapper::handleRequest",
+    "testEntrypoint": "com.aws.ec2.transitgateway.HandlerWrapper::testEntrypoint",
+    "settings": {
+        "version": false,
+        "subparser_name": null,
+        "verbose": 0,
+        "force": false,
+        "type_name": "Aws::EC2::TransitGateway",
+        "namespace": [
+            "com",
+            "aws",
+            "ec2",
+            "transitgateway"
+        ],
+        "codegen_template_path": "default",
+        "protocolVersion": "2.0.0"
+    }
+}
