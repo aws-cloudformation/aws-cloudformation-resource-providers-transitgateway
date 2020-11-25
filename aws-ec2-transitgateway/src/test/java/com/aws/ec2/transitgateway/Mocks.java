@@ -157,13 +157,6 @@ public class Mocks {
         return this.describeResponse(new ArrayList<>(), "available");
     }
 
-    public TransitGatewayState transitGatewayAvailable(){
-        return TransitGatewayState.AVAILABLE;
-    }
-
-    public TransitGatewayState transitGatewayPending(){
-        return TransitGatewayState.PENDING;
-    }
 
     public CreateTagsResponse createTagsResponse() {
         return CreateTagsResponse.builder().build();
@@ -200,13 +193,6 @@ public class Mocks {
 
     public CreateTransitGatewayResponse createResponse() {
         return this.createResponse(new ArrayList<>(), "available");
-    }
-
-    protected TransitGateway buildPendingTransitGateway() {
-        return TransitGateway.builder()
-                .transitGatewayId(primaryIdentifier)
-                .state(TransitGatewayState.PENDING)
-                .build();
     }
 
 

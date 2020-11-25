@@ -35,7 +35,6 @@ public class Read {
     }
 
     public ProgressEvent<ResourceModel, CallbackContext>  run(ProgressEvent<ResourceModel, CallbackContext> progress) {
-        logger.log("read workflow");
         this.progress = progress;
         return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())
             .translateToServiceRequest(this::translateModelToRequest)
@@ -61,7 +60,6 @@ public class Read {
     }
 
     private DescribeTransitGatewaysRequest translateModelToRequest(ResourceModel model) {
-        logger.log(model.getId());
         return DescribeTransitGatewaysRequest.builder()
             .transitGatewayIds(model.getId())
             .build();

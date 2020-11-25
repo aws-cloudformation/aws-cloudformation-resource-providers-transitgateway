@@ -83,13 +83,10 @@ public class ValidateCurrentStateBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(Exception exception) {
-            logger.log("handle Error");
-            logger.log(exception.getLocalizedMessage());
-            logger.log(exception.getMessage());
+
             if (exception instanceof AwsServiceException) {
             AwsServiceException awsServiceException = (AwsServiceException) exception;
             String errorCode = awsServiceException.awsErrorDetails().errorCode();
-            logger.log(errorCode);
              }
             return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
 
