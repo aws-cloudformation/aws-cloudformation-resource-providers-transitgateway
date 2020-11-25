@@ -9,10 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
 import software.amazon.awssdk.services.ec2.model.Tag;
-import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
-import software.amazon.cloudformation.proxy.OperationStatus;
-import software.amazon.cloudformation.proxy.ProgressEvent;
-import software.amazon.cloudformation.proxy.ProxyClient;
+import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -44,11 +41,11 @@ public class ReadHandlerTest extends AbstractTestBase {
         proxyClient = MOCK_PROXY(proxy, sdkClient);
     }
 
-    @AfterEach
-    public void tear_down() {
-        verify(sdkClient, atLeastOnce()).serviceName();
-        verifyNoMoreInteractions(sdkClient);
-    }
+//    @AfterEach
+//    public void tear_down() {
+//        verify(sdkClient, atLeastOnce()).serviceName();
+//        verifyNoMoreInteractions(sdkClient);
+//    }
 
     @Test
     public void handleRequest_SimpleSuccess() {
@@ -69,4 +66,20 @@ public class ReadHandlerTest extends AbstractTestBase {
         assertThat(response.getErrorCode()).isNull();
     }
 
+
+    @Test
+    public void handleRequest_Failure() {
+
+
+        when(proxyClient.client().describeTransitGateways(any(DescribeTransitGatewaysRequest.class))).thenReturn(MOCKS.describeResponse("deleted"));
+        ResourceModel model = MOCKS.model("deleted");
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
+    }
 }

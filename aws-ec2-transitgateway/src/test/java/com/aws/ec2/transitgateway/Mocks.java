@@ -192,6 +192,12 @@ public class Mocks {
         return this.createResponse(new ArrayList<>(), "available");
     }
 
+    protected TransitGateway buildPendingTransitGateway() {
+        return TransitGateway.builder()
+                .transitGatewayId(primaryIdentifier)
+                .state(TransitGatewayState.PENDING)
+                .build();
+    }
 
 
 }
