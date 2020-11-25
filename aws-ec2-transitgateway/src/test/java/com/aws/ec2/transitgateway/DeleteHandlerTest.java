@@ -1,5 +1,6 @@
 package com.aws.ec2.transitgateway;
 
+import com.aws.ec2.transitgateway.workflow.read.Read;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,8 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRequest;
 import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
 import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
@@ -28,6 +31,7 @@ public class DeleteHandlerTest extends AbstractTestBase {
 
     @Mock(lenient = true)
     Ec2Client sdkClient;
+
 
     private DeleteHandler handler;
 
@@ -67,26 +71,29 @@ public class DeleteHandlerTest extends AbstractTestBase {
     public void handleRequest_Failure() {
 
         ResourceModel model = MOCKS.model("deleted");
+        when(proxyClient.client().describeTransitGateways(any(DescribeTransitGatewaysRequest.class))).thenReturn(MOCKS.describeResponse("deleted"));
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
 
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
         assertThat(response.getResourceModel()).isNull();
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.GeneralServiceException);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
     }
 
     @Test
     public void handleRequest_FailurePending() {
 
         ResourceModel model = MOCKS.model("pending");
+        when(proxyClient.client().describeTransitGateways(any(DescribeTransitGatewaysRequest.class))).thenReturn(MOCKS.describeResponse("pending"));
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
         assertThat(response.getResourceModel()).isNull();
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.GeneralServiceException);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.ResourceConflict);
     }
 
 }

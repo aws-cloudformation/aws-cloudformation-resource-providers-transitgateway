@@ -41,6 +41,8 @@ public class Mocks {
     }
 
 
+
+
     public ResourceModel modelWithoutCreateOnlyProperties() {
         final List<Tag> tags = new ArrayList<>();
         return this.modelWithoutCreateOnlyProperties(tags, "available");
@@ -153,6 +155,14 @@ public class Mocks {
 
     public DescribeTransitGatewaysResponse describeResponse() {
         return this.describeResponse(new ArrayList<>(), "available");
+    }
+
+    public TransitGatewayState transitGatewayAvailable(){
+        return TransitGatewayState.AVAILABLE;
+    }
+
+    public TransitGatewayState transitGatewayPending(){
+        return TransitGatewayState.PENDING;
     }
 
     public CreateTagsResponse createTagsResponse() {
