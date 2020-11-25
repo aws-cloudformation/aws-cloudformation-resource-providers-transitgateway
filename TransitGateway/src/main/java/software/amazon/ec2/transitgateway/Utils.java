@@ -135,15 +135,6 @@ public class Utils {
                 .build();
     }
 
-    static DescribeTransitGatewaysResponse describeTransitGateways(final Ec2Client client,
-                                                                    final ResourceModel model,
-                                                                    final AmazonWebServicesClientProxy proxy) {
-        final DescribeTransitGatewaysRequest describeTransitGatewaysRequest = DescribeTransitGatewaysRequest.builder()
-                .transitGatewayIds(model.getTransitGatewayId())
-                .build();
-        return proxy.injectCredentialsAndInvokeV2(describeTransitGatewaysRequest, client::describeTransitGateways);
-    }
-
 
 
 }
