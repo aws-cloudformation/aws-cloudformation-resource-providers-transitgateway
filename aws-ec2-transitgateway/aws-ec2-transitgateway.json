@@ -1,4 +1,5 @@
 {
+
   "typeName": "AWS::EC2::TransitGateway",
   "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway",
   "description": "Resource Type definition for AWS::EC2::TransitGateway",
@@ -75,6 +76,7 @@
     "/properties/MulticastSupport"
   ],
   "handlers": {
+
     "create": {
       "permissions": [
         "ec2:CreateTransitGateway",
@@ -100,4 +102,6 @@
       ]
     }
   }
+
 }
+
