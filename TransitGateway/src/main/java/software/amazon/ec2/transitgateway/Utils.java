@@ -111,6 +111,7 @@ public class Utils {
 
 
 
+
     static DescribeTransitGatewaysResponse describeTransitGateways(final Ec2Client client,
                                                                     final ResourceModel model,
                                                                     final AmazonWebServicesClientProxy proxy) {
@@ -134,6 +135,7 @@ public class Utils {
                 .vpnEcmpSupport(model.getVpnEcmpSupport())
                 .build();
     }
+
 
 
 
