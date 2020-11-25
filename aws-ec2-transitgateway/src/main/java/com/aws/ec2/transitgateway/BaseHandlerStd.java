@@ -28,4 +28,6 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext> {
           final CallbackContext callbackContext,
           final ProxyClient<Ec2Client> proxyClient,
           final Logger logger);
+
 }
+
