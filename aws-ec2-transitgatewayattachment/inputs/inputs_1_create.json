@@ -1,0 +1,15 @@
+{
+  "TransitGatewayId": "tgw-065030d3a9e2e3ea8",
+  "VpcId": "vpc-066149c5b74ba3904",
+  "SubnetIds": ["subnet-03bad2d6a4371146b", "subnet-09a6bf5667421f60b"],
+  "Options": {
+    "DnsSupport": "enable",
+    "Ipv6Support": "disable"
+  },
+  "Tags": [
+    {
+      "Key": "key1",
+      "Value": "value1"
+    }
+  ]
+}

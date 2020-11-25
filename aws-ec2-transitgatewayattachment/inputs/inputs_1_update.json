@@ -1,0 +1,6 @@
+{
+  "Options": {
+    "DnsSupport": "disable",
+    "Ipv6Support": "disable"
+  }
+}

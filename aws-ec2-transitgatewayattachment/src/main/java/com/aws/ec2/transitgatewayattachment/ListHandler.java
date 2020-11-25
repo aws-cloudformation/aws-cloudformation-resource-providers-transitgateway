@@ -1,0 +1,21 @@
+package com.aws.ec2.transitgatewayattachment;
+
+import com.aws.ec2.transitgatewayattachment.workflow.list.List;
+import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.Logger;
+import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
+
+public class ListHandler extends BaseHandler<CallbackContext> {
+
+    @Override
+    public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+        final AmazonWebServicesClientProxy proxy,
+        final ResourceHandlerRequest<ResourceModel> request,
+        final CallbackContext callbackContext,
+        final Logger logger) {
+
+        return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
+                .then(new List(proxy, request, callbackContext, logger)::run);
+    }
+}
