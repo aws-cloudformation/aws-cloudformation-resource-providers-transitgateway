@@ -30,4 +30,3 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext> {
           final Logger logger);
 
 }
-

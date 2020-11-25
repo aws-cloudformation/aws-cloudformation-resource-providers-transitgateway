@@ -9,4 +9,3 @@ import software.amazon.cloudformation.proxy.StdCallbackContext;
 public class CallbackContext extends StdCallbackContext {
     private int attempts=0;
 }
-

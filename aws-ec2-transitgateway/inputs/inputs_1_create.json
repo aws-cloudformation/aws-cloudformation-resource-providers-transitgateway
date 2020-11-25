@@ -3,6 +3,4 @@
   "DefaultRouteTablePropagation": "enable",
   "AutoAcceptSharedAttachments": "disable",
   "DefaultRouteTableAssociation": "enable"
-
 }
-
