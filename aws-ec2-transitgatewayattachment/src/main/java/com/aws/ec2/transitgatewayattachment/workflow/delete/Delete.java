@@ -22,12 +22,13 @@ public class Delete {
         AmazonWebServicesClientProxy proxy,
         ResourceHandlerRequest<ResourceModel> request,
         CallbackContext callbackContext,
+        ProxyClient<Ec2Client> client,
         Logger logger
     ) {
         this.proxy = proxy;
         this.request = request;
         this.callbackContext = callbackContext;
-        this.client = this.proxy.newProxy(ClientBuilder::getClient);
+        this.client = client;
         this.logger = logger;
     }
 
@@ -60,7 +61,7 @@ public class Delete {
         CallbackContext context
     ) {
         model.setId(response.transitGatewayVpcAttachment().transitGatewayAttachmentId());
-        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
+        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(model).toString();
         return currentState.equals(TransitGatewayAttachmentState.DELETED.toString());
     }
 

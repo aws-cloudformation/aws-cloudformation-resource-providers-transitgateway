@@ -2,7 +2,6 @@ package com.aws.ec2.transitgatewayattachment;
 
 import com.aws.ec2.transitgatewayattachment.workflow.delete.Delete;
 import com.aws.ec2.transitgatewayattachment.workflow.delete.ValidateCurrentState;
-import com.aws.ec2.transitgatewayattachment.workflow.update.ValidatePropertiesCheck;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.proxy.*;
 
@@ -17,7 +16,7 @@ public class DeleteHandler extends BaseHandlerStd {
 
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
             .then(new ValidateCurrentState(proxy, request, callbackContext, proxyClient, logger)::run)
-            .then(new Delete(proxy, request, callbackContext, logger)::run)
+            .then(new Delete(proxy, request, callbackContext, proxyClient, logger)::run)
             .then(_progress -> ProgressEvent.defaultSuccessHandler(null)); //After delete successfully completes we want to return a null response because the model no longer exits
     }
 }

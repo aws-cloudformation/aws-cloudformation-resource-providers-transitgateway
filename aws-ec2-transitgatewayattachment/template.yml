@@ -21,4 +21,3 @@ Resources:
       Handler: com.aws.ec2.transitgatewayattachment.HandlerWrapper::testEntrypoint
       Runtime: java8
       CodeUri: ./target/aws-ec2-transitgatewayattachment-handler-1.0-SNAPSHOT.jar
-

@@ -1,12 +1,11 @@
 {
-  "TransitGatewayAttachmentId": "tgw-attach-123abs",
-  "TransitGatewayId": "tgw-0a9a31a96253f1088",
-  "VpcId": "vpc-0316af806d54fdbf5",
-  "SubnetIds": ["subnet-0398f66d021784e90", "subnet-0303f6ab0c1555b90"],
-  "Options": {
-    "DnsSupport": "enable",
-    "Ipv6Support": "disable"
-  },
+  "Id": "tgw-attach-123abc",
+  "TransitGatewayId": "tgw-02baf9056f2de3ed2",
+  "VpcId": "vpc-0e32b4e0c1ca43f43",
+  "SubnetIds": [
+    "subnet-0d2d2e34a920cd263",
+    "subnet-0c1dcbe37e3db157b"
+  ],
   "Tags": [
     {
       "Key": "key1",

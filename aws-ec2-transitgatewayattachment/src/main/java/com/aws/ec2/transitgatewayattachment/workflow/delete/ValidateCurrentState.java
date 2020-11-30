@@ -17,7 +17,7 @@ public class ValidateCurrentState extends ValidateCurrentStateBase {
 
     @Override
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
-        if(this.validStates().contains(this.currentState())) {
+        if(this.validStates().contains(this.currentState()) || this.callbackContext.getAttempts() > 1) {
             return this.progress;
         } else {
             return this.failure();

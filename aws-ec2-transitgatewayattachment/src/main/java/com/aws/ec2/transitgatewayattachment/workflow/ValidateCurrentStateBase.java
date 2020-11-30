@@ -3,7 +3,9 @@ package com.aws.ec2.transitgatewayattachment.workflow;
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
 import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import software.amazon.awssdk.services.cloudwatchevents.model.BatchRetryStrategy;
 import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
 import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
 import software.amazon.cloudformation.proxy.*;
 
@@ -11,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ValidateCurrentStateBase {
+public class ValidateCurrentStateBase  {
     AmazonWebServicesClientProxy proxy;
     ResourceHandlerRequest<ResourceModel> request;
-    CallbackContext callbackContext;
+    protected CallbackContext callbackContext;
     ProxyClient<Ec2Client> client;
     Logger logger;
     protected ProgressEvent<ResourceModel, CallbackContext> progress;
@@ -46,8 +48,8 @@ public class ValidateCurrentStateBase {
         }
     }
 
-    protected ResourceModel makeRequest() {
-        return new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(this.model);
+    protected TransitGatewayAttachmentState makeRequest() {
+        return new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(this.model);
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
@@ -59,7 +61,10 @@ public class ValidateCurrentStateBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> failure() {
-        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString(), "State: " + this.currentState() + "cannot be updated.");
+        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString(), "State: " + this.currentState() + " cannot be updated.");
+        if(this.currentState().equals("deleted")) {
+            return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.NotFound);
+        }
         return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.ResourceConflict);
     }
 
@@ -71,7 +76,7 @@ public class ValidateCurrentStateBase {
         if(this._currentState != null) {
             return this._currentState;
         } else {
-            return this._currentState = this.makeRequest().getState();
+            return this._currentState = this.makeRequest().toString();
         }
     }
 

@@ -24,7 +24,7 @@ public class Read {
         this.proxy = proxy;
         this.request = request;
         this.callbackContext = callbackContext;
-        this.client = this.proxy.newProxy(ClientBuilder::getClient);
+        this.client = client;
         this.logger = logger;
     }
 
@@ -47,6 +47,13 @@ public class Read {
         );
     }
 
+    public TransitGatewayAttachmentState stateRequest(final ResourceModel model){
+        return this.proxy.injectCredentialsAndInvokeV2(
+                this.translateModelToRequest(model),
+                this.client.client()::describeTransitGatewayVpcAttachments
+        ).transitGatewayVpcAttachments().get(0).state();
+    }
+
     private DescribeTransitGatewayVpcAttachmentsRequest translateModelToRequest(ResourceModel model) {
         return DescribeTransitGatewayVpcAttachmentsRequest.builder()
             .transitGatewayAttachmentIds(model.getId())
@@ -61,7 +68,6 @@ public class Read {
         TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
         return ResourceModel.builder()
                 .id(response.transitGatewayAttachmentId())
-                .state(response.stateAsString())
                 .subnetIds(response.subnetIds())
                 .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
                 .transitGatewayId(response.transitGatewayId())

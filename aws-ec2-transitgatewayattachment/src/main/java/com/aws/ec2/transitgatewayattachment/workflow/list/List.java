@@ -6,6 +6,8 @@ import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsRequest;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsResponse;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysResponse;
 import software.amazon.cloudformation.proxy.*;
@@ -26,19 +28,20 @@ public class List {
         AmazonWebServicesClientProxy proxy,
         ResourceHandlerRequest<ResourceModel> request,
         CallbackContext callbackContext,
+        final ProxyClient<Ec2Client> client,
         Logger logger
     ) {
         this.proxy = proxy;
         this.request = request;
         this.callbackContext = callbackContext;
-        this.client = this.proxy.newProxy(ClientBuilder::getClient);
+        this.client = client;
         this.logger = logger;
     }
 
     public ProgressEvent<ResourceModel, CallbackContext>  run(ProgressEvent<ResourceModel, CallbackContext> progress) {
-        DescribeTransitGatewaysRequest  awsRequest = this.translateModelToRequest(progress.getResourceModel());
+        DescribeTransitGatewayVpcAttachmentsRequest  awsRequest = this.translateModelToRequest(progress.getResourceModel());
         try{
-            DescribeTransitGatewaysResponse awsResponse = this.makeServiceCall(awsRequest, this.client);
+            DescribeTransitGatewayVpcAttachmentsResponse awsResponse = this.makeServiceCall(awsRequest, this.client);
             java.util.List<ResourceModel> models = this.translateResponseToModel(awsResponse);
             return ProgressEvent.<ResourceModel, CallbackContext>builder()
                 .resourceModels(models)
@@ -50,25 +53,26 @@ public class List {
         }
     }
 
-    private DescribeTransitGatewaysRequest translateModelToRequest(ResourceModel model) {
-        return DescribeTransitGatewaysRequest.builder()
+    private DescribeTransitGatewayVpcAttachmentsRequest translateModelToRequest(ResourceModel model) {
+        return DescribeTransitGatewayVpcAttachmentsRequest.builder()
             .maxResults(50)
             .nextToken(this.request.getNextToken()).build();
     }
 
-    private DescribeTransitGatewaysResponse makeServiceCall(DescribeTransitGatewaysRequest awsRequest, ProxyClient<Ec2Client> client) {
-        return this.proxy.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeTransitGateways);
+    private DescribeTransitGatewayVpcAttachmentsResponse makeServiceCall(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, ProxyClient<Ec2Client> client) {
+        return this.proxy.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeTransitGatewayVpcAttachments);
     }
 
-    private java.util.List<ResourceModel> translateResponseToModel(DescribeTransitGatewaysResponse awsResponse) {
-        return streamOfOrEmpty(awsResponse.transitGateways())
+    private java.util.List<ResourceModel> translateResponseToModel(DescribeTransitGatewayVpcAttachmentsResponse awsResponse) {
+        return streamOfOrEmpty(awsResponse.transitGatewayVpcAttachments())
+            .filter(resource -> !(resource.stateAsString().equals("deleted")))
             .map(resource -> ResourceModel.builder()
-                .id(resource.transitGatewayId())
+                .id(resource.transitGatewayAttachmentId())
                 .build())
             .collect(Collectors.toList());
     }
 
-    private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewaysRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
+    private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
 

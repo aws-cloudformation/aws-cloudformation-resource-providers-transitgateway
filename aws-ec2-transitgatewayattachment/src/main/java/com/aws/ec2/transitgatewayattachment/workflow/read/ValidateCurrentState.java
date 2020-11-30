@@ -17,9 +17,7 @@ public class ValidateCurrentState extends ValidateCurrentStateBase {
 
     @Override
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
-        if(this.currentState().equals(TransitGatewayAttachmentState.DELETED)) {
-            return this.failure();
-        } else if(this.validStates().contains(this.currentState())) {
+        if(this.validStates().contains(this.currentState()) || this.callbackContext.getAttempts() > 1) {
             return this.progress;
         } else {
             return this.failure();
@@ -30,6 +28,9 @@ public class ValidateCurrentState extends ValidateCurrentStateBase {
     protected List<String> validStates() {
         List<String> list = new ArrayList<>();
         list.add(TransitGatewayAttachmentState.AVAILABLE.toString());
+        list.add(TransitGatewayAttachmentState.DELETING.toString());
+        list.add(TransitGatewayAttachmentState.MODIFYING.toString());
+        list.add(TransitGatewayAttachmentState.PENDING.toString());
         return list;
     }
 }

@@ -55,19 +55,9 @@ public class TagUtils {
             return null;
         }
         return Arrays.asList(TagSpecification.builder()
-            .resourceType("transit-gateway")
+            .resourceType("transit-gateway-attachment")
             .tags(newTags).build());
     }
 
-    public static java.util.Set<Tag> listToSet(final List<Tag> tags) {
-        if(tags == null) return null;
-        return CollectionUtils.isEmpty(tags) ? new HashSet<>() : new HashSet<>(tags);
-    }
-
-    public static List<Tag> difference(List<com.aws.ec2.transitgatewayattachment.Tag>  tags1, List<com.aws.ec2.transitgatewayattachment.Tag> tags2) {
-        final List<Tag> sdkTags1 = TagUtils.cfnTagsToSdkTags(tags1);
-        final List<Tag> sdkTags2 = TagUtils.cfnTagsToSdkTags(tags2);
-        return Sets.difference(TagUtils.listToSet(sdkTags1), TagUtils.listToSet(sdkTags2)).immutableCopy().asList();
-    }
 
 }
