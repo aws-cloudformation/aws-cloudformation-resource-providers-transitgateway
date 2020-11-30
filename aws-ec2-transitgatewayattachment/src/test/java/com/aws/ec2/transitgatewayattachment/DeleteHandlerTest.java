@@ -22,13 +22,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class DeleteHandlerTest extends com.aws.ec2.transitgatewayattachment.AbstractTestBase {
 
-    @Mock(lenient = true)
+    @Mock
     private AmazonWebServicesClientProxy proxy;
 
-    @Mock(lenient = true)
+    @Mock
     private ProxyClient<Ec2Client> proxyClient;
 
-    @Mock(lenient = true)
+    @Mock
     Ec2Client sdkClient;
 
 
