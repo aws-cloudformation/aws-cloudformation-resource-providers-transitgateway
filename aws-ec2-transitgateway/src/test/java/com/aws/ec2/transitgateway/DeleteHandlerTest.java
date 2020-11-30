@@ -23,13 +23,13 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class DeleteHandlerTest extends AbstractTestBase {
 
-    @Mock(lenient = true)
+    @Mock
     private AmazonWebServicesClientProxy proxy;
 
-    @Mock(lenient = true)
+    @Mock
     private ProxyClient<Ec2Client> proxyClient;
 
-    @Mock(lenient = true)
+    @Mock
     Ec2Client sdkClient;
 
 
