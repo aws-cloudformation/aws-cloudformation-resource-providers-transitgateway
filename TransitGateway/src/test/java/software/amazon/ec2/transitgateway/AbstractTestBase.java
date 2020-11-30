@@ -22,13 +22,13 @@ public class AbstractTestBase {
 
   protected CallbackContext context;
 
-  @Mock(lenient = true)
+  @Mock
   ProxyClient<SdkClient> proxyClient;
 
-  @Mock(lenient = true)
+  @Mock
   protected AmazonWebServicesClientProxy proxy;
 
-  @Mock(lenient = true)
+  @Mock
   protected Logger logger;
 
 
