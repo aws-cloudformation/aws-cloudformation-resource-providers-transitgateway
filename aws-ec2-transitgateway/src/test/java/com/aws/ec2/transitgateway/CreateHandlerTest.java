@@ -32,6 +32,7 @@ public class CreateHandlerTest extends AbstractTestBase {
     private ProxyClient<Ec2Client> proxyClient;
 
     @Mock
+
     Ec2Client sdkClient;
 
     private CreateHandler handler;
