@@ -1,4 +1,6 @@
-# Aws::EC2::TransitGateway Tag
+
+# AWS::EC2::TransitGateway Tag
+
 
 ## Syntax
 

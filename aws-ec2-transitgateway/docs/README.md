@@ -1,4 +1,6 @@
-# Aws::EC2::TransitGateway
+
+# AWS::EC2::TransitGateway
+
 
 Resource Type definition for AWS::EC2::TransitGateway
 
@@ -10,7 +12,9 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "Type" : "Aws::EC2::TransitGateway",
+
+    "Type" : "AWS::EC2::TransitGateway",
+
     "Properties" : {
         "<a href="#defaultroutetablepropagation" title="DefaultRouteTablePropagation">DefaultRouteTablePropagation</a>" : <i>String</i>,
         "<a href="#description" title="Description">Description</a>" : <i>String</i>,
@@ -28,7 +32,9 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 ### YAML
 
 <pre>
-Type: Aws::EC2::TransitGateway
+
+Type: AWS::EC2::TransitGateway
+
 Properties:
     <a href="#defaultroutetablepropagation" title="DefaultRouteTablePropagation">DefaultRouteTablePropagation</a>: <i>String</i>
     <a href="#description" title="Description">Description</a>: <i>String</i>

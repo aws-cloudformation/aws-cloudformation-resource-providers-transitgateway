@@ -1,5 +1,6 @@
 {
-    "typeName": "Aws::EC2::TransitGateway",
+
+    "typeName": "AWS::EC2::TransitGateway",
     "language": "java",
     "runtime": "java8",
     "entrypoint": "com.aws.ec2.transitgateway.HandlerWrapper::handleRequest",
