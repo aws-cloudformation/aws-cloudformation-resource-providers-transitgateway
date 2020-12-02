@@ -44,9 +44,6 @@
     }
   },
   "additionalProperties": false,
-  "required": [
-    "TransitGatewayId"
-  ],
   "createOnlyProperties": [
     "/properties/TransitGatewayId"
   ],

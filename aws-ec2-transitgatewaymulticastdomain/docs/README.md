@@ -34,7 +34,7 @@ Properties:
 
 The ID of the transit gateway.
 
-_Required_: Yes
+_Required_: No
 
 _Type_: String
 

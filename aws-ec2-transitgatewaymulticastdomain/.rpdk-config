@@ -2,17 +2,17 @@
     "typeName": "AWS::EC2::TransitGatewayMulticastDomain",
     "language": "java",
     "runtime": "java8",
-    "entrypoint": "com.aws.ec2.transitgatewaymulticastdomain.HandlerWrapper::handleRequest",
-    "testEntrypoint": "com.aws.ec2.transitgatewaymulticastdomain.HandlerWrapper::testEntrypoint",
+    "entrypoint": "software.amazon.ec2.transitgatewaymulticastdomain.HandlerWrapper::handleRequest",
+    "testEntrypoint": "software.amazon.ec2.transitgatewaymulticastdomain.HandlerWrapper::testEntrypoint",
     "settings": {
         "version": false,
         "subparser_name": null,
         "verbose": 0,
         "force": false,
-        "type_name": "Aws::EC2::TransitGatewayMulticastDomain",
+        "type_name": "AWS::EC2::TransitGatewayMulticastDomain",
         "namespace": [
-            "com",
-            "aws",
+            "software",
+            "amazon",
             "ec2",
             "transitgatewaymulticastdomain"
         ],

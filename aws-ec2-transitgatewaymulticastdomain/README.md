@@ -1,4 +1,4 @@
-# Aws::EC2::TransitGatewayMulticastDomain
+# AWS::EC2::TransitGatewayMulticastDomain
 
 Congratulations on starting development! Next steps:
 
