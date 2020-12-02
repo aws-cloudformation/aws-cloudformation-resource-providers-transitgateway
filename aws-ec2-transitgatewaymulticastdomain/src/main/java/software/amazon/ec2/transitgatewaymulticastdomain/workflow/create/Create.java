@@ -34,7 +34,6 @@ public class Create {
     }
 
     public ProgressEvent<ResourceModel, CallbackContext> run(ProgressEvent<ResourceModel, CallbackContext> progress) {
-        this.logger.log(progress.getResourceModel().toString());
         return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())
             .translateToServiceRequest(this::translateModelToRequest)
             .makeServiceCall(this::makeServiceCall)
@@ -67,8 +66,6 @@ public class Create {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(CreateTransitGatewayMulticastDomainRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
-        this.logger.log("handleError");
-        System.out.println(exception);
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
 }
