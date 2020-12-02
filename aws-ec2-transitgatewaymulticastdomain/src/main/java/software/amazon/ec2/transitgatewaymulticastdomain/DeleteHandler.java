@@ -13,9 +13,6 @@ public class DeleteHandler extends BaseHandlerStd {
         final CallbackContext callbackContext,
         final ProxyClient<Ec2Client> proxyClient,
         final Logger logger) {
-        logger.log("DELETE HANDLER");
-        logger.log(request.getDesiredResourceState().toString());
-        logger.log("DELETE HANDLER");
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
             .then(new ValidCurrentStateCheck(proxy, request, callbackContext, proxyClient, logger)::run)
             .then(new Delete(proxy, request, callbackContext, proxyClient, logger)::run)

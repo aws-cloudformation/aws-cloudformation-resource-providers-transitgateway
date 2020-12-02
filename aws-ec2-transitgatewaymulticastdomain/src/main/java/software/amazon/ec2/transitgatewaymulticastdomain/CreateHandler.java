@@ -13,9 +13,6 @@ public class CreateHandler extends BaseHandlerStd {
         final CallbackContext callbackContext,
         final ProxyClient<Ec2Client> proxyClient,
         final Logger logger) {
-        logger.log("CREATE HANDLER");
-        logger.log(request.getDesiredResourceState().toString());
-        logger.log("CREATE HANDLER");
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
             .then(new Create(proxy, request, callbackContext, proxyClient, logger)::run)
             .then(new Read(proxy, request, callbackContext, proxyClient, logger)::run);

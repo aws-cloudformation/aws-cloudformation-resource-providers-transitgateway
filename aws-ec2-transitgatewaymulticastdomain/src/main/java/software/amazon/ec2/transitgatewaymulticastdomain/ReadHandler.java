@@ -12,10 +12,6 @@ public class ReadHandler extends BaseHandlerStd {
         final CallbackContext callbackContext,
         final ProxyClient<Ec2Client> proxyClient,
         final Logger logger) {
-            logger.log("READ HANDLER");
-            logger.log(request.getDesiredResourceState().toString());
-            logger.log("READ HANDLER");
-            logger.log(callbackContext.toString());
             return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
                     .then(new Read(proxy, request, callbackContext, proxyClient, logger)::run);
     }
