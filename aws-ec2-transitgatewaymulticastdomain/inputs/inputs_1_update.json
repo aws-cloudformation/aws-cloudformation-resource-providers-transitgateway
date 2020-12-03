@@ -1,0 +1,9 @@
+{
+  "TransitGatewayId": null,
+  "Tags": [
+    {
+      "Key": "Name",
+      "Value": "Last Name"
+    }
+  ]
+}
