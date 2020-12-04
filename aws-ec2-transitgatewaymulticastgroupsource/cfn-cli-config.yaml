@@ -1,0 +1,44 @@
+SdkClient: Ec2Client
+SdkModel:
+  Class: TransitGatewayMulticastGroup
+  PrimaryIdentifierMethod: transitGatewayMulticastDomainId
+ServiceName: ec2
+Create:
+  RequestClass: RegisterTransitGatewayMulticastGroupMembersRequest
+  ResponseClass: RegisterTransitGatewayMulticastGroupMembersResponse
+  RequestMethod: registerTransitGatewayMulticastGroupMembers
+  ResponseMethod: registeredMulticastGroupMembers
+Read:
+  RequestClass: SearchTransitGatewayMulticastGroupsRequest
+  ResponseClass: SearchTransitGatewayMulticastGroupsResponse
+  RequestMethod: searchTransitGatewayMulticastGroups
+  ResponseMethod: multicastGroups
+  GetPrimaryIdentifierMethod: null
+  GetByPrimaryIdentifierMethod: transitGatewayMulticastDomainIds
+Update:
+  RequestClass: null
+  ResponseClass: null
+  RequestMethod: null
+Delete:
+  RequestClass: DeregisterTransitGatewayMulticastGroupSourcesRequest
+  ResponseClass: DeregisterTransitGatewayMulticastGroupSourcesResponse
+  RequestMethod: deregisterTransitGatewayMulticastGroupSources
+  ResponseMethod: deregisteredMulticastGroupSources
+List:
+  RequestClass: SearchTransitGatewayMulticastGroupsRequest
+  ResponseClass: SearchTransitGatewayMulticastGroupsResponse
+  RequestMethod: searchTransitGatewayMulticastGroups
+  ResponseMethod: multicastGroups
+State:
+  Class: null
+  Deleted: null
+  Deleting: null
+  Available: null
+  Pending: null
+ResourceModel:
+  PrimaryIdentifiers:
+    - TransitGatewayMulticastDomainId
+    - GroupIpAddress
+    - NetworkInterfaceIds
+  GetPrimaryIdentifierMethod: getTransitGatewayMulticastDomainId
+  SetPrimaryIdentifierMethod: setTransitGatewayMulticastDomainId
