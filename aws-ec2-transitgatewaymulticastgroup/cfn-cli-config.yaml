@@ -20,10 +20,10 @@ Update:
   ResponseClass: null
   RequestMethod: null
 Delete:
-  RequestClass: DeregisterTransitGatewayMulticastGroupSourcesRequest
-  ResponseClass: DeregisterTransitGatewayMulticastGroupSourcesResponse
-  RequestMethod: deregisterTransitGatewayMulticastGroupSources
-  ResponseMethod: deregisteredMulticastGroupSources
+  RequestClass: DeregisterTransitGatewayMulticastGroupMembersRequest
+  ResponseClass: DeregisterTransitGatewayMulticastGroupMembersResponse
+  RequestMethod: deregisterTransitGatewayMulticastGroupMembers
+  ResponseMethod: deregisteredMulticastGroupMembers
 List:
   RequestClass: SearchTransitGatewayMulticastGroupsRequest
   ResponseClass: SearchTransitGatewayMulticastGroupsResponse
