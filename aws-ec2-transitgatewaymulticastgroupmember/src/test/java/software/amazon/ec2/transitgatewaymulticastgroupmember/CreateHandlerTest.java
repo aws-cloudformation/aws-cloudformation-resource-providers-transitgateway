@@ -44,7 +44,6 @@ public class CreateHandlerTest extends AbstractTestBase {
 
     @AfterEach
     public void tear_down() {
-        verify(sdkClient, atLeastOnce()).serviceName();
         verifyNoMoreInteractions(sdkClient);
     }
 
@@ -56,7 +55,7 @@ public class CreateHandlerTest extends AbstractTestBase {
         ResourceModel model = MOCKS.model(mockMap);
 
         when(proxyClient.client().registerTransitGatewayMulticastGroupMembers(any(RegisterTransitGatewayMulticastGroupMembersRequest.class))).thenReturn(MOCKS.createResponse(mockMap));
-        when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.readResponse(mockMap));
+        when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.readResponse(mockMap));
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -67,6 +66,49 @@ public class CreateHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
+    }
+
+
+    @Test
+    public void handleRequest_Duplicates() {
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupMember", "true");
+        mockMap.put("groupSource", "false");
+
+        when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.readResponse(mockMap));
+
+        ResourceModel model = MOCKS.model(mockMap);
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage().contains("be modified by ACTION: CREATE.")).isTrue();
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.AlreadyExists);
+    }
+
+    @Test
+    public void handleRequest_InvalidPrimaryIdentifier() {
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupMember", "false");
+        mockMap.put("groupSource", "true");
+        mockMap.put("groupIpAddress", "224.0.0");
+
+        ResourceModel model = MOCKS.model(mockMap);
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage().contains("be modified by ACTION: CREATE.")).isTrue();
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InvalidRequest);
     }
 
 
@@ -78,7 +120,7 @@ public class CreateHandlerTest extends AbstractTestBase {
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("Invalid Request").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
         when(proxyClient.client().registerTransitGatewayMulticastGroupMembers(any(RegisterTransitGatewayMulticastGroupMembersRequest.class))).thenThrow(exception);
-
+        when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.emptyReadResponse());
         ResourceModel model = MOCKS.model(mockMap);
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
@@ -90,6 +132,8 @@ public class CreateHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage().contains("Something went wrong")).isTrue();
         assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InvalidRequest);
+        verify(sdkClient, atLeastOnce()).serviceName();
+
     }
 
 }

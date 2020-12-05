@@ -23,9 +23,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "ec2:DeregisterTransitGatewayMulticastGroupMembers"
                 - "ec2:DeregisterTransitGatewayMulticastGroupSources"
-                - "ec2:RegisterTransitGatewayMulticastGroupMembers"
                 - "ec2:RegisterTransitGatewayMulticastGroupSources"
                 - "ec2:SearchTransitGatewayMulticastGroups"
                 Resource: "*"

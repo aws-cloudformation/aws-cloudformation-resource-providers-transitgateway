@@ -5,6 +5,7 @@ import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,6 +113,13 @@ public class Mocks {
         .build();
     }
 
+    public SearchTransitGatewayMulticastGroupsResponse emptyReadResponse() {
+        java.util.List<TransitGatewayMulticastGroup> emptyMulticastGroups = new ArrayList<>();
+        return SearchTransitGatewayMulticastGroupsResponse.builder()
+            .multicastGroups(emptyMulticastGroups)
+        .build();
+    }
+
     public SearchTransitGatewayMulticastGroupsResponse listResponse() {
         return this.listResponse(Collections.emptyMap());
 
@@ -138,10 +146,11 @@ public class Mocks {
                     .transitGatewayMulticastDomainId(values.get("transitGatewayMulticastDomainId"))
                     .groupIpAddress(values.get("transitGatewayMulticastDomainId"))
                     .deregisteredNetworkInterfaceIds(values.get("transitGatewayMulticastDomainId"))
-                .build()
+                    .build()
             )
             .build();
     }
+
 
     public RegisterTransitGatewayMulticastGroupSourcesResponse createResponse() {
         return this.createResponse(Collections.emptyMap());
@@ -160,5 +169,7 @@ public class Mocks {
             )
         .build();
     }
+
+
 
 }

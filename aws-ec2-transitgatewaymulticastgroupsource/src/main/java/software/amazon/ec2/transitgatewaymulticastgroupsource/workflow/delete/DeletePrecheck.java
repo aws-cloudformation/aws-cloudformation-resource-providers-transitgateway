@@ -54,7 +54,7 @@ public class DeletePrecheck {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> failure() {
-        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), " cannot be modified by ACTION: DELETED");
+        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "Cannot be modified by ACTION: DELETE");
         return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.NotFound);
     }
 

@@ -5,6 +5,7 @@ import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,6 +113,13 @@ public class Mocks {
         .build();
     }
 
+    public SearchTransitGatewayMulticastGroupsResponse emptyReadResponse() {
+        java.util.List<TransitGatewayMulticastGroup> emptyMulticastGroups = new ArrayList<>();
+        return SearchTransitGatewayMulticastGroupsResponse.builder()
+            .multicastGroups(emptyMulticastGroups)
+        .build();
+    }
+
     public SearchTransitGatewayMulticastGroupsResponse listResponse() {
         return this.listResponse(Collections.emptyMap());
 
@@ -133,14 +141,14 @@ public class Mocks {
     public DeregisterTransitGatewayMulticastGroupMembersResponse deleteResponse(Map<String, String> newMap) {
         Map<String, String> values = this.modelMap(newMap);
         return DeregisterTransitGatewayMulticastGroupMembersResponse.builder()
-                .deregisteredMulticastGroupMembers(
-                        TransitGatewayMulticastDeregisteredGroupMembers.builder()
-                                .transitGatewayMulticastDomainId(values.get("transitGatewayMulticastDomainId"))
-                                .groupIpAddress(values.get("transitGatewayMulticastDomainId"))
-                                .deregisteredNetworkInterfaceIds(values.get("transitGatewayMulticastDomainId"))
-                                .build()
-                )
-                .build();
+            .deregisteredMulticastGroupMembers(
+                TransitGatewayMulticastDeregisteredGroupMembers.builder()
+                    .transitGatewayMulticastDomainId(values.get("transitGatewayMulticastDomainId"))
+                    .groupIpAddress(values.get("transitGatewayMulticastDomainId"))
+                    .deregisteredNetworkInterfaceIds(values.get("transitGatewayMulticastDomainId"))
+                    .build()
+            )
+            .build();
     }
 
 

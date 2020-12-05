@@ -16,8 +16,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#transitgatewayattachmentid" title="TransitGatewayAttachmentId">TransitGatewayAttachmentId</a>" : <i>String</i>,
         "<a href="#transitgatewaymulticastdomainid" title="TransitGatewayMulticastDomainId">TransitGatewayMulticastDomainId</a>" : <i>String</i>,
         "<a href="#networkinterfaceid" title="NetworkInterfaceId">NetworkInterfaceId</a>" : <i>String</i>,
-        "<a href="#groupmember" title="GroupMember">GroupMember</a>" : <i>Boolean</i>,
-        "<a href="#groupsource" title="GroupSource">GroupSource</a>" : <i>Boolean</i>,
     }
 }
 </pre>
@@ -31,8 +29,6 @@ Properties:
     <a href="#transitgatewayattachmentid" title="TransitGatewayAttachmentId">TransitGatewayAttachmentId</a>: <i>String</i>
     <a href="#transitgatewaymulticastdomainid" title="TransitGatewayMulticastDomainId">TransitGatewayMulticastDomainId</a>: <i>String</i>
     <a href="#networkinterfaceid" title="NetworkInterfaceId">NetworkInterfaceId</a>: <i>String</i>
-    <a href="#groupmember" title="GroupMember">GroupMember</a>: <i>Boolean</i>
-    <a href="#groupsource" title="GroupSource">GroupSource</a>: <i>Boolean</i>
 </pre>
 
 ## Properties
@@ -77,26 +73,6 @@ _Type_: String
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
-#### GroupMember
-
-Indicates that the resource is a transit gateway multicast group member.
-
-_Required_: No
-
-_Type_: Boolean
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
-#### GroupSource
-
-Indicates that the resource is a transit gateway multicast group member.
-
-_Required_: No
-
-_Type_: Boolean
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
 ## Return Values
 
 ### Fn::GetAtt
@@ -116,6 +92,14 @@ The ID of the resource.
 #### ResourceType
 
 The type of resource, for example a VPC attachment.
+
+#### GroupSource
+
+Indicates that the resource is a transit gateway multicast group member.
+
+#### GroupMember
+
+Indicates that the resource is a transit gateway multicast group member.
 
 #### MemberType
 

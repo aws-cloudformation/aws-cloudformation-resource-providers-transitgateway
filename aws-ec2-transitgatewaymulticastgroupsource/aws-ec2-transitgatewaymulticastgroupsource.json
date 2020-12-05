@@ -49,17 +49,12 @@
     }
   },
   "additionalProperties": false,
-  "required": [
-    "/properties/GroupMember",
-    "/properties/GroupSource",
-    "/properties/TransitGatewayMulticastDomainId",
-    "/properties/GroupIpAddress",
-    "/properties/NetworkInterfaceId"
-  ],
   "readOnlyProperties": [
     "/properties/SubnetId",
     "/properties/ResourceId",
     "/properties/ResourceType",
+    "/properties/GroupSource",
+    "/properties/GroupMember",
     "/properties/MemberType",
     "/properties/SourceType"
   ],
