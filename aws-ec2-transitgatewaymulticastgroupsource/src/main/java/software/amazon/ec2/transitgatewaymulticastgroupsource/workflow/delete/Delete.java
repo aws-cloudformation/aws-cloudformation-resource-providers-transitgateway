@@ -65,10 +65,6 @@ public class Delete {
         CallbackContext context
     ) {
         ResourceModel current = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
-        if(current != null) {
-            this.logger.log(current.toString());
-        }
-        this.logger.log("DELETE GROUP SOURCE SIMPLE REQUEST");
         return current == null;
     }
 
