@@ -21,4 +21,3 @@ Resources:
       Handler: software.amazon.ec2.transitgatewaymulticastgroupsource.HandlerWrapper::testEntrypoint
       Runtime: java8
       CodeUri: ./target/aws-ec2-transitgatewaymulticastgroupsource-handler-1.0-SNAPSHOT.jar
-
