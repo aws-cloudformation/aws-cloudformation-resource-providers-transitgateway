@@ -49,17 +49,13 @@ public class CreatePrecheck {
         System.out.println(this.model.getTransitGatewayMulticastDomainId().startsWith("tgw-mcast-domain-"));
         System.out.println( this.model.getGroupIpAddress().split("[.]").length);
         if(!this.model.getTransitGatewayMulticastDomainId().startsWith("tgw-mcast-domain-") || this.model.getGroupIpAddress().split("[.]").length != 4 || !this.model.getNetworkInterfaceId().startsWith("eni-")) {
-            this.logger.log("INVALID STUFF");
             return this.invalidModel();
         } else {
             ResourceModel current = this.makeRequest();
 
             if(current != null) {
-                this.logger.log("FAILED");
-                this.logger.log(current.toString());
                 return this.failedRequest();
             } else {
-                this.logger.log("CONTINUE");
                 return this.progress;
             }
         }

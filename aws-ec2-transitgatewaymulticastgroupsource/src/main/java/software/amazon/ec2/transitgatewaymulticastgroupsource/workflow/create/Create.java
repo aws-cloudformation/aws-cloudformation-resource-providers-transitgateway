@@ -60,13 +60,7 @@ public class Create {
         ResourceModel model,
         CallbackContext context
     ) {
-        this.logger.log("CREATE GROUP SOURCE SIMPLE REQUEST");
-
         ResourceModel current = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
-        this.logger.log("CREATE GROUP SOURCE SIMPLE REQUEST");
-        if(current != null) {
-            this.logger.log(current.toString());
-        }
         return current != null;
     }
 

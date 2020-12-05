@@ -47,17 +47,12 @@ public class CreatePrecheck {
 
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
         if(!this.model.getTransitGatewayMulticastDomainId().startsWith("tgw-mcast-domain-") || this.model.getGroupIpAddress().split("[.]").length != 4 || !this.model.getNetworkInterfaceId().startsWith("eni-")) {
-            this.logger.log("INVALID STUFF");
             return this.invalidModel();
         } else {
             ResourceModel current = this.makeRequest();
-
             if(current != null) {
-                this.logger.log("FAILED");
-                this.logger.log(current.toString());
                 return this.failedRequest();
             } else {
-                this.logger.log("CONTINUE");
                 return this.progress;
             }
         }
@@ -72,8 +67,6 @@ public class CreatePrecheck {
         String errorMessage = ResourceModel.TYPE_NAME + this.model.getPrimaryIdentifier().toString().replace("/properties/", "") + "Cannot be modified by ACTION: CREATE. At least one primary identifier is invalid";
         AwsServiceException emptyResponseException = AwsServiceException.builder().awsErrorDetails(AwsErrorDetails.builder().errorCode("InvalidRequest").errorMessage(errorMessage).build()).build();
         return ProgressEvent.defaultFailureHandler(emptyResponseException, HandlerErrorCode.InvalidRequest);
-       /* CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "Cannot be modified by ACTION: CREATE. All primary identifier fields are required");
-        return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.InvalidRequest);*/
     }
 
     private ResourceModel makeRequest() {

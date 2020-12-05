@@ -37,7 +37,6 @@ public class Read {
     }
 
     public ProgressEvent<ResourceModel, CallbackContext>  run(ProgressEvent<ResourceModel, CallbackContext> progress) {
-        this.logger.log("REAL READ REQUEST");
         this.progress = progress;
         return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())
             .translateToServiceRequest(this::translateModelToRequest)
@@ -57,10 +56,6 @@ public class Read {
         filters.add(Filter.builder().name("group-ip-address").values(model.getGroupIpAddress()).build());
         filters.add(Filter.builder().name("network-interface-id").values(model.getNetworkInterfaceId()).build());
         filters.add(Filter.builder().name("is-group-member").values("true").build());
-        this.logger.log("READ REQUEST");
-        this.logger.log(model.getTransitGatewayMulticastDomainId());
-        this.logger.log(filters.toString());
-        this.logger.log("READ REQUEST");
         return SearchTransitGatewayMulticastGroupsRequest.builder()
             .transitGatewayMulticastDomainId(model.getTransitGatewayMulticastDomainId())
             .filters(filters)
@@ -72,10 +67,7 @@ public class Read {
     }
 
     private ResourceModel translateResponsesToModel(SearchTransitGatewayMulticastGroupsResponse awsResponse, ResourceModel model) {
-        this.logger.log("AWS RESPONSE");
-        this.logger.log(awsResponse.toString());
         if(awsResponse.multicastGroups().isEmpty()) {
-            this.logger.log("NO RESPONSE");
             return null;
         } else {
             TransitGatewayMulticastGroup response = awsResponse.multicastGroups().get(0);

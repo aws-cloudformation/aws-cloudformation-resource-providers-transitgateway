@@ -45,13 +45,12 @@ public class DeleteHandlerTest extends AbstractTestBase {
 
     @AfterEach
     public void tear_down() {
-        verify(sdkClient, atLeastOnce()).serviceName();
         verifyNoMoreInteractions(sdkClient);
     }
 
 
     @Test
-    public void handleRequest_SimpleSuccessGroupMember() {
+    public void handleRequest_SimpleSuccess() {
         HashMap<String, String> mockMap = new HashMap<>();
         mockMap.put("groupMember", "false");
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
@@ -68,10 +67,33 @@ public class DeleteHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
     }
 
     @Test
-    public void handleRequest_ErrorGroupMember() {
+    public void handleRequest_WaitSuccess() {
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupSource", "false");
+        AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
+        AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
+        when(proxyClient.client().deregisterTransitGatewayMulticastGroupMembers(any(DeregisterTransitGatewayMulticastGroupMembersRequest.class))).thenReturn(MOCKS.deleteResponse(mockMap));
+        when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.readResponse(mockMap)).thenReturn(MOCKS.emptyReadResponse());
+        ResourceModel model = MOCKS.model(mockMap);
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
+
+    }
+
+    @Test
+    public void handleRequest_Error() {
         HashMap<String, String> mockMap = new HashMap<>();
         mockMap.put("groupMember", "false");
 
@@ -92,11 +114,13 @@ public class DeleteHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage().contains("Something went wrong")).isTrue();
         assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InvalidRequest);
+        verify(sdkClient, atLeastOnce()).serviceName();
+
     }
 
 
     @Test
-    public void handleRequest_NotFoundGroupMember() {
+    public void handleRequest_NotFound() {
         HashMap<String, String> mockMap = new HashMap<>();
         mockMap.put("groupMember", "false");
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
@@ -116,6 +140,28 @@ public class DeleteHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
+
+    }
+
+    @Test
+    public void handleRequest_NotFoundBeforeDelete() {
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupMember", "false");
+        when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.emptyReadResponse());
+
+
+        ResourceModel model = MOCKS.model(mockMap);
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage().contains("Cannot be modified by ACTION")).isTrue();
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
     }
 
 }
