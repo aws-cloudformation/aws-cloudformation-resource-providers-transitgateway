@@ -21,4 +21,5 @@ build.gradle
 contract-test.log
 .DS_Store
 /.sam-test
+/inputs
 sam.log

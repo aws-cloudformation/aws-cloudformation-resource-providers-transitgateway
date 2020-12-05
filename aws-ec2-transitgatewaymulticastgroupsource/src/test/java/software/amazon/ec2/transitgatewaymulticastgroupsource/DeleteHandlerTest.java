@@ -56,7 +56,7 @@ public class DeleteHandlerTest extends AbstractTestBase {
         mockMap.put("groupSource", "false");
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
-        when(proxyClient.client().deregisterTransitGatewayMulticastGroupSources(any(DeregisterTransitGatewayMulticastGroupSourcesRequest.class))).thenReturn(MOCKS.deleteGroupSourceResponse(mockMap));
+        when(proxyClient.client().deregisterTransitGatewayMulticastGroupSources(any(DeregisterTransitGatewayMulticastGroupSourcesRequest.class))).thenReturn(MOCKS.deleteResponse(mockMap));
         when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.readResponse(mockMap)).thenThrow(exception);
         ResourceModel model = MOCKS.model(mockMap);
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);

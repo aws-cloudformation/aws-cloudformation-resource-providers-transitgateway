@@ -126,11 +126,11 @@ public class Mocks {
     }
 
 
-    public DeregisterTransitGatewayMulticastGroupSourcesResponse deleteGroupSourceResponse() {
-        return this.deleteGroupSourceResponse(Collections.emptyMap());
+    public DeregisterTransitGatewayMulticastGroupSourcesResponse deleteResponse() {
+        return this.deleteResponse(Collections.emptyMap());
     }
 
-    public DeregisterTransitGatewayMulticastGroupSourcesResponse deleteGroupSourceResponse(Map<String, String> newMap) {
+    public DeregisterTransitGatewayMulticastGroupSourcesResponse deleteResponse(Map<String, String> newMap) {
         Map<String, String> values = this.modelMap(newMap);
         return DeregisterTransitGatewayMulticastGroupSourcesResponse.builder()
             .deregisteredMulticastGroupSources(
@@ -143,29 +143,11 @@ public class Mocks {
             .build();
     }
 
-    public DeregisterTransitGatewayMulticastGroupMembersResponse deleteGroupMemberResponse() {
-        return this.deleteGroupMemberResponse(Collections.emptyMap());
-    }
-
-    public DeregisterTransitGatewayMulticastGroupMembersResponse deleteGroupMemberResponse(Map<String, String> newMap) {
-        Map<String, String> values = this.modelMap(newMap);
-        return DeregisterTransitGatewayMulticastGroupMembersResponse.builder()
-                .deregisteredMulticastGroupMembers(
-                        TransitGatewayMulticastDeregisteredGroupMembers.builder()
-                                .transitGatewayMulticastDomainId(values.get("transitGatewayMulticastDomainId"))
-                                .groupIpAddress(values.get("transitGatewayMulticastDomainId"))
-                                .deregisteredNetworkInterfaceIds(values.get("transitGatewayMulticastDomainId"))
-                                .build()
-                )
-                .build();
-    }
-
-
-    public RegisterTransitGatewayMulticastGroupSourcesResponse createGroupSourceResponse() {
-        return this.createGroupSourceResponse(Collections.emptyMap());
+    public RegisterTransitGatewayMulticastGroupSourcesResponse createResponse() {
+        return this.createResponse(Collections.emptyMap());
 
     }
-    public RegisterTransitGatewayMulticastGroupSourcesResponse createGroupSourceResponse(Map<String, String> newMap) {
+    public RegisterTransitGatewayMulticastGroupSourcesResponse createResponse(Map<String, String> newMap) {
         Map<String, String> values = this.modelMap(newMap);
 
         return RegisterTransitGatewayMulticastGroupSourcesResponse.builder()
@@ -178,26 +160,5 @@ public class Mocks {
             )
         .build();
     }
-
-
-    public RegisterTransitGatewayMulticastGroupMembersResponse createGroupMemberResponse() {
-        return this.createGroupMemberResponse(Collections.emptyMap());
-
-    }
-    public RegisterTransitGatewayMulticastGroupMembersResponse createGroupMemberResponse(Map<String, String> newMap) {
-        Map<String, String> values = this.modelMap(newMap);
-
-        return RegisterTransitGatewayMulticastGroupMembersResponse.builder()
-            .registeredMulticastGroupMembers(
-                TransitGatewayMulticastRegisteredGroupMembers.builder()
-                    .transitGatewayMulticastDomainId(values.get("transitGatewayMulticastDomainId"))
-                    .groupIpAddress(values.get("transitGatewayMulticastDomainId"))
-                    .registeredNetworkInterfaceIds(values.get("transitGatewayMulticastDomainId"))
-                .build()
-            )
-        .build();
-    }
-
-
 
 }

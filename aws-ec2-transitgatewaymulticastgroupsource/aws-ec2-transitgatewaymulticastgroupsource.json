@@ -76,7 +76,6 @@
   "handlers": {
     "create": {
       "permissions": [
-        "ec2:RegisterTransitGatewayMulticastGroupMembers",
         "ec2:RegisterTransitGatewayMulticastGroupSources",
         "ec2:SearchTransitGatewayMulticastGroups"
       ]
@@ -88,7 +87,6 @@
     },
     "delete": {
       "permissions": [
-        "ec2:DeregisterTransitGatewayMulticastGroupMembers",
         "ec2:DeregisterTransitGatewayMulticastGroupSources",
         "ec2:SearchTransitGatewayMulticastGroups"
       ]

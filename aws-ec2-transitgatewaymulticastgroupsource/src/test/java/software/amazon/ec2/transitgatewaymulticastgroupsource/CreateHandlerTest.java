@@ -55,7 +55,7 @@ public class CreateHandlerTest extends AbstractTestBase {
         mockMap.put("groupSource", "true");
         ResourceModel model = MOCKS.model(mockMap);
 
-        when(proxyClient.client().registerTransitGatewayMulticastGroupSources(any(RegisterTransitGatewayMulticastGroupSourcesRequest.class))).thenReturn(MOCKS.createGroupSourceResponse(mockMap));
+        when(proxyClient.client().registerTransitGatewayMulticastGroupSources(any(RegisterTransitGatewayMulticastGroupSourcesRequest.class))).thenReturn(MOCKS.createResponse(mockMap));
         when(proxyClient.client().searchTransitGatewayMulticastGroups(any(SearchTransitGatewayMulticastGroupsRequest.class))).thenReturn(MOCKS.readResponse(mockMap));
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
