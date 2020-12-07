@@ -1,5 +1,5 @@
 {
-    "GroupIpAddress": "224.0.0.2",
-    "NetworkInterfaceId": "eni-0406f0e5cb9a840ea",
-    "TransitGatewayMulticastDomainId": "tgw-mcast-domain-0217413a6741f4eaa"
+  "GroupIpAddress": "224.0.0.2",
+  "NetworkInterfaceId": "eni-0406f0e5cb9a840ea",
+  "TransitGatewayMulticastDomainId": "tgw-mcast-domain-0217413a6741f4eaa"
 }
