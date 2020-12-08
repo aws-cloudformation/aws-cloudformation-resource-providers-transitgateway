@@ -1,0 +1,7 @@
+{
+  "TransitGatewayMulticastDomainId": "tgw-mcast-domain-02b362eb0a5d9ccbd",
+  "TransitGatewayAttachmentId": "tgw-attach-0c29a1c9beed4f58c",
+  "State": "associated",
+  "SubnetId": "subnet-02f1aae7a63a34b02",
+  "blue": "color"
+}

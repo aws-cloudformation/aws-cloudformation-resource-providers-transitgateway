@@ -1,0 +1,48 @@
+SdkClient: Ec2Client
+SdkModel:
+  Class: TransitGatewayMulticastDomainAssociation
+  PrimaryIdentifierMethod: transitGatewayMulticastDomainId
+ServiceName: ec2
+Create:
+  RequestClass: AssociateTransitGatewayMulticastDomainRequest
+  ResponseClass: AssociateTransitGatewayMulticastDomainResponse
+  RequestMethod: associateTransitGatewayMulticastDomain
+  ResponseMethod: associations
+Read:
+  RequestClass: GetTransitGatewayMulticastDomainAssociationsRequest
+  ResponseClass: GetTransitGatewayMulticastDomainAssociationsResponse
+  RequestMethod: getTransitGatewayMulticastDomainAssociations
+  ResponseMethod: multicastDomainAssociations
+  GetPrimaryIdentifierMethod: null
+  GetByPrimaryIdentifierMethod: transitGatewayMulticastDomainIds
+Update:
+  RequestClass: null
+  ResponseClass: null
+  RequestMethod: null
+Delete:
+  RequestClass: DisassociateTransitGatewayMulticastDomainRequest
+  ResponseClass: DisassociateTransitGatewayMulticastDomainResponse
+  RequestMethod: disassociateTransitGatewayMulticastDomain
+  ResponseMethod: associations
+List:
+  RequestClass: GetTransitGatewayMulticastDomainAssociationsRequest
+  ResponseClass: GetTransitGatewayMulticastDomainAssociationsResponse
+  RequestMethod: getTransitGatewayMulticastDomainAssociations
+  ResponseMethod: multicastDomainAssociations
+State:
+  Class: TransitGatewayMulitcastDomainAssociationState
+  Deleted: null
+  Deleting: null
+  Available: null
+  Pending: null
+  DELETED: DISASSOCIATED
+  DELETING: DISASSOCIATED
+  AVAILABLE: DISASSOCIATED
+  PENDING: DISASSOCIATED
+ResourceModel:
+  PrimaryIdentifiers:
+    - TransitGatewayMulticastDomainId
+    - TransitGatewayAttachmentId
+    - SubnetIds
+  GetPrimaryIdentifierMethod: getTransitGatewayMulticastDomainId
+  SetPrimaryIdentifierMethod: setTransitGatewayMulticastDomainId

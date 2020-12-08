@@ -1,0 +1,22 @@
+{
+    "typeName": "AWS::EC2::TransitGatewayMulticastDomainAssociation",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "software.amazon.ec2.transitgatewaymulticastdomainassociation.HandlerWrapper::handleRequest",
+    "testEntrypoint": "software.amazon.ec2.transitgatewaymulticastdomainassociation.HandlerWrapper::testEntrypoint",
+    "settings": {
+        "version": false,
+        "subparser_name": null,
+        "verbose": 0,
+        "force": false,
+        "type_name": "AWS::EC2::TransitGatewayMulticastDomainAssociation",
+        "namespace": [
+            "software",
+            "amazon",
+            "ec2",
+            "transitgatewaymulticastdomainassociation"
+        ],
+        "codegen_template_path": "default",
+        "protocolVersion": "2.0.0"
+    }
+}
