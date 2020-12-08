@@ -1,9 +1,9 @@
 {
-    "typeName": "Aws::EC2::TransitGatewayAttachment",
+    "typeName": "AWS::EC2::TransitGatewayAttachment",
     "language": "java",
     "runtime": "java8",
     "entrypoint": "com.aws.ec2.transitgatewayattachment.HandlerWrapper::handleRequest",
-    "testEntrypoint": "com.aws.ec2.transitgatewayattachment.HandlerWrapper::testEntrypoint",
+    "testEntrypoint": "software.amazon.mwaa.environment.HandlerWrapper::handleRequest",
     "settings": {
         "version": false,
         "subparser_name": null,

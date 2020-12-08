@@ -3,9 +3,11 @@ package com.aws.ec2.transitgatewayattachment.workflow;
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
 import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.cloudwatchevents.model.BatchRetryStrategy;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
 import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
 import software.amazon.cloudformation.proxy.*;
 
@@ -28,7 +30,7 @@ public class ValidateCurrentStateBase  {
             ResourceHandlerRequest<ResourceModel> request,
             CallbackContext callbackContext,
             ProxyClient<Ec2Client> client,
-    Logger logger
+            Logger logger
     ) {
         this.model = request.getDesiredResourceState();
         this.proxy = proxy;
@@ -72,6 +74,7 @@ public class ValidateCurrentStateBase  {
         return new ArrayList<>();
     }
 
+
     protected String currentState() {
         if(this._currentState != null) {
             return this._currentState;
@@ -81,12 +84,13 @@ public class ValidateCurrentStateBase  {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(Exception exception) {
-        if (ExceptionMapper.mapToHandlerErrorCode(exception).equals(HandlerErrorCode.NotFound)) {
-            return ProgressEvent.defaultSuccessHandler(null);
-        } else {
-            return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
-        }
-    }
 
+        if (exception instanceof AwsServiceException) {
+            AwsServiceException awsServiceException = (AwsServiceException) exception;
+            String errorCode = awsServiceException.awsErrorDetails().errorCode();
+        }
+        return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
+
+    }
 
 }

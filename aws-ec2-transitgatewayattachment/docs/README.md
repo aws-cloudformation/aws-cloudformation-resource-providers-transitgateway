@@ -1,4 +1,4 @@
-# Aws::EC2::TransitGatewayAttachment
+# AWS::EC2::TransitGatewayAttachment
 
 Resource Type definition for AWS::EC2::TransitGatewayAttachment
 
@@ -10,7 +10,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "Type" : "Aws::EC2::TransitGatewayAttachment",
+    "Type" : "AWS::EC2::TransitGatewayAttachment",
     "Properties" : {
         "<a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>" : <i>String</i>,
         "<a href="#vpcid" title="VpcId">VpcId</a>" : <i>String</i>,
@@ -23,7 +23,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 ### YAML
 
 <pre>
-Type: Aws::EC2::TransitGatewayAttachment
+Type: AWS::EC2::TransitGatewayAttachment
 Properties:
     <a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>: <i>String</i>
     <a href="#vpcid" title="VpcId">VpcId</a>: <i>String</i>
