@@ -1,9 +1,3 @@
 {
-  "TransitGatewayId": "tgw-08ce13c3f116c8603",
-  "Tags": [
-    {
-      "Key": "Name",
-      "Value": "This is my name"
-    }
-  ]
+  "TransitGatewayId": "tgw-0cfc157e72ff1e845"
 }

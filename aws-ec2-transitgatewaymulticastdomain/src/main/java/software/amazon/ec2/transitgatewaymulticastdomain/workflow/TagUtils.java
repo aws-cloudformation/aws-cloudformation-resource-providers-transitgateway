@@ -38,6 +38,7 @@ public class TagUtils {
     }
 
     public static List<TagSpecification> cfnTagsToSdkTagSpecifications(final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> tags) {
+         if(tags == null) return null;
         List<Tag> listTags = TagUtils.cfnTagsToSdkTags(tags);
         return TagUtils.translateTagsToTagSpecifications(listTags);
     }
