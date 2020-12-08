@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: software.amazon.ec2.transitgatewaymulticastdomainassociation.ReadHandlerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.533 s - in software.amazon.ec2.transitgatewaymulticastdomainassociation.ReadHandlerTest

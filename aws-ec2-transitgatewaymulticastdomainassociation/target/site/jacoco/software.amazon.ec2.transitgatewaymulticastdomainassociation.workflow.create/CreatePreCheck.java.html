@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreatePreCheck.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewaymulticastdomainassociation-handler</a> &gt; <a href="index.source.html" class="el_package">software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.create</a> &gt; <span class="el_source">CreatePreCheck.java</span></div><h1>CreatePreCheck.java</h1><pre class="source lang-java linenums">package software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.create;
+
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
+import software.amazon.cloudformation.proxy.*;
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.CallbackContext;
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.ResourceModel;
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.ExceptionMapper;
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.read.Read;
+
+public class CreatePreCheck {
+    AmazonWebServicesClientProxy proxy;
+    ResourceHandlerRequest&lt;ResourceModel&gt; request;
+    CallbackContext callbackContext;
+    ProxyClient&lt;Ec2Client&gt; client;
+    Logger logger;
+    ProgressEvent&lt;ResourceModel, CallbackContext&gt;  progress;
+    ResourceModel model;
+
+    public CreatePreCheck(
+            AmazonWebServicesClientProxy proxy,
+            ResourceHandlerRequest&lt;ResourceModel&gt; request,
+            CallbackContext callbackContext,
+            ProxyClient&lt;Ec2Client&gt; client,
+            Logger logger
+<span class="fc" id="L28">    ) {</span>
+<span class="fc" id="L29">        this.model = request.getDesiredResourceState();</span>
+<span class="fc" id="L30">        this.proxy = proxy;</span>
+<span class="fc" id="L31">        this.request = request;</span>
+<span class="fc" id="L32">        this.callbackContext = callbackContext;</span>
+<span class="fc" id="L33">        this.client = client;</span>
+<span class="fc" id="L34">        this.logger = logger;</span>
+<span class="fc" id="L35">    }</span>
+
+    public ProgressEvent&lt;ResourceModel, CallbackContext&gt;  run(ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress) {
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if(this.callbackContext.getAttempts() &gt; 0) { return progress; } //skip if this not the first attempt by the lambda function</span>
+
+        try {
+<span class="fc" id="L41">            this.progress = progress;</span>
+<span class="fc" id="L42">            return this.validate();</span>
+<span class="nc" id="L43">        } catch (Exception exception) {</span>
+<span class="nc" id="L44">            return this.handleError(exception);</span>
+        }
+    }
+
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt; validate() {
+<span class="fc" id="L49">        System.out.println(this.model.getTransitGatewayMulticastDomainId().startsWith(&quot;tgw-mcast-domain-&quot;));</span>
+//        System.out.println( this.model.getGroupIpAddress().split(&quot;[.]&quot;).length);
+
+<span class="fc" id="L52">            ResourceModel current = this.makeRequest();</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            if(current != null) {</span>
+<span class="fc" id="L55">                return this.failedRequest();</span>
+            } else {
+<span class="fc" id="L57">                return this.progress;</span>
+            }
+
+    }
+
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt; failedRequest() {
+<span class="fc" id="L63">        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace(&quot;/properties/&quot;, &quot;&quot;), &quot;Cannot be modified by ACTION: CREATE. A resource with the primary identifier already exists&quot;);</span>
+<span class="fc" id="L64">        return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.AlreadyExists);</span>
+    }
+
+
+    private ResourceModel makeRequest() {
+<span class="fc" id="L69">        return new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(this.model);</span>
+    }
+
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt;  handleError(Exception exception) {
+<span class="nc" id="L73">        System.out.println(exception.toString());</span>
+<span class="nc" id="L74">        return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

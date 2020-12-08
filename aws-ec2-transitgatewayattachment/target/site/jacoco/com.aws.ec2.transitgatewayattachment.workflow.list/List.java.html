@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>List.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewayattachment-handler</a> &gt; <a href="index.source.html" class="el_package">com.aws.ec2.transitgatewayattachment.workflow.list</a> &gt; <span class="el_source">List.java</span></div><h1>List.java</h1><pre class="source lang-java linenums">package com.aws.ec2.transitgatewayattachment.workflow.list;
+
+import com.aws.ec2.transitgatewayattachment.CallbackContext;
+import com.aws.ec2.transitgatewayattachment.ClientBuilder;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
+import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsRequest;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsResponse;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysResponse;
+import software.amazon.cloudformation.proxy.*;
+
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class List {
+    AmazonWebServicesClientProxy proxy;
+    ResourceHandlerRequest&lt;ResourceModel&gt; request;
+    CallbackContext callbackContext;
+    ProxyClient&lt;Ec2Client&gt; client;
+    Logger logger;
+
+    public List(
+        AmazonWebServicesClientProxy proxy,
+        ResourceHandlerRequest&lt;ResourceModel&gt; request,
+        CallbackContext callbackContext,
+        final ProxyClient&lt;Ec2Client&gt; client,
+        Logger logger
+<span class="fc" id="L33">    ) {</span>
+<span class="fc" id="L34">        this.proxy = proxy;</span>
+<span class="fc" id="L35">        this.request = request;</span>
+<span class="fc" id="L36">        this.callbackContext = callbackContext;</span>
+<span class="fc" id="L37">        this.client = client;</span>
+<span class="fc" id="L38">        this.logger = logger;</span>
+<span class="fc" id="L39">    }</span>
+
+    public ProgressEvent&lt;ResourceModel, CallbackContext&gt;  run(ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress) {
+<span class="fc" id="L42">        DescribeTransitGatewayVpcAttachmentsRequest  awsRequest = this.translateModelToRequest(progress.getResourceModel());</span>
+        try{
+<span class="fc" id="L44">            DescribeTransitGatewayVpcAttachmentsResponse awsResponse = this.makeServiceCall(awsRequest, this.client);</span>
+<span class="fc" id="L45">            java.util.List&lt;ResourceModel&gt; models = this.translateResponseToModel(awsResponse);</span>
+<span class="fc" id="L46">            return ProgressEvent.&lt;ResourceModel, CallbackContext&gt;builder()</span>
+<span class="fc" id="L47">                .resourceModels(models)</span>
+<span class="fc" id="L48">                .nextToken(awsResponse.nextToken())</span>
+<span class="fc" id="L49">                .status(OperationStatus.SUCCESS)</span>
+<span class="fc" id="L50">                .build();</span>
+<span class="nc" id="L51">        } catch (final AwsServiceException e) {</span>
+<span class="nc" id="L52">            return this.handleError(awsRequest, e, this.client, this.request.getDesiredResourceState(), this.callbackContext);</span>
+        }
+    }
+
+    private DescribeTransitGatewayVpcAttachmentsRequest translateModelToRequest(ResourceModel model) {
+<span class="fc" id="L57">        return DescribeTransitGatewayVpcAttachmentsRequest.builder()</span>
+<span class="fc" id="L58">            .maxResults(50)</span>
+<span class="fc" id="L59">            .nextToken(this.request.getNextToken()).build();</span>
+    }
+
+    private DescribeTransitGatewayVpcAttachmentsResponse makeServiceCall(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, ProxyClient&lt;Ec2Client&gt; client) {
+<span class="fc" id="L63">        return this.proxy.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeTransitGatewayVpcAttachments);</span>
+    }
+
+    private java.util.List&lt;ResourceModel&gt; translateResponseToModel(DescribeTransitGatewayVpcAttachmentsResponse awsResponse) {
+<span class="fc" id="L67">        return streamOfOrEmpty(awsResponse.transitGatewayVpcAttachments())</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            .filter(resource -&gt; !(resource.stateAsString().equals(&quot;deleted&quot;)))</span>
+<span class="fc" id="L69">            .map(resource -&gt; ResourceModel.builder()</span>
+<span class="fc" id="L70">                .id(resource.transitGatewayAttachmentId())</span>
+<span class="fc" id="L71">                .build())</span>
+<span class="fc" id="L72">            .collect(Collectors.toList());</span>
+    }
+
+    private ProgressEvent&lt;ResourceModel, CallbackContext&gt;  handleError(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, Exception exception, ProxyClient&lt;Ec2Client&gt; client, ResourceModel model, CallbackContext context) {
+<span class="nc" id="L76">        return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));</span>
+    }
+
+    private static &lt;T&gt; Stream&lt;T&gt; streamOfOrEmpty(final Collection&lt;T&gt; collection) {
+<span class="fc" id="L80">        return Optional.ofNullable(collection)</span>
+<span class="fc" id="L81">            .map(Collection::stream)</span>
+<span class="fc" id="L82">            .orElseGet(Stream::empty);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

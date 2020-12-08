@@ -1,0 +1,17 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment,CallbackContext,0,6,0,0,0,2,0,1,0,1
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment,CreateHandler,10,33,3,1,0,5,2,2,0,2
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment,ListHandler,0,19,0,0,0,3,0,2,0,2
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment,ReadHandler,0,29,0,0,0,4,0,2,0,2
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment,DeleteHandler,0,34,0,0,0,5,0,3,0,3
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment,ClientBuilder,0,10,0,0,0,4,0,2,0,2
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment,Configuration,0,4,0,0,0,2,0,1,0,1
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow.read,Read,23,124,0,0,5,30,2,7,2,7
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow.read,ValidateCurrentState,0,51,1,3,0,11,1,4,0,3
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow,TagUtils,20,83,6,8,4,26,6,8,0,7
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow,ValidateCurrentStateBase,36,92,4,4,10,18,5,7,3,5
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow,ExceptionMapper,0,96,0,16,0,26,0,13,0,5
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow.list,List,20,101,1,1,3,28,2,8,1,8
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow.create,Create,5,103,0,0,1,23,1,5,1,5
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow.delete,ValidateCurrentState,0,41,1,3,0,9,1,4,0,3
+aws-ec2-transitgatewayattachment-handler,com.aws.ec2.transitgatewayattachment.workflow.delete,Delete,16,96,4,0,3,21,3,5,1,5

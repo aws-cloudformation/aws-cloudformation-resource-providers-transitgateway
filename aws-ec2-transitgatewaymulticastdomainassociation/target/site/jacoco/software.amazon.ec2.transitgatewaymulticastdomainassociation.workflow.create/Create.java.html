@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Create.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewaymulticastdomainassociation-handler</a> &gt; <a href="index.source.html" class="el_package">software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.create</a> &gt; <span class="el_source">Create.java</span></div><h1>Create.java</h1><pre class="source lang-java linenums">package software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.create;
+
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.CallbackContext;
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.ResourceModel;
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.ExceptionMapper;
+import software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.read.Read;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.AssociateTransitGatewayMulticastDomainRequest;
+import software.amazon.awssdk.services.ec2.model.AssociateTransitGatewayMulticastDomainResponse;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayMulitcastDomainAssociationState;
+import software.amazon.cloudformation.proxy.*;
+
+public class Create {
+    AmazonWebServicesClientProxy proxy;
+    ResourceHandlerRequest&lt;ResourceModel&gt; request;
+    CallbackContext callbackContext;
+    ProxyClient&lt;Ec2Client&gt; client;
+    Logger logger;
+    ProgressEvent&lt;ResourceModel, CallbackContext&gt;  progress;
+
+    public Create(
+        AmazonWebServicesClientProxy proxy,
+        ResourceHandlerRequest&lt;ResourceModel&gt; request,
+        CallbackContext callbackContext,
+        ProxyClient&lt;Ec2Client&gt; client,
+        Logger logger
+<span class="fc" id="L27">    ) {</span>
+<span class="fc" id="L28">        this.proxy = proxy;</span>
+<span class="fc" id="L29">        this.request = request;</span>
+<span class="fc" id="L30">        this.callbackContext = callbackContext;</span>
+<span class="fc" id="L31">        this.client = client;</span>
+<span class="fc" id="L32">        this.logger = logger;</span>
+<span class="fc" id="L33">    }</span>
+
+    public ProgressEvent&lt;ResourceModel, CallbackContext&gt; run(ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress) {
+<span class="fc" id="L36">        this.logger.log(progress.getResourceModel().toString());</span>
+<span class="fc" id="L37">        return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())</span>
+<span class="fc" id="L38">            .translateToServiceRequest(this::translateModelToRequest)</span>
+<span class="fc" id="L39">            .makeServiceCall(this::makeServiceCall)</span>
+<span class="fc" id="L40">            .stabilize(this::stabilize)</span>
+<span class="fc" id="L41">            .handleError(this::handleError)</span>
+<span class="fc" id="L42">            .progress();</span>
+    }
+
+    private AssociateTransitGatewayMulticastDomainRequest translateModelToRequest(ResourceModel model) {
+<span class="fc" id="L46">        return AssociateTransitGatewayMulticastDomainRequest.builder()</span>
+<span class="fc" id="L47">            .transitGatewayAttachmentId(model.getTransitGatewayAttachmentId())</span>
+<span class="fc" id="L48">            .transitGatewayMulticastDomainId(model.getTransitGatewayMulticastDomainId())</span>
+<span class="fc" id="L49">            .subnetIds(model.getSubnetId())</span>
+<span class="fc" id="L50">            .build();</span>
+    }
+
+    private AssociateTransitGatewayMulticastDomainResponse makeServiceCall(AssociateTransitGatewayMulticastDomainRequest request, ProxyClient&lt;Ec2Client&gt; client) {
+<span class="fc" id="L54">        return proxy.injectCredentialsAndInvokeV2(request, client.client()::associateTransitGatewayMulticastDomain);</span>
+    }
+
+    private boolean stabilize(
+        AssociateTransitGatewayMulticastDomainRequest awsRequest,
+        AssociateTransitGatewayMulticastDomainResponse awsResponse,
+        ProxyClient&lt;Ec2Client&gt; client,
+        ResourceModel model,
+        CallbackContext context
+    ) {
+
+<span class="fc" id="L65">        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();</span>
+<span class="fc" id="L66">        return TransitGatewayMulitcastDomainAssociationState.ASSOCIATED.toString().equals(currentState);</span>
+    }
+
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt;  handleError(AssociateTransitGatewayMulticastDomainRequest awsRequest, Exception exception, ProxyClient&lt;Ec2Client&gt; client, ResourceModel model, CallbackContext context) {
+<span class="nc" id="L70">        this.logger.log(&quot;handleError&quot;);</span>
+<span class="nc" id="L71">        System.out.println(exception);</span>
+<span class="nc" id="L72">        return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

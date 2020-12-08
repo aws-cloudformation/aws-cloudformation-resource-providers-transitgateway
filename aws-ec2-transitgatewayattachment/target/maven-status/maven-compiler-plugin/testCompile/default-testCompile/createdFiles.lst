@@ -1,0 +1,11 @@
+com/aws/ec2/transitgatewayattachment/AbstractTestBase$1.class
+com/aws/ec2/transitgatewayattachment/DeleteHandlerTest.class
+com/aws/ec2/transitgatewayattachment/Mocks.class
+com/aws/ec2/transitgatewayattachment/workflow/TagUtilsTest.class
+com/aws/ec2/transitgatewayattachment/ReadHandlerTest.class
+com/aws/ec2/transitgatewayattachment/CreateHandlerTest.class
+com/aws/ec2/transitgatewayattachment/ClientBuilderTest.class
+com/aws/ec2/transitgatewayattachment/ListHandlerTest.class
+com/aws/ec2/transitgatewayattachment/ConfigurationTest.class
+com/aws/ec2/transitgatewayattachment/AbstractTestBase.class
+com/aws/ec2/transitgatewayattachment/workflow/ExceptionMapperTest.class

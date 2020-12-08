@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Read.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewayattachment-handler</a> &gt; <a href="index.source.html" class="el_package">com.aws.ec2.transitgatewayattachment.workflow.read</a> &gt; <span class="el_source">Read.java</span></div><h1>Read.java</h1><pre class="source lang-java linenums">package com.aws.ec2.transitgatewayattachment.workflow.read;
+
+import com.aws.ec2.transitgatewayattachment.CallbackContext;
+import com.aws.ec2.transitgatewayattachment.ClientBuilder;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
+import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
+import com.aws.ec2.transitgatewayattachment.workflow.TagUtils;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.*;
+import software.amazon.cloudformation.proxy.*;
+
+public class Read {
+    AmazonWebServicesClientProxy proxy;
+    ResourceHandlerRequest&lt;ResourceModel&gt; request;
+    CallbackContext callbackContext;
+    ProxyClient&lt;Ec2Client&gt; client;
+    Logger logger;
+    ProgressEvent&lt;ResourceModel, CallbackContext&gt;  progress;
+
+
+
+<span class="fc" id="L22">    public Read(AmazonWebServicesClientProxy proxy, ResourceHandlerRequest&lt;ResourceModel&gt; request, CallbackContext callbackContext, ProxyClient&lt;Ec2Client&gt; client, Logger logger) {</span>
+
+<span class="fc" id="L24">        this.proxy = proxy;</span>
+<span class="fc" id="L25">        this.request = request;</span>
+<span class="fc" id="L26">        this.callbackContext = callbackContext;</span>
+<span class="fc" id="L27">        this.client = client;</span>
+<span class="fc" id="L28">        this.logger = logger;</span>
+<span class="fc" id="L29">    }</span>
+
+
+    public ProgressEvent&lt;ResourceModel, CallbackContext&gt;  run(ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress) {
+<span class="fc" id="L33">        this.progress = progress;</span>
+<span class="fc" id="L34">        return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())</span>
+<span class="fc" id="L35">            .translateToServiceRequest(this::translateModelToRequest)</span>
+<span class="fc" id="L36">            .makeServiceCall(this::makeServiceCall)</span>
+<span class="fc" id="L37">            .handleError(this::handleError)</span>
+<span class="fc" id="L38">            .done(this::done);</span>
+    }
+
+    public ResourceModel simpleRequest(final ResourceModel model) {
+<span class="nc" id="L42">        return this.translateResponseToModel(</span>
+<span class="nc" id="L43">            this.proxy.injectCredentialsAndInvokeV2(</span>
+<span class="nc" id="L44">                this.translateModelToRequest(model),</span>
+<span class="nc" id="L45">                this.client.client()::describeTransitGatewayVpcAttachments</span>
+            )
+        );
+    }
+
+    public TransitGatewayAttachmentState stateRequest(final ResourceModel model){
+<span class="fc" id="L51">        return this.proxy.injectCredentialsAndInvokeV2(</span>
+<span class="fc" id="L52">                this.translateModelToRequest(model),</span>
+<span class="fc" id="L53">                this.client.client()::describeTransitGatewayVpcAttachments</span>
+<span class="fc" id="L54">        ).transitGatewayVpcAttachments().get(0).state();</span>
+    }
+
+    private DescribeTransitGatewayVpcAttachmentsRequest translateModelToRequest(ResourceModel model) {
+<span class="fc" id="L58">        return DescribeTransitGatewayVpcAttachmentsRequest.builder()</span>
+<span class="fc" id="L59">            .transitGatewayAttachmentIds(model.getId())</span>
+<span class="fc" id="L60">            .build();</span>
+    }
+
+    private DescribeTransitGatewayVpcAttachmentsResponse makeServiceCall(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, ProxyClient&lt;Ec2Client&gt; client) {
+<span class="fc" id="L64">        return this.proxy.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeTransitGatewayVpcAttachments);</span>
+    }
+
+    private ResourceModel translateResponseToModel(DescribeTransitGatewayVpcAttachmentsResponse awsResponses) {
+<span class="fc" id="L68">        TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);</span>
+<span class="fc" id="L69">        return ResourceModel.builder()</span>
+<span class="fc" id="L70">                .id(response.transitGatewayAttachmentId())</span>
+<span class="fc" id="L71">                .subnetIds(response.subnetIds())</span>
+<span class="fc" id="L72">                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))</span>
+<span class="fc" id="L73">                .transitGatewayId(response.transitGatewayId())</span>
+<span class="fc" id="L74">                .vpcId(response.vpcId())</span>
+<span class="fc" id="L75">                .build();</span>
+    }
+
+    private ProgressEvent&lt;ResourceModel, CallbackContext&gt;  handleError(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, Exception exception, ProxyClient&lt;Ec2Client&gt; client, ResourceModel model, CallbackContext context) {
+<span class="nc" id="L79">        return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));</span>
+    }
+
+    private  ProgressEvent&lt;ResourceModel, CallbackContext&gt; done(DescribeTransitGatewayVpcAttachmentsResponse response) {
+<span class="fc" id="L83">        return ProgressEvent.defaultSuccessHandler(this.translateResponseToModel(response));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

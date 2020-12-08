@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidateCurrentStateBase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewayattachment-handler</a> &gt; <a href="index.source.html" class="el_package">com.aws.ec2.transitgatewayattachment.workflow</a> &gt; <span class="el_source">ValidateCurrentStateBase.java</span></div><h1>ValidateCurrentStateBase.java</h1><pre class="source lang-java linenums">package com.aws.ec2.transitgatewayattachment.workflow;
+
+import com.aws.ec2.transitgatewayattachment.CallbackContext;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
+import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.services.cloudwatchevents.model.BatchRetryStrategy;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
+import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
+import software.amazon.cloudformation.proxy.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class ValidateCurrentStateBase  {
+    AmazonWebServicesClientProxy proxy;
+    ResourceHandlerRequest&lt;ResourceModel&gt; request;
+    protected CallbackContext callbackContext;
+    ProxyClient&lt;Ec2Client&gt; client;
+    Logger logger;
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress;
+    ResourceModel model;
+    String _currentState;
+
+    public ValidateCurrentStateBase(
+            AmazonWebServicesClientProxy proxy,
+            ResourceHandlerRequest&lt;ResourceModel&gt; request,
+            CallbackContext callbackContext,
+            ProxyClient&lt;Ec2Client&gt; client,
+            Logger logger
+<span class="fc" id="L34">    ) {</span>
+<span class="fc" id="L35">        this.model = request.getDesiredResourceState();</span>
+<span class="fc" id="L36">        this.proxy = proxy;</span>
+<span class="fc" id="L37">        this.request = request;</span>
+<span class="fc" id="L38">        this.callbackContext = callbackContext;</span>
+<span class="fc" id="L39">        this.client = client;</span>
+<span class="fc" id="L40">        this.logger = logger;</span>
+<span class="fc" id="L41">    }</span>
+
+    public ProgressEvent&lt;ResourceModel, CallbackContext&gt; run(ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress) {
+<span class="fc" id="L44">        this.progress = progress;</span>
+
+        try {
+<span class="fc" id="L47">            return this.validate();</span>
+<span class="nc" id="L48">        } catch (Exception exception) {</span>
+<span class="nc" id="L49">            return this.handleError(exception);</span>
+        }
+    }
+
+    protected TransitGatewayAttachmentState makeRequest() {
+<span class="fc" id="L54">        return new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(this.model);</span>
+    }
+
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt; validate() {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if(this.validStates().contains(this.currentState())) {</span>
+<span class="nc" id="L59">            return this.progress;</span>
+        } else {
+<span class="nc" id="L61">            return this.failure();</span>
+        }
+    }
+
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt; failure() {
+<span class="fc" id="L66">        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString(), &quot;State: &quot; + this.currentState() + &quot; cannot be updated.&quot;);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if(this.currentState().equals(&quot;deleted&quot;)) {</span>
+<span class="fc" id="L68">            return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.NotFound);</span>
+        }
+<span class="fc" id="L70">        return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.ResourceConflict);</span>
+    }
+
+    protected List&lt;String&gt; validStates() {
+<span class="nc" id="L74">        return new ArrayList&lt;&gt;();</span>
+    }
+
+
+    protected String currentState() {
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if(this._currentState != null) {</span>
+<span class="fc" id="L80">            return this._currentState;</span>
+        } else {
+<span class="fc" id="L82">            return this._currentState = this.makeRequest().toString();</span>
+        }
+    }
+
+    protected ProgressEvent&lt;ResourceModel, CallbackContext&gt;  handleError(Exception exception) {
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (exception instanceof AwsServiceException) {</span>
+<span class="nc" id="L89">            AwsServiceException awsServiceException = (AwsServiceException) exception;</span>
+<span class="nc" id="L90">            String errorCode = awsServiceException.awsErrorDetails().errorCode();</span>
+        }
+<span class="nc" id="L92">        return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

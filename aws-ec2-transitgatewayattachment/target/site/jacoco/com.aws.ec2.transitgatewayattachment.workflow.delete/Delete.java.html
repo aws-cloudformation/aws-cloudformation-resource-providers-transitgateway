@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Delete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewayattachment-handler</a> &gt; <a href="index.source.html" class="el_package">com.aws.ec2.transitgatewayattachment.workflow.delete</a> &gt; <span class="el_source">Delete.java</span></div><h1>Delete.java</h1><pre class="source lang-java linenums">package com.aws.ec2.transitgatewayattachment.workflow.delete;
+
+import com.aws.ec2.transitgatewayattachment.CallbackContext;
+import com.aws.ec2.transitgatewayattachment.ClientBuilder;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
+import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
+import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.*;
+import software.amazon.cloudformation.exceptions.ResourceNotFoundException;
+import software.amazon.cloudformation.proxy.*;
+
+public class Delete {
+    AmazonWebServicesClientProxy proxy;
+    ResourceHandlerRequest&lt;ResourceModel&gt; request;
+    CallbackContext callbackContext;
+    ProxyClient&lt;Ec2Client&gt; client;
+    Logger logger;
+    ProgressEvent&lt;ResourceModel, CallbackContext&gt;  progress;
+
+    public Delete(
+        AmazonWebServicesClientProxy proxy,
+        ResourceHandlerRequest&lt;ResourceModel&gt; request,
+        CallbackContext callbackContext,
+        ProxyClient&lt;Ec2Client&gt; client,
+        Logger logger
+<span class="fc" id="L27">    ) {</span>
+<span class="fc" id="L28">        this.proxy = proxy;</span>
+<span class="fc" id="L29">        this.request = request;</span>
+<span class="fc" id="L30">        this.callbackContext = callbackContext;</span>
+<span class="fc" id="L31">        this.client = client;</span>
+<span class="fc" id="L32">        this.logger = logger;</span>
+<span class="fc" id="L33">    }</span>
+
+    public ProgressEvent&lt;ResourceModel, CallbackContext&gt;  run(ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress) {
+<span class="fc" id="L36">        this.progress = progress;</span>
+<span class="fc" id="L37">        return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())</span>
+<span class="fc" id="L38">            .translateToServiceRequest(this::translateModelToRequest)</span>
+<span class="fc" id="L39">            .makeServiceCall(this::makeServiceCall)</span>
+<span class="fc" id="L40">            .stabilize(this::stabilize)</span>
+<span class="fc" id="L41">            .handleError(this::handleError)</span>
+<span class="fc" id="L42">            .progress();</span>
+
+    }
+
+    private DeleteTransitGatewayVpcAttachmentRequest translateModelToRequest(ResourceModel model) {
+<span class="fc" id="L47">        return  DeleteTransitGatewayVpcAttachmentRequest.builder()</span>
+<span class="fc" id="L48">            .transitGatewayAttachmentId(model.getId())</span>
+<span class="fc" id="L49">            .build();</span>
+    }
+
+    private DeleteTransitGatewayVpcAttachmentResponse makeServiceCall(DeleteTransitGatewayVpcAttachmentRequest request, ProxyClient&lt;Ec2Client&gt; client) {
+<span class="fc" id="L53">        return proxy.injectCredentialsAndInvokeV2(request, client.client()::deleteTransitGatewayVpcAttachment);</span>
+    }
+
+    private boolean stabilize (
+        DeleteTransitGatewayVpcAttachmentRequest request,
+        DeleteTransitGatewayVpcAttachmentResponse response,
+        ProxyClient&lt;Ec2Client&gt; client,
+        ResourceModel model,
+        CallbackContext context
+    ) {
+<span class="fc" id="L63">        model.setId(response.transitGatewayVpcAttachment().transitGatewayAttachmentId());</span>
+<span class="fc" id="L64">        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(model).toString();</span>
+<span class="fc" id="L65">        return currentState.equals(TransitGatewayAttachmentState.DELETED.toString());</span>
+    }
+
+    private ProgressEvent&lt;ResourceModel, CallbackContext&gt;  handleError(DeleteTransitGatewayVpcAttachmentRequest awsRequest, Exception exception, ProxyClient&lt;Ec2Client&gt; client, ResourceModel model, CallbackContext context) {
+<span class="nc bnc" id="L69" title="All 4 branches missed.">        if (exception instanceof ResourceNotFoundException || ExceptionMapper.mapToHandlerErrorCode(exception).equals(HandlerErrorCode.NotFound)) {</span>
+<span class="nc" id="L70">            return ProgressEvent.defaultSuccessHandler(null);</span>
+        } else {
+<span class="nc" id="L72">            return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

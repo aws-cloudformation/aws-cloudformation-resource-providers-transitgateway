@@ -1,0 +1,16 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation,ListHandler,0,31,0,0,0,6,0,2,0,2
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation,DeleteHandler,0,46,0,0,0,8,0,3,0,3
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation,Configuration,0,4,0,0,0,2,0,1,0,1
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation,ClientBuilder,0,10,0,0,0,4,0,2,0,2
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation,CreateHandler,0,51,0,0,0,8,0,2,0,2
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation,ReadHandler,0,35,0,0,0,7,0,2,0,2
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation,CallbackContext,0,6,0,0,0,2,0,1,0,1
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.list,List,0,165,0,0,0,38,0,8,0,8
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.read,Read,0,236,1,7,0,47,1,11,0,8
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow,ExceptionMapper,0,92,0,16,0,25,0,13,0,5
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow,ValidCurrentStateCheckBase,3,178,1,15,0,32,1,17,0,10
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.delete,Delete,4,117,3,3,1,24,3,6,0,6
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.delete,ValidCurrentStateCheck,0,24,0,0,0,6,0,2,0,2
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.create,Create,12,106,0,0,3,22,1,5,1,5
+aws-ec2-transitgatewaymulticastdomainassociation-handler,software.amazon.ec2.transitgatewaymulticastdomainassociation.workflow.create,CreatePreCheck,16,85,1,3,4,19,2,6,1,5

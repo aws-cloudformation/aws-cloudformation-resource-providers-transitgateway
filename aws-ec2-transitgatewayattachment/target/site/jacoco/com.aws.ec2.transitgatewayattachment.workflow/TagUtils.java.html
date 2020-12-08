@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TagUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewayattachment-handler</a> &gt; <a href="index.source.html" class="el_package">com.aws.ec2.transitgatewayattachment.workflow</a> &gt; <span class="el_source">TagUtils.java</span></div><h1>TagUtils.java</h1><pre class="source lang-java linenums">package com.aws.ec2.transitgatewayattachment.workflow;
+
+import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
+import software.amazon.awssdk.services.ec2.model.Tag;
+import software.amazon.awssdk.services.ec2.model.TagSpecification;
+import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
+<span class="fc" id="L15">public class TagUtils {</span>
+    public static List&lt;com.aws.ec2.transitgatewayattachment.Tag&gt; sdkTagsToCfnTags(final List&lt;Tag&gt; tags) {
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (tags == null) return null;</span>
+<span class="fc" id="L18">        return tags.stream()</span>
+<span class="fc" id="L19">            .map(e -&gt; com.aws.ec2.transitgatewayattachment.Tag.builder()</span>
+<span class="fc" id="L20">                .key(e.key())</span>
+<span class="fc" id="L21">                .value(e.value())</span>
+<span class="fc" id="L22">                .build())</span>
+<span class="fc" id="L23">            .collect(Collectors.toList());</span>
+    }
+
+    public static List&lt;Tag&gt; cfnTagsToSdkTags(final List&lt;com.aws.ec2.transitgatewayattachment.Tag&gt; tags) {
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (tags == null) {</span>
+<span class="nc" id="L28">            return new ArrayList&lt;Tag&gt;();</span>
+        }
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (final com.aws.ec2.transitgatewayattachment.Tag tag : tags) {</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">            if (tag.getKey() == null) {</span>
+<span class="nc" id="L32">                throw new CfnInvalidRequestException(&quot;Tags cannot have a null key&quot;);</span>
+            }
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">            if (tag.getValue() == null) {</span>
+<span class="nc" id="L35">                throw new CfnInvalidRequestException(&quot;Tags cannot have a null value&quot;);</span>
+            }
+<span class="fc" id="L37">        }</span>
+<span class="fc" id="L38">        return tags.stream()</span>
+<span class="fc" id="L39">            .map(e -&gt; Tag.builder()</span>
+<span class="fc" id="L40">                .key(e.getKey())</span>
+<span class="fc" id="L41">                .value(e.getValue())</span>
+<span class="fc" id="L42">                .build())</span>
+<span class="fc" id="L43">            .collect(Collectors.toList());</span>
+    }
+
+    public static List&lt;TagSpecification&gt; cfnTagsToSdkTagSpecifications(final List&lt;com.aws.ec2.transitgatewayattachment.Tag&gt; tags) {
+
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">       if(tags == null) return null;</span>
+<span class="fc" id="L49">        List&lt;Tag&gt; listTags = TagUtils.cfnTagsToSdkTags(tags);</span>
+<span class="fc" id="L50">        return TagUtils.translateTagsToTagSpecifications(listTags);</span>
+    }
+
+    public static List&lt;TagSpecification&gt; translateTagsToTagSpecifications(final List&lt;Tag&gt; newTags) {
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (newTags == null) {</span>
+<span class="nc" id="L55">            return null;</span>
+        }
+<span class="fc" id="L57">        return Arrays.asList(TagSpecification.builder()</span>
+<span class="fc" id="L58">            .resourceType(&quot;transit-gateway-attachment&quot;)</span>
+<span class="fc" id="L59">            .tags(newTags).build());</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
