@@ -23,9 +23,9 @@ public class AbstractTestBase {
     MOCK_CREDENTIALS = new Credentials("accessKey", "secretKey", "token");
     logger = new LoggerProxy();
   }
-  static ProxyClient<Ec2Client> MOCK_PROXY(
-    final AmazonWebServicesClientProxy proxy,
-    final Ec2Client sdkClient) {
+  protected static ProxyClient<Ec2Client> MOCK_PROXY(
+          final AmazonWebServicesClientProxy proxy,
+          final Ec2Client sdkClient) {
     return new ProxyClient<Ec2Client>() {
       @Override
       public <RequestT extends AwsRequest, ResponseT extends AwsResponse> ResponseT

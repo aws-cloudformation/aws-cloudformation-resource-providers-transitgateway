@@ -1,7 +1,6 @@
 package com.aws.ec2.transitgateway.workflow.read;
 
 import com.aws.ec2.transitgateway.CallbackContext;
-import com.aws.ec2.transitgateway.ClientBuilder;
 import com.aws.ec2.transitgateway.ResourceModel;
 import com.aws.ec2.transitgateway.workflow.ExceptionMapper;
 import com.aws.ec2.transitgateway.workflow.TagUtils;

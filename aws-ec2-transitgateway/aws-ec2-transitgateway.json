@@ -63,7 +63,7 @@
   "readOnlyProperties": [
     "/properties/Id"
   ],
-  "createOnlyProperties": [
+  "writeOnlyProperties": [
     "/properties/DnsSupport",
     "/properties/DefaultRouteTableAssociation",
     "/properties/DefaultRouteTablePropagation",
@@ -85,6 +85,13 @@
       "permissions": [
         "ec2:DescribeTransitGateways",
         "ec2:DescribeTags"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:DescribeTransitGateways",
+        "ec2:DeleteTags",
+        "ec2:CreateTags"
       ]
     },
     "delete": {

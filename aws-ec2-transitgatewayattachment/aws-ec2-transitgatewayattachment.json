@@ -20,6 +20,10 @@
         "type": "string"
       }
     },
+    "State": {
+      "description": "The state of the transit gateway multicast domain.",
+      "type": "string"
+    },
     "Tags": {
       "type": "array",
       "uniqueItems": false,
@@ -31,19 +35,16 @@
   "definitions": {
     "Tag": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
         "Key": {
+          "description": "The key of the tag. Constraints: Tag keys are case-sensitive and accept a maximum of 127 Unicode characters. May not begin with aws:.",
           "type": "string"
         },
         "Value": {
+          "description": "The value of the tag. Constraints: Tag values are case-sensitive and accept a maximum of 255 Unicode characters.",
           "type": "string"
         }
-      },
-      "required": [
-        "Value",
-        "Key"
-      ]
+      }
     }
   },
   "required": [
@@ -51,7 +52,7 @@
     "SubnetIds",
     "TransitGatewayId"
   ],
-  "createOnlyProperties": [
+  "writeOnlyProperties": [
     "/properties/Tags",
     "/properties/TransitGatewayId",
     "/properties/VpcId",
@@ -75,6 +76,13 @@
         "ec2:DescribeTransitGatewayAttachments",
         "ec2:DescribeTransitGatewayVpcAttachments",
         "ec2:DescribeTags"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayAttachments",
+        "ec2:DeleteTags",
+        "ec2:CreateTags"
       ]
     },
     "delete": {

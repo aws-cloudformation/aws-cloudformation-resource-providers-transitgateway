@@ -180,7 +180,42 @@ public class Mocks {
         return this.createResponse(new ArrayList<>(), "available");
     }
 
+    public  ResourceModel modelWithoutPrimaryIdentifier(List<Tag> tags) {
+        return ResourceModel.builder()
+                .tags(TagUtils.sdkTagsToCfnTags(tags))
+                .build();
+    }
 
+    public ResourceModel modelWithoutPrimaryIdentifier() {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modelWithoutPrimaryIdentifier(tags);
+    }
+
+    public  ResourceModel modelWithInvalidProperties(List<Tag> tags) {
+        return ResourceModel.builder()
+                .id(this.primaryIdentifier)
+                .tags(TagUtils.sdkTagsToCfnTags(tags))
+                .build();
+    }
+
+    public ResourceModel modelWithInvalidProperties() {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modelWithInvalidProperties(tags);
+    }
+
+
+    public  ResourceModel modelWithNullProperties(List<Tag> tags) {
+        return ResourceModel.builder()
+                .id(null)
+                .tags(TagUtils.sdkTagsToCfnTags(tags))
+                .build();
+    }
+
+
+    public ResourceModel modelWithNullProperties() {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modelWithNullProperties(tags);
+    }
 
 
 }
