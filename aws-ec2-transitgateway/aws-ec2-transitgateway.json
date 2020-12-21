@@ -64,14 +64,7 @@
     "/properties/Id"
   ],
   "createOnlyProperties": [
-    "/properties/DnsSupport",
-    "/properties/DefaultRouteTableAssociation",
-    "/properties/DefaultRouteTablePropagation",
-    "/properties/Tags",
-    "/properties/AutoAcceptSharedAttachments",
     "/properties/AmazonSideAsn",
-    "/properties/Description",
-    "/properties/VpnEcmpSupport",
     "/properties/MulticastSupport"
   ],
   "handlers": {
@@ -91,6 +84,12 @@
       "permissions": [
         "ec2:DeleteTransitGateway",
         "ec2:DeleteTags"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:ModifyTransitGateway",
+        "ec2:ModifyTransitGatewayOptions"
       ]
     },
     "list": {

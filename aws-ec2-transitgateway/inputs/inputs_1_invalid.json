@@ -1,17 +1,11 @@
 {
   "Id": "tgw-072bb448892a7aafe",
-  "Description": "my-tgw",
+  "Description": "my-tgw-update",
   "Tags": [
     {
       "Key": "keyx",
       "Value": "valuex"
     }
   ],
-  "AmazonSideAsn": 65514,
-  "DefaultRouteTablePropagation": "enable",
-  "AutoAcceptSharedAttachments": "disable",
-  "DefaultRouteTableAssociation": "enable",
-  "VpnEcmpSupport": "enable",
-  "MulticastSupport": "disable",
-  "DnsSupport": "enable"
+  "AmazonSideAsn": 65514
 }

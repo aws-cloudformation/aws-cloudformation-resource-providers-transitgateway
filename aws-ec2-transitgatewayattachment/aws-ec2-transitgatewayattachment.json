@@ -52,10 +52,8 @@
     "TransitGatewayId"
   ],
   "createOnlyProperties": [
-    "/properties/Tags",
     "/properties/TransitGatewayId",
-    "/properties/VpcId",
-    "/properties/SubnetIds"
+    "/properties/VpcId"
   ],
   "readOnlyProperties": [
     "/properties/Id"
@@ -81,6 +79,11 @@
       "permissions": [
         "ec2:DeleteTransitGatewayVpcAttachment",
         "ec2:DeleteTags"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:ModifyTransitGatewayVpcAttachment"
       ]
     },
     "list": {
