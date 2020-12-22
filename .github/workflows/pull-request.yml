@@ -17,6 +17,7 @@ jobs:
 
       - name: Checkout current branch
         run: |
+          printenv
           git checkout -B ${{ github.ref }}
       - name: Log into registry
         run: |
