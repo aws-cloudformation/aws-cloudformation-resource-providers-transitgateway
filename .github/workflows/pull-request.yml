@@ -25,3 +25,10 @@ jobs:
           git add -A
           git commit -m '(ci skip): Automated code quality fixes from pre-commit in github actions'
           git push origin master
+      - name: Recommit
+        run: |
+          git config --global user.email "$GITHUB_USERNAME@users.no-reply.github.com"
+          git config --global user.name $GITHUB_USERNAME
+          git add -A
+          git commit -m '(ci skip): Automated code quality fixes from pre-commit in github actions'
+          git push origin master
