@@ -36,5 +36,5 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git add -A
-          git commit --allow-empty -am "(ci skip): Automated code quality fixes from pre-commit in github actions"
-          git push origin ${{ github.head_ref }}
+          git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions" &>/dev/null
+          git push origin ${{ github.head_ref }} &>/dev/null
