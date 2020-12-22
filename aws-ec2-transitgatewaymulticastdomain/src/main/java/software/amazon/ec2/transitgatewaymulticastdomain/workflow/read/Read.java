@@ -1,6 +1,7 @@
 package software.amazon.ec2.transitgatewaymulticastdomain.workflow.read;
 
 import software.amazon.ec2.transitgatewaymulticastdomain.CallbackContext;
+import software.amazon.ec2.transitgatewaymulticastdomain.Options;
 import software.amazon.ec2.transitgatewaymulticastdomain.ResourceModel;
 import software.amazon.ec2.transitgatewaymulticastdomain.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
@@ -71,6 +72,12 @@ public class Read {
             .transitGatewayId(response.transitGatewayId())
             .state(response.state().toString())
             .creationTime(response.creationTime().toString())
+            .options(
+                Options.builder()
+                    .autoAcceptSharedAssociations(response.options().autoAcceptSharedAssociationsAsString())
+                    .igmpv2Support(response.options().igmpv2SupportAsString())
+                    .staticSourcesSupport(response.options().staticSourcesSupportAsString())
+                .build())
             .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
             .build();
     }

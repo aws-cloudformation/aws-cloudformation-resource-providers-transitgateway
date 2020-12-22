@@ -13,7 +13,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "Type" : "AWS::EC2::TransitGatewayMulticastDomain",
     "Properties" : {
         "<a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>" : <i>String</i>,
-        "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>
+        "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
+        "<a href="#options" title="Options">Options</a>" : <i><a href="options.md">Options</a></i>
     }
 }
 </pre>
@@ -26,6 +27,7 @@ Properties:
     <a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>: <i>String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
+    <a href="#options" title="Options">Options</a>: <i><a href="options.md">Options</a></i>
 </pre>
 
 ## Properties
@@ -47,6 +49,16 @@ The tags for the transit gateway multicast domain.
 _Required_: No
 
 _Type_: List of <a href="tag.md">Tag</a>
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### Options
+
+The options for the transit gateway multicast domain.
+
+_Required_: No
+
+_Type_: <a href="options.md">Options</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -73,3 +85,4 @@ The state of the transit gateway multicast domain.
 #### CreationTime
 
 The time the transit gateway multicast domain was created.
+

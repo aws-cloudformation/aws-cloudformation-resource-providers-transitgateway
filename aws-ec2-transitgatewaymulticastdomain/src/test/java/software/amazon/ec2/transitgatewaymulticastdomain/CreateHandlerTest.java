@@ -72,6 +72,26 @@ public class CreateHandlerTest extends AbstractTestBase {
 
 
     @Test
+    public void handleRequest_NonDefaultOptions() {
+
+        ResourceModel model = MOCKS.modelWithNonDefaultOptions();
+
+        when(proxyClient.client().createTransitGatewayMulticastDomain(any(CreateTransitGatewayMulticastDomainRequest.class))).thenReturn(MOCKS.createResponse());
+        when(proxyClient.client().describeTransitGatewayMulticastDomains(any(DescribeTransitGatewayMulticastDomainsRequest.class))).thenReturn(MOCKS.describeResponseWithNonDefaultOptions());
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isEqualTo(model);
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+    }
+
+
+    @Test
     public void handleRequest_Error() {
         final List<Tag> tags = new ArrayList<>();
         tags.add(MOCKS.tag());

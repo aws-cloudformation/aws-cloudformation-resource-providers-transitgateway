@@ -26,6 +26,24 @@
       "items": {
         "$ref": "#/definitions/Tag"
       }
+    },
+    "Options": {
+      "description": "The options for the transit gateway multicast domain.",
+      "type": "object",
+      "properties": {
+        "AutoAcceptSharedAssociations": {
+          "description": "Indicates whether to automatically cross-account subnet associations that are associated with the transit gateway multicast domain. Valid Values: enable | disable",
+          "type": "string"
+        },
+        "Igmpv2Support": {
+          "description": "Indicates whether Internet Group Management Protocol (IGMP) version 2 is turned on for the transit gateway multicast domain. Valid Values: enable | disable",
+          "type": "string"
+        },
+        "StaticSourcesSupport": {
+          "description": "Indicates whether support for statically configuring transit gateway multicast group sources is turned on. Valid Values: enable | disable",
+          "type": "string"
+        }
+      }
     }
   },
   "definitions": {
