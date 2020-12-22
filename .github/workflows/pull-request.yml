@@ -25,9 +25,9 @@ jobs:
       - name: Recommit
         run: |
           git config --list
-          git config --global user.email "$GITHUB_ACTOR@users.no-reply.github.com"
-          git config --global user.name "$GITHUB_ACTOR"
-          git status
-          git add -A
-          git commit -m '(ci skip): Automated code quality fixes from pre-commit in github actions'
-          git push origin master
+
+
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions"
+          git push
