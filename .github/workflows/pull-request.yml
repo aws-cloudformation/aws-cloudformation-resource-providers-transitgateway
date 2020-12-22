@@ -17,7 +17,7 @@ jobs:
 
       - name: Install pre-commit
         run: |
-          docker build --build-arg GITHUB_USERNAME=${GITHUB_USERNAME} --build-arg --build-arg GITHUB_TOKEN=${GITHUB_TOKEN} --build-arg APP_NAME=$GITHUB_REPOSITORY . -t precommit
+          docker build --build-arg GITHUB_USERNAME=${GITHUB_USERNAME} --build-arg GITHUB_TOKEN=${GITHUB_TOKEN} --build-arg APP_NAME=$GITHUB_REPOSITORY . -t precommit
 
       - name: Run precommit
         run: |
