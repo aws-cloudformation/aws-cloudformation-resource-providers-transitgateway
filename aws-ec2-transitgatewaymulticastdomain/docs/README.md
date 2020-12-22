@@ -40,7 +40,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### Tags
 
@@ -85,3 +85,4 @@ The state of the transit gateway multicast domain.
 #### CreationTime
 
 The time the transit gateway multicast domain was created.
+

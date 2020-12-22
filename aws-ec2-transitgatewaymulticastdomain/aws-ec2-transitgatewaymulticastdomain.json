@@ -62,9 +62,6 @@
     }
   },
   "additionalProperties": false,
-  "createOnlyProperties": [
-    "/properties/TransitGatewayId"
-  ],
   "readOnlyProperties": [
     "/properties/TransitGatewayMulticastDomainId",
     "/properties/State",
