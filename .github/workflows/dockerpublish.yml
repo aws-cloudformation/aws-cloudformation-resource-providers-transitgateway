@@ -1,10 +1,12 @@
 name: Docker
 on:
-  push: null
-  create:
-    tags:
-      - v*
-env:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for docker image'
+        required: true
+        default: 'latest'
+
   IMAGE_NAME: precommit
 jobs:
   push:
@@ -30,7 +32,7 @@ jobs:
 
           # Strip git ref prefix from version
 
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          VERSION=$(echo "${{ github.event.inputs.tag }}" | sed -e 's,.*/\(.*\),\1,')
 
 
           # Strip "v" prefix from tag name
