@@ -6,7 +6,7 @@ on:
         description: 'Tag for docker image'
         required: true
         default: 'latest'
-
+env:
   IMAGE_NAME: precommit
 jobs:
   push:
