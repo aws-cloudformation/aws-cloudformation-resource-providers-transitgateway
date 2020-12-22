@@ -50,9 +50,9 @@ public class Create {
 
     private CreateTransitGatewayMulticastDomainRequestOptions translateModelToOptions(ResourceModel model) {
         //DEFAULT OPTIONS
-        String autoAcceptSharedAssociations = "disabled";
-        String igmpv2Support = "disabled";
-        String staticSourcesSupport = "disabled";
+        String autoAcceptSharedAssociations = "disable";
+        String igmpv2Support = "disable";
+        String staticSourcesSupport = "disable";
         if(model.getOptions() != null) {
             if(model.getOptions().getAutoAcceptSharedAssociations() != null) {
                 autoAcceptSharedAssociations = model.getOptions().getAutoAcceptSharedAssociations() ;
