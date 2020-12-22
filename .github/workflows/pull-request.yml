@@ -1,0 +1,42 @@
+name: PR for master
+
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 100
+
+
+      - name: Checkout current branch
+        run: |
+          printenv
+          git fetch
+          git checkout ${{ github.head_ref }}
+      - name: Log into registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - name: Pull Docker Image
+        run: |
+          docker pull docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:latest
+      - name: Run precommit
+        run: |
+          docker run -v $GITHUB_WORKSPACE/:/app -t docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:latest pre-commit run --all-files
+      - name: Recommit
+        run: |
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          echo "GIT ADD - A"
+          git add -A
+          echo "git commit -am "
+          git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions"  || true
+          echo "git push "
+          git push origin ${{ github.head_ref }}  || true
