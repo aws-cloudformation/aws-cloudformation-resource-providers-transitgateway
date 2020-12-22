@@ -1,0 +1,23 @@
+name: PR for master
+
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 100
+
+      - name: Pull Docker Image
+        run: |
+          docker pull python
+      - name: Run precommit
+        run: |
+          echo "Hello World"
