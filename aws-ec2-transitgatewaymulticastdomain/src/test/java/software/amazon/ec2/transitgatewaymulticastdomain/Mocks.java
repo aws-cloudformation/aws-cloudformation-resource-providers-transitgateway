@@ -1,9 +1,9 @@
 package software.amazon.ec2.transitgatewaymulticastdomain;
 
-import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
+import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -31,6 +31,12 @@ public class Mocks {
         return ResourceModel.builder()
                 .creationTime(this.currentTime.toString())
                 .state(state)
+                .options(Options.builder()
+                    .autoAcceptSharedAssociations("disable")
+                    .igmpv2Support("disable")
+                    .staticSourcesSupport("disable")
+                    .build()
+                )
                 .transitGatewayMulticastDomainId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
@@ -56,6 +62,12 @@ public class Mocks {
         return ResourceModel.builder()
                 .creationTime(this.currentTime.toString())
                 .state(state)
+                .options(Options.builder()
+                    .autoAcceptSharedAssociations("disable")
+                    .igmpv2Support("disable")
+                    .staticSourcesSupport("disable")
+                    .build()
+                )
                 .transitGatewayId(this.parentIdentifier)
                 .transitGatewayMulticastDomainId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
@@ -82,6 +94,12 @@ public class Mocks {
                 .creationTime(this.currentTime.toString())
                 .state(state)
                 .transitGatewayId(null)
+                .options(Options.builder()
+                    .autoAcceptSharedAssociations("disable")
+                    .igmpv2Support("disable")
+                    .staticSourcesSupport("disable")
+                    .build()
+                )
                 .transitGatewayMulticastDomainId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
@@ -107,6 +125,12 @@ public class Mocks {
                 .creationTime(this.currentTime.toString())
                 .state(state)
                 .transitGatewayId(null)
+                .options(Options.builder()
+                    .autoAcceptSharedAssociations("disable")
+                    .igmpv2Support("disable")
+                    .staticSourcesSupport("disable")
+                    .build()
+                )
                 .transitGatewayMulticastDomainId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
@@ -132,6 +156,12 @@ public class Mocks {
         return ResourceModel.builder()
                 .creationTime(this.currentTime.toString())
                 .state(state)
+                .options(Options.builder()
+                    .autoAcceptSharedAssociations("disable")
+                    .igmpv2Support("disable")
+                    .staticSourcesSupport("disable")
+                    .build()
+                )
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
     }
@@ -158,11 +188,16 @@ public class Mocks {
             .transitGatewayId(this.parentIdentifier)
             .creationTime(this.currentTime.toString())
             .state(state)
+            .options(Options.builder()
+                .autoAcceptSharedAssociations("disable")
+                .igmpv2Support("disable")
+                .staticSourcesSupport("disable")
+                .build()
+            )
             .transitGatewayMulticastDomainId(this.primaryIdentifier)
             .tags(TagUtils.sdkTagsToCfnTags(tags))
             .build();
     }
-
 
 
     public ResourceModel model() {
@@ -179,6 +214,39 @@ public class Mocks {
         return this.model(tags, "available");
     }
 
+
+
+    public  ResourceModel modelWithNonDefaultOptions(List<Tag> tags, String state) {
+        return ResourceModel.builder()
+            .transitGatewayId(this.parentIdentifier)
+            .creationTime(this.currentTime.toString())
+            .state(state)
+            .options(Options.builder()
+                .autoAcceptSharedAssociations("enable")
+                .igmpv2Support("enable")
+                .staticSourcesSupport("enable")
+                .build()
+            )
+            .transitGatewayMulticastDomainId(this.primaryIdentifier)
+            .tags(TagUtils.sdkTagsToCfnTags(tags))
+            .build();
+    }
+
+    public ResourceModel modelWithNonDefaultOptions() {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modelWithNonDefaultOptions(tags, "available");
+    }
+
+    public ResourceModel modelWithNonDefaultOptions(String state) {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modelWithNonDefaultOptions(tags, state);
+    }
+
+    public ResourceModel modelWithNonDefaultOptions(List<Tag> tags) {
+        return this.modelWithNonDefaultOptions(tags, "available");
+    }
+
+
     public Tag tag(String key, String value) {
         return Tag.builder().key(key).value(value).build();
     }
@@ -190,12 +258,17 @@ public class Mocks {
 
     public TransitGatewayMulticastDomain sdkModel(List<Tag> tags, String state) {
         return TransitGatewayMulticastDomain.builder()
-                .transitGatewayId(this.parentIdentifier)
-                .creationTime(this.currentTime)
-                .state(state)
-                .transitGatewayMulticastDomainId(this.primaryIdentifier)
-                .tags(tags)
-                .build();
+            .transitGatewayId(this.parentIdentifier)
+            .creationTime(this.currentTime)
+            .state(state)
+            .options(TransitGatewayMulticastDomainOptions.builder()
+                .autoAcceptSharedAssociations("disable")
+                .igmpv2Support("disable")
+                .staticSourcesSupport("disable")
+                .build())
+            .transitGatewayMulticastDomainId(this.primaryIdentifier)
+            .tags(tags)
+            .build();
     }
 
 
@@ -210,6 +283,35 @@ public class Mocks {
 
     public TransitGatewayMulticastDomain sdkModel() {
         return this.sdkModel(new ArrayList<>(), "available");
+    }
+
+    public TransitGatewayMulticastDomain sdkModelWithNonDefaultOptions(List<Tag> tags, String state) {
+        return TransitGatewayMulticastDomain.builder()
+                .transitGatewayId(this.parentIdentifier)
+                .creationTime(this.currentTime)
+                .state(state)
+                .options(TransitGatewayMulticastDomainOptions.builder()
+                    .autoAcceptSharedAssociations("enable")
+                    .igmpv2Support("enable")
+                    .staticSourcesSupport("enable")
+                    .build())
+                .transitGatewayMulticastDomainId(this.primaryIdentifier)
+                .tags(tags)
+                .build();
+    }
+
+
+    public TransitGatewayMulticastDomain sdkModelWithNonDefaultOptions(String state) {
+        final List<software.amazon.awssdk.services.ec2.model.Tag> tags = new ArrayList<>();
+        return this.sdkModelWithNonDefaultOptions(tags, state);
+    }
+
+    public TransitGatewayMulticastDomain sdkModelWithNonDefaultOptions(List<Tag> tags) {
+        return this.sdkModelWithNonDefaultOptions(tags, "available");
+    }
+
+    public TransitGatewayMulticastDomain sdkModelWithNonDefaultOptions() {
+        return this.sdkModelWithNonDefaultOptions(new ArrayList<>(), "available");
     }
 
     public DescribeTransitGatewayMulticastDomainsResponse describeResponse(List<Tag> tags, String state) {
@@ -232,6 +334,28 @@ public class Mocks {
 
     public DescribeTransitGatewayMulticastDomainsResponse describeResponse() {
         return this.describeResponse(new ArrayList<>(), "available");
+    }
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithNonDefaultOptions(List<Tag> tags, String state) {
+        return DescribeTransitGatewayMulticastDomainsResponse.builder()
+            .transitGatewayMulticastDomains(
+               this.sdkModelWithNonDefaultOptions(tags, state)
+            )
+            .build();
+    }
+
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithNonDefaultOptions(String state) {
+        final List<software.amazon.awssdk.services.ec2.model.Tag> tags = new ArrayList<>();
+        return this.describeResponseWithNonDefaultOptions(tags, state);
+    }
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithNonDefaultOptions(List<Tag> tags) {
+        return this.describeResponseWithNonDefaultOptions(tags, "available");
+    }
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithNonDefaultOptions() {
+        return this.describeResponseWithNonDefaultOptions(new ArrayList<>(), "available");
     }
 
     public CreateTagsResponse createTagsResponse() {
