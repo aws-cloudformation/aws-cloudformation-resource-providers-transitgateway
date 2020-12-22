@@ -1,0 +1,55 @@
+name: Docker
+on:
+  push: null
+  create:
+    tags:
+      - v*
+env:
+  IMAGE_NAME: precommit
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: >
+          docker build --build-arg GITHUB_USERNAME=${{ github.actor }} . --file Dockerfile --tag image
+
+      - name: Push image
+        run: >
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+
+
+          # Change all uppercase to lowercase
+
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+
+          # Strip git ref prefix from version
+
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+
+          # Strip "v" prefix from tag name
+
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+
+          # Use Docker `latest` tag convention
+
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+
+          # Use branch when it is a pull request
+
+          [ "$VERSION" == "merge" ] && VERSION=${GITHUB_REF##*/}
+
+
+          echo IMAGE_ID=$IMAGE_ID
+
+          echo VERSION=$VERSION
+
+
+          docker tag image $IMAGE_ID:$VERSION
+
+          docker push $IMAGE_ID:$VERSION
