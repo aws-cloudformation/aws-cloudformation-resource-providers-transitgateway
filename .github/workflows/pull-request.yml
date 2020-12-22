@@ -18,7 +18,7 @@ jobs:
       - name: Checkout current branch
         run: |
           printenv
-          git checkout -B ${{ github.ref }}
+          git checkout -B ${{ github.head_ref }}
       - name: Log into registry
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
