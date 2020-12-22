@@ -35,7 +35,6 @@ jobs:
           git config --list
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          echo HELLO >> README.md
           git add -A
           git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions"
           git push origin ${{ github.head_ref }}
