@@ -15,19 +15,20 @@ jobs:
         with:
           fetch-depth: 100
 
-      - name: Install pre-commit
+      - name: Log into registry
         run: |
-          docker build --build-arg GITHUB_ACTOR=${GITHUB_ACTOR} --build-arg GITHUB_TOKEN=${GITHUB_TOKEN} --build-arg APP_NAME=$GITHUB_REPOSITORY . -t precommit
-
+          echo "${{ secrets.CI_GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - name: Pull Docker Image
+        run: |
+          docker pull docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:try-github-actions
       - name: Run precommit
         run: |
-          docker run -v $GITHUB_WORKSPACE/:/app -t precommit pre-commit run --all-files
+          docker run -v $GITHUB_WORKSPACE/:/app -t precommit:try-github-actions pre-commit run --all-files
       - name: Recommit
         run: |
           git config --list
-
-
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add -A
           git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions"
           git push
