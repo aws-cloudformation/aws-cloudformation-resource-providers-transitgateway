@@ -9,15 +9,19 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 100
 
-      - name: Pull Docker Image
+      - name: Install pre-commit
         run: |
-          docker pull python
+          pip install pre-commit
+
       - name: Run precommit
         run: |
-          echo "Hello World"
+          pre-commit run --all-files
+          git add -A
+          git commit -m '(ci skip): Automated code quality fixes from pre-commit in github actions'
+          git push origin master
