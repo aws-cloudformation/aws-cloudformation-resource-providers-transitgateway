@@ -19,7 +19,8 @@ jobs:
       - name: Checkout current branch
         run: |
           printenv
-          git checkout -B ${{ github.head_ref }}
+          git fetch
+          git checkout ${{ github.head_ref }}
       - name: Log into registry
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
@@ -37,4 +38,4 @@ jobs:
           echo HELLO >> README.md
           git add -A
           git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions"
-          git push
+          git push origin ${{ github.head_ref }}
