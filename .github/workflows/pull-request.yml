@@ -23,7 +23,7 @@ jobs:
           docker pull docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:try-github-actions
       - name: Run precommit
         run: |
-          docker run -v $GITHUB_WORKSPACE/:/app -t precommit:try-github-actions pre-commit run --all-files
+          docker run -v $GITHUB_WORKSPACE/:/app -t docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:try-github-actions pre-commit run --all-files
       - name: Recommit
         run: |
           git config --list
