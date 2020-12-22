@@ -37,6 +37,6 @@ jobs:
           echo "GIT ADD - A"
           git add -A
           echo "git commit -am "
-          git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions"  >/dev/null 2>&1
+          git commit -am "(ci skip): Automated code quality fixes from pre-commit in github actions"  || true
           echo "git push "
-          git push origin ${{ github.head_ref }}  >/dev/null 2>&1
+          git push origin ${{ github.head_ref }}  || true
