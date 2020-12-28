@@ -31,7 +31,7 @@ public class Mocks {
         return ResourceModel.builder()
                 .creationTime(this.currentTime.toString())
                 .state(state)
-                .transitGatewayRouteTable(this.primaryIdentifier)
+                .transitGatewayRouteTableId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
     }
@@ -57,7 +57,7 @@ public class Mocks {
                 .creationTime(this.currentTime.toString())
                 .state(state)
                 .transitGatewayId(this.parentIdentifier)
-                .transitGatewayRouteTable(this.primaryIdentifier)
+                .transitGatewayRouteTableId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
     }
@@ -82,7 +82,7 @@ public class Mocks {
                 .creationTime(this.currentTime.toString())
                 .state(state)
                 .transitGatewayId(null)
-                .transitGatewayRouteTable(this.primaryIdentifier)
+                .transitGatewayRouteTableId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
     }
@@ -107,7 +107,7 @@ public class Mocks {
                 .creationTime(this.currentTime.toString())
                 .state(state)
                 .transitGatewayId(null)
-                .transitGatewayRouteTable(this.primaryIdentifier)
+                .transitGatewayRouteTableId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
     }
@@ -150,20 +150,15 @@ public class Mocks {
         return this.modelWithoutPrimaryIdentifier(tags, "available");
     }
 
-
-
-
     public  ResourceModel model(List<Tag> tags, String state) {
         return ResourceModel.builder()
             .transitGatewayId(this.parentIdentifier)
             .creationTime(this.currentTime.toString())
             .state(state)
-            .transitGatewayRouteTable(this.primaryIdentifier)
+            .transitGatewayRouteTableId(this.primaryIdentifier)
             .tags(TagUtils.sdkTagsToCfnTags(tags))
             .build();
     }
-
-
 
     public ResourceModel model() {
         final List<Tag> tags = new ArrayList<>();
@@ -193,7 +188,7 @@ public class Mocks {
                 .transitGatewayId(this.parentIdentifier)
                 .creationTime(this.currentTime)
                 .state(state)
-                .transitGatewayRouteTable(this.primaryIdentifier)
+                .transitGatewayRouteTableId(this.primaryIdentifier)
                 .tags(tags)
                 .build();
     }
@@ -214,7 +209,7 @@ public class Mocks {
 
     public DescribeTransitGatewayRouteTablesResponse describeResponse(List<Tag> tags, String state) {
         return DescribeTransitGatewayRouteTablesResponse.builder()
-            .transitGatewayMulticastDomains(
+            .transitGatewayRouteTables(
                this.sdkModel(tags, state)
             )
             .build();
@@ -244,13 +239,13 @@ public class Mocks {
 
     public DeleteTransitGatewayRouteTableResponse deleteResponse() {
         return DeleteTransitGatewayRouteTableResponse.builder()
-            .transitGatewayMulticastDomain(this.sdkModel())
+            .transitGatewayRouteTable(this.sdkModel())
             .build();
     }
 
     public CreateTransitGatewayRouteTableResponse createResponse() {
         return CreateTransitGatewayRouteTableResponse.builder()
-            .transitGatewayMulticastDomain(this.sdkModel())
+            .transitGatewayRouteTable(this.sdkModel())
             .build();
     }
 

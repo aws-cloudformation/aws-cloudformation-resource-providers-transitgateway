@@ -88,7 +88,6 @@ public class ValidCurrentStateCheckBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(Exception exception) {
-        this.logger.log(String.valueOf(exception));
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
 

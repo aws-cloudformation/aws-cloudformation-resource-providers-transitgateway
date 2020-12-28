@@ -55,7 +55,7 @@ public class Read {
 
     private DescribeTransitGatewayRouteTablesRequest translateModelToRequest(ResourceModel model) {
         return DescribeTransitGatewayRouteTablesRequest.builder()
-            .transitGatewayRouteTables(model.getTransitGatewayRouteTableId())
+            .transitGatewayRouteTableIds(model.getTransitGatewayRouteTableId())
             .build();
     }
 
@@ -64,10 +64,10 @@ public class Read {
     }
 
     private ResourceModel translateResponsesToModel(DescribeTransitGatewayRouteTablesResponse awsResponse) {
-        TransitGatewayRouteTable response = awsResponse.transitGatewayMulticastDomains().get(0);
+        TransitGatewayRouteTable response = awsResponse.transitGatewayRouteTables().get(0);
 
         return ResourceModel.builder()
-            {{ReadResponseResourceModelBuilder}}
+            .transitGatewayRouteTableId(response.transitGatewayRouteTableId())
             .build();
     }
 
@@ -82,7 +82,7 @@ public class Read {
 
     private  ProgressEvent<ResourceModel, CallbackContext> done(DescribeTransitGatewayRouteTablesResponse response) {
         ResourceModel model = this.translateResponsesToModel(response);
-        if(model.getState().equals({{Config.State.Deleted}}.toString())) {
+        if(model.getState().equals(TransitGatewayRouteTableState.DELETED.toString())) {
             AwsServiceException emptyResponseException = AwsServiceException.builder().awsErrorDetails(AwsErrorDetails.builder().errorCode("NotFound").errorMessage("Not Found").build()).build();
             return ProgressEvent.defaultFailureHandler(emptyResponseException, HandlerErrorCode.NotFound);
         } else {

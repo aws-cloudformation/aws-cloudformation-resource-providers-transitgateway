@@ -46,7 +46,7 @@ public class Delete {
 
     private DeleteTransitGatewayRouteTableRequest translateModelToRequest(ResourceModel model) {
         return  DeleteTransitGatewayRouteTableRequest.builder()
-            .transitGatewayRouteTable(model.getTransitGatewayRouteTableId())
+            .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
             .build();
     }
 
@@ -61,9 +61,9 @@ public class Delete {
         ResourceModel model,
         CallbackContext context
     ) {
-        model.setTransitGatewayRouteTableId(response.transitGatewayMulticastDomain().transitGatewayRouteTable());
+        model.setTransitGatewayRouteTableId(response.transitGatewayRouteTable().transitGatewayRouteTableId());
         String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
-        return currentState.equals({{Config.State.Deleted}}.toString());
+        return currentState.equals(TransitGatewayRouteTableState.DELETED.toString());
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DeleteTransitGatewayRouteTableRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {

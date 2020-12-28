@@ -34,7 +34,6 @@ public class Create {
     }
 
     public ProgressEvent<ResourceModel, CallbackContext> run(ProgressEvent<ResourceModel, CallbackContext> progress) {
-        this.logger.log(progress.getResourceModel().toString());
         return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())
             .translateToServiceRequest(this::translateModelToRequest)
             .makeServiceCall(this::makeServiceCall)
@@ -63,12 +62,10 @@ public class Create {
     ) {
         model.setTransitGatewayRouteTableId(awsResponse.transitGatewayRouteTable().transitGatewayRouteTableId());
         String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
-        return {{Config.State.Available}}.toString().equals(currentState);
+        return TransitGatewayRouteTableState.AVAILABLE.toString().equals(currentState);
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(CreateTransitGatewayRouteTableRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
-        this.logger.log("handleError");
-        System.out.println(exception);
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
 }

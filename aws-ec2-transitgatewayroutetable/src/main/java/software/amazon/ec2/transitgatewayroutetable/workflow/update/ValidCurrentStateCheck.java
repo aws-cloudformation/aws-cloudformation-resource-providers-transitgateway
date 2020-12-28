@@ -19,7 +19,7 @@ public class ValidCurrentStateCheck extends ValidCurrentStateCheckBase {
     @Override
     protected List<String> validStates() {
         List<String> list = new ArrayList<>();
-        list.add({{Config.State.Available}}.toString());
+        list.add(TransitGatewayRouteTableState.AVAILABLE.toString());
         return list;
     }
 }

@@ -22,6 +22,4 @@ public class UpdateHandler extends BaseHandlerStd {
             .then(new DeleteTags(proxy, request, callbackContext, proxyClient, logger)::run)
             .then(new Read(proxy, request, callbackContext, proxyClient, logger)::run);
     }
-
-
 }

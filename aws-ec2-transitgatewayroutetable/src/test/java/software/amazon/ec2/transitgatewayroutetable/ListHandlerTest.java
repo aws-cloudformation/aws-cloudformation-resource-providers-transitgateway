@@ -56,7 +56,7 @@ public class ListHandlerTest extends AbstractTestBase {
         tags.add(MOCKS.tag());
 
         final ResourceModel expectedResult = ResourceModel.builder()
-                .transitGatewayRouteTable(MOCKS.primaryIdentifier)
+                .transitGatewayRouteTableId(MOCKS.primaryIdentifier)
                 .build();
 
         final List<ResourceModel> expectedResults = new ArrayList<>();

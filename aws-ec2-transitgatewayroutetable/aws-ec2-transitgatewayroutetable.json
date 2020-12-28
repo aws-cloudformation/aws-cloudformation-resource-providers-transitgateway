@@ -1,7 +1,7 @@
 {
   "typeName": "AWS::EC2::TransitGatewayRouteTable",
   "description": "The AWS::EC2::TransitGatewayRouteTable type",
-  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-myservice",
+  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayroutetable",
   "properties": {
     "TransitGatewayRouteTableId": {
       "description": "The ID of the transit gateway route table.",

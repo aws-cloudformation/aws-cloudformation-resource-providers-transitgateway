@@ -61,9 +61,9 @@ public class List {
     }
 
     private java.util.List<ResourceModel> translateResponseToModel(DescribeTransitGatewayRouteTablesResponse awsResponse) {
-        return streamOfOrEmpty(awsResponse.transitGatewayMulticastDomains())
+        return streamOfOrEmpty(awsResponse. transitGatewayRouteTables())
             .map(resource -> ResourceModel.builder()
-                .transitGatewayRouteTable(resource.transitGatewayRouteTable())
+                .transitGatewayRouteTableId(resource.transitGatewayRouteTableId())
                 .build())
             .collect(Collectors.toList());
     }

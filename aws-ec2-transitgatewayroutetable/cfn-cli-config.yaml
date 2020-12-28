@@ -38,5 +38,6 @@ State:
 ResourceModel:
   PrimaryIdentifiers:
     - TransitGatewayRouteTableId
+  PrimaryIdentifierMethod: transitGatewayRouteTableId
   GetPrimaryIdentifierMethod: getTransitGatewayRouteTableId
   SetPrimaryIdentifierMethod: setTransitGatewayRouteTableId
