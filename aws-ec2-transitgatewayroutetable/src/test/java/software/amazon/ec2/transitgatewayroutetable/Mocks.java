@@ -150,6 +150,9 @@ public class Mocks {
         return this.modelWithoutPrimaryIdentifier(tags, "available");
     }
 
+
+
+
     public  ResourceModel model(List<Tag> tags, String state) {
         return ResourceModel.builder()
             .transitGatewayId(this.parentIdentifier)
@@ -159,6 +162,8 @@ public class Mocks {
             .tags(TagUtils.sdkTagsToCfnTags(tags))
             .build();
     }
+
+
 
     public ResourceModel model() {
         final List<Tag> tags = new ArrayList<>();

@@ -16,6 +16,8 @@ public class ConfigurationTest extends AbstractTestBase {
         Configuration config = new Configuration();
         JSONObject json = config.resourceSchemaJSONObject();
         assertThat(json.get("sourceUrl").toString().contains("github.com/aws-cloudformation/aws-cloudformation-resource-providers")).isTrue();
+        assertThat(json.get("sourceUrl").toString().contains("my-service")).isFalse();
+
     }
 
 }
