@@ -1,17 +1,16 @@
 package software.amazon.ec2.transitgatewayroutetable.workflow.read;
 
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.*;
+import software.amazon.cloudformation.proxy.*;
 import software.amazon.ec2.transitgatewayroutetable.CallbackContext;
 import software.amazon.ec2.transitgatewayroutetable.ResourceModel;
 import software.amazon.ec2.transitgatewayroutetable.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewayroutetable.workflow.TagUtils;
-import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
-import software.amazon.awssdk.awscore.exception.AwsServiceException;
-import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayRouteTablesRequest;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayRouteTablesResponse;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteTable;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteTableState;
-import software.amazon.cloudformation.proxy.*;
+
+import java.util.ArrayList;
 
 public class Read {
     AmazonWebServicesClientProxy proxy;
@@ -44,13 +43,10 @@ public class Read {
             .done(this::done);
     }
 
-    public ResourceModel simpleRequest(final ResourceModel model) {
-        return this.translateResponsesToModel(
-            this.proxy.injectCredentialsAndInvokeV2(
-                this.translateModelToRequest(model),
-                this.client.client()::describeTransitGatewayRouteTables
-            )
-        );
+    public ResourceModel simpleRequest(ResourceModel model) {
+        DescribeTransitGatewayRouteTablesRequest request = this.translateModelToRequest(model);
+        DescribeTransitGatewayRouteTablesResponse response = this.proxy.injectCredentialsAndInvokeV2(request, this.client.client()::describeTransitGatewayRouteTables);
+        return this.translateResponsesToModel(response, model);
     }
 
     private DescribeTransitGatewayRouteTablesRequest translateModelToRequest(ResourceModel model) {
@@ -63,12 +59,19 @@ public class Read {
         return this.proxy.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeTransitGatewayRouteTables);
     }
 
-    private ResourceModel translateResponsesToModel(DescribeTransitGatewayRouteTablesResponse awsResponse) {
-        TransitGatewayRouteTable response = awsResponse.transitGatewayRouteTables().get(0);
-
-        return ResourceModel.builder()
-            .transitGatewayRouteTableId(response.transitGatewayRouteTableId())
-            .build();
+    private ResourceModel translateResponsesToModel(DescribeTransitGatewayRouteTablesResponse awsResponse, ResourceModel model) {
+        if(awsResponse.transitGatewayRouteTables().isEmpty()) {
+            return null;
+        } else {
+            TransitGatewayRouteTable response = awsResponse.transitGatewayRouteTables().get(0);
+            return ResourceModel.builder()
+                .transitGatewayRouteTableId(response.transitGatewayRouteTableId())
+                .transitGatewayId(response.transitGatewayId())
+                .state(response.state().toString())
+                .creationTime(response.creationTime().toString())
+                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
+                .build();
+        }
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewayRouteTablesRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
@@ -81,12 +84,12 @@ public class Read {
     }
 
     private  ProgressEvent<ResourceModel, CallbackContext> done(DescribeTransitGatewayRouteTablesResponse response) {
-        ResourceModel model = this.translateResponsesToModel(response);
-        if(model.getState().equals(TransitGatewayRouteTableState.DELETED.toString())) {
+        ResourceModel model = this.translateResponsesToModel(response, this.progress.getResourceModel());
+        if(model == null || model.getState().equals(TransitGatewayRouteTableState.DELETED.toString())) {
             AwsServiceException emptyResponseException = AwsServiceException.builder().awsErrorDetails(AwsErrorDetails.builder().errorCode("NotFound").errorMessage("Not Found").build()).build();
             return ProgressEvent.defaultFailureHandler(emptyResponseException, HandlerErrorCode.NotFound);
         } else {
-            return ProgressEvent.defaultSuccessHandler(this.translateResponsesToModel(response));
+            return ProgressEvent.defaultSuccessHandler(this.translateResponsesToModel(response, this.progress.getResourceModel()));
         }
     }
 }
