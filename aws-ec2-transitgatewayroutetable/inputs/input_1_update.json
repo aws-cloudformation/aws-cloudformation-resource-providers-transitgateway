@@ -1,0 +1,14 @@
+{
+  "TransitGatewayRouteTableId": "tgr-21d58d54ce43ae9",
+  "TransitGatewayId": "tgw-08ce13c3f116c8603",
+  "Tags": [
+    {
+      "Key": "Name",
+      "Value": "Updated Name"
+    },
+    {
+      "Key": "KEY_2",
+      "Value": "VALUE_2"
+    }
+  ]
+}
