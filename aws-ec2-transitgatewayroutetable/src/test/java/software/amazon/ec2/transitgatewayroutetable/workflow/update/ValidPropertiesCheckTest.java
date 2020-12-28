@@ -49,23 +49,6 @@ public class ValidPropertiesCheckTest extends AbstractTestBase {
     }
 
     @Test
-    public void run_WithInvalidProperties() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
-
-        ResourceModel model = MOCKS.modelWithInvalidProperties(tags);
-        CallbackContext context =  new CallbackContext();
-        ProgressEvent<ResourceModel, CallbackContext> response = new ValidPropertiesCheck(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isNull();
-        assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage().contains("Invalid request provided:")).isTrue();
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InvalidRequest);
-    }
-
-    @Test
     public void run_NullProperties() {
         final List<Tag> tags = new ArrayList<>();
         tags.add(MOCKS.tag());

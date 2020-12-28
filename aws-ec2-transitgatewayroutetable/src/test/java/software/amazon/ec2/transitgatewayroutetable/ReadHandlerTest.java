@@ -11,6 +11,7 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayRouteTablesRequest;
 import software.amazon.awssdk.services.ec2.model.Tag;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteTableState;
 import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
@@ -113,7 +114,7 @@ public class ReadHandlerTest extends AbstractTestBase {
         final List<Tag> tags = new ArrayList<>();
         tags.add(MOCKS.tag());
 
-        when(proxyClient.client().describeTransitGatewayRouteTables(any(DescribeTransitGatewayRouteTablesRequest.class))).thenReturn(MOCKS.describeResponse(tags, "deleted"));
+        when(proxyClient.client().describeTransitGatewayRouteTables(any(DescribeTransitGatewayRouteTablesRequest.class))).thenReturn(MOCKS.describeResponse(tags, TransitGatewayRouteTableState.DELETED.toString()));
         ResourceModel model = MOCKS.model(tags);
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);

@@ -59,9 +59,6 @@
     "/properties/DefaultPropagationRouteTable",
     "/properties/CreationTime"
   ],
-  "createOnlyProperties": [
-    "/properties/TransitGatewayRouteTableId"
-  ],
   "primaryIdentifier": [
     "/properties/TransitGatewayRouteTableId"
   ],

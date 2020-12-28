@@ -66,10 +66,12 @@ public class Read {
             TransitGatewayRouteTable response = awsResponse.transitGatewayRouteTables().get(0);
             return ResourceModel.builder()
                 .transitGatewayRouteTableId(response.transitGatewayRouteTableId())
-                .transitGatewayId(response.transitGatewayId())
-                .state(response.state().toString())
-                .creationTime(response.creationTime().toString())
-                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
+            .transitGatewayId(response.transitGatewayId())
+            .state(response.state().toString())
+            .defaultAssociationRouteTable(response.defaultAssociationRouteTable())
+            .defaultPropagationRouteTable(response.defaultPropagationRouteTable())
+            .creationTime(response.creationTime().toString())
+            .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
                 .build();
         }
     }

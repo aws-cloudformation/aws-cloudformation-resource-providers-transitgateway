@@ -1,11 +1,12 @@
 package software.amazon.ec2.transitgatewayroutetable.workflow;
 
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteTableState;
+import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
+import software.amazon.cloudformation.proxy.*;
 import software.amazon.ec2.transitgatewayroutetable.CallbackContext;
 import software.amazon.ec2.transitgatewayroutetable.ResourceModel;
 import software.amazon.ec2.transitgatewayroutetable.workflow.read.Read;
-import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
-import software.amazon.cloudformation.proxy.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,8 @@ public class ValidCurrentStateCheckBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> failure() {
-        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "STATE: \"" + this.currentState() + "\" cannot be modified by ACTION: \"" + this.action().toUpperCase() + "\"");
-        if(this.currentState().equals("deleted")) {
+        CfnResourceConflictException exception = new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "STATE: \"" + this.currentState() + "\" cannot be modified by ACTION: \"" + this.action().toUpperCase() + "\"");
+        if(this.currentState().equals(TransitGatewayRouteTableState.DELETED.toString())) {
             return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.NotFound);
         } else {
             return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.ResourceConflict);

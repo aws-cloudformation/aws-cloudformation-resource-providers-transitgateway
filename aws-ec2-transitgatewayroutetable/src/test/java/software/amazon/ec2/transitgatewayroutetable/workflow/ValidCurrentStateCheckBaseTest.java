@@ -1,6 +1,5 @@
 package software.amazon.ec2.transitgatewayroutetable.workflow;
 
-import software.amazon.ec2.transitgatewayroutetable.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +11,11 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayRouteTablesRequest;
 import software.amazon.awssdk.services.ec2.model.Tag;
-import software.amazon.awssdk.services.ec2.model.TagSpecification;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteTableState;
 import software.amazon.cloudformation.proxy.*;
+import software.amazon.ec2.transitgatewayroutetable.AbstractTestBase;
+import software.amazon.ec2.transitgatewayroutetable.CallbackContext;
+import software.amazon.ec2.transitgatewayroutetable.ResourceModel;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class ValidCurrentStateCheckBaseTest extends AbstractTestBase {
         @Override
         protected List<String> invalidStates() {
             List<String> list = new ArrayList<>();
-            list.add("deleted");
+            list.add(TransitGatewayRouteTableState.DELETED.toString());
             return list;
         }
     }
@@ -59,7 +60,7 @@ public class ValidCurrentStateCheckBaseTest extends AbstractTestBase {
         @Override
         protected List<String> validStates() {
             List<String> list = new ArrayList<>();
-            list.add("available");
+            list.add(TransitGatewayRouteTableState.AVAILABLE.toString());
             return list;
         }
     }
@@ -107,7 +108,7 @@ public class ValidCurrentStateCheckBaseTest extends AbstractTestBase {
         final List<Tag> tags = new ArrayList<>();
         tags.add(MOCKS.tag());
 
-        when(proxyClient.client().describeTransitGatewayRouteTables(any(DescribeTransitGatewayRouteTablesRequest.class))).thenReturn(MOCKS.describeResponse(tags, "deleted"));
+        when(proxyClient.client().describeTransitGatewayRouteTables(any(DescribeTransitGatewayRouteTablesRequest.class))).thenReturn(MOCKS.describeResponse(tags, TransitGatewayRouteTableState.DELETED.toString()));
         ResourceModel model = MOCKS.model(tags);
         CallbackContext context =  new CallbackContext();
         ProgressEvent<ResourceModel, CallbackContext> response = new InvalidDeleteState(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
@@ -162,7 +163,7 @@ public class ValidCurrentStateCheckBaseTest extends AbstractTestBase {
         final List<Tag> tags = new ArrayList<>();
         tags.add(MOCKS.tag());
 
-        when(proxyClient.client().describeTransitGatewayRouteTables(any(DescribeTransitGatewayRouteTablesRequest.class))).thenReturn(MOCKS.describeResponse(tags, "deleting"));
+        when(proxyClient.client().describeTransitGatewayRouteTables(any(DescribeTransitGatewayRouteTablesRequest.class))).thenReturn(MOCKS.describeResponse(tags, TransitGatewayRouteTableState.DELETING.toString()));
         ResourceModel model = MOCKS.model(tags);
         CallbackContext context =  new CallbackContext();
         ProgressEvent<ResourceModel, CallbackContext> response = new ValidAvailableState(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
