@@ -1,0 +1,60 @@
+name: Docker
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for docker image'
+        required: true
+        default: 'latest'
+env:
+  IMAGE_NAME: precommit
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    #if: "contains(github.event.head_commit.message, 'rebuild-docker')"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: >
+          docker build --build-arg GITHUB_ACTOR=${{ github.actor }} --build-arg GITHUB_TOKEN=${{ github.token }} --build-arg APP_NAME=${{ github.repository }} . --file Dockerfile --tag image
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - name: Push image
+        run: >
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+
+
+          # Change all uppercase to lowercase
+
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+
+          # Strip git ref prefix from version
+
+          VERSION=$(echo "${{ github.event.inputs.tag }}" | sed -e 's,.*/\(.*\),\1,')
+
+
+          # Strip "v" prefix from tag name
+
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+
+          # Use Docker `latest` tag convention
+
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+
+          # Use branch when it is a pull request
+
+          [ "$VERSION" == "merge" ] && VERSION=${GITHUB_REF##*/}
+
+
+          echo IMAGE_ID=$IMAGE_ID
+
+          echo VERSION=$VERSION
+
+
+          docker tag image $IMAGE_ID:$VERSION
+
+          docker push $IMAGE_ID:$VERSION
