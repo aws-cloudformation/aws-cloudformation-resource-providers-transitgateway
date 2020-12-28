@@ -4,8 +4,8 @@ Description: AWS SAM template for the AWS::EC2::TransitGatewayRouteTable resourc
 
 Globals:
   Function:
-    Timeout: 180  # docker start-up times can be long for SAM CLI
-    MemorySize: 256
+    Timeout: 450  # docker start-up times can be long for SAM CLI
+    MemorySize: 800
 
 Resources:
   TypeFunction:
