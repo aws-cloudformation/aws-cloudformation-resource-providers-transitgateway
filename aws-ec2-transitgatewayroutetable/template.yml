@@ -21,4 +21,3 @@ Resources:
       Handler: software.amazon.ec2.transitgatewayroutetable.HandlerWrapper::testEntrypoint
       Runtime: java8
       CodeUri: ./target/aws-ec2-transitgatewayroutetable-handler-1.0-SNAPSHOT.jar
-
