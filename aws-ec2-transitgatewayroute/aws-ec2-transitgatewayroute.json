@@ -90,11 +90,6 @@
         "ec2:SearchTransitGatewayRoutes"
       ]
     },
-    "update": {
-      "permissions": [
-        "ec2:SearchTransitGatewayRoutes"
-      ]
-    },
     "delete": {
       "permissions": [
         "ec2:DeleteTransitGatewayRoute",

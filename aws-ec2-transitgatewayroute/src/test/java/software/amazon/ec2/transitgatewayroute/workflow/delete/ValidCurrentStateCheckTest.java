@@ -1,5 +1,6 @@
 package software.amazon.ec2.transitgatewayroute.workflow.delete;
 
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteState;
 import software.amazon.ec2.transitgatewayroute.AbstractTestBase;
 import software.amazon.ec2.transitgatewayroute.CallbackContext;
 import software.amazon.ec2.transitgatewayroute.ResourceModel;
@@ -16,6 +17,7 @@ import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,11 +51,9 @@ public class ValidCurrentStateCheckTest extends AbstractTestBase {
 
     @Test
     public void validForAvailableState() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
 
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse(tags));
-        ResourceModel model = MOCKS.model(tags);
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.listResponse());
+        ResourceModel model = MOCKS.model();
         CallbackContext context =  new CallbackContext();
         ProgressEvent<ResourceModel, CallbackContext> response = new ValidCurrentStateCheck(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
         assertThat(response).isNotNull();
@@ -67,11 +67,10 @@ public class ValidCurrentStateCheckTest extends AbstractTestBase {
 
     @Test
     public void failedForDeletedCurrentState() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
-
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse(tags, "deleted"));
-        ResourceModel model = MOCKS.model(tags);
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("state",  TransitGatewayRouteState.DELETED.toString());
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.listResponse( mockMap));
+        ResourceModel model = MOCKS.model();
         CallbackContext context =  new CallbackContext();
         ProgressEvent<ResourceModel, CallbackContext> response = new ValidCurrentStateCheck(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
         assertThat(response).isNotNull();

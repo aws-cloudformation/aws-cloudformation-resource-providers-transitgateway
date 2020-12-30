@@ -46,7 +46,7 @@ public class CreatePrecheck {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
-        if(!this.model.getBlackhole().equals(false) && this.model.getTransitGatewayAttachmentId() == null) {
+        if((this.model.getBlackhole().equals(false) && this.model.getTransitGatewayAttachmentId() == null) || (this.model.getBlackhole().equals(true) && this.model.getTransitGatewayAttachmentId() != null)) {
             return this.invalidModel();
         } else {
             ResourceModel current = this.makeRequest();
@@ -60,7 +60,7 @@ public class CreatePrecheck {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> failedRequest() {
-        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "Cannot be modified by ACTION: CREATE. A resource with the primary identifier already exists");
+        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, this.model.getTransitGatewayRouteTableId() + "::" + this.model.getDestinationCidrBlock(), "Cannot be modified by ACTION: CREATE. A resource with the primary identifier already exists");
         return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.AlreadyExists);
     }
 

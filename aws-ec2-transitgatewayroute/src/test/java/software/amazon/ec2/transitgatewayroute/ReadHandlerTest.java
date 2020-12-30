@@ -10,13 +10,9 @@ import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.SearchTransitGatewayRoutesRequest;
-import software.amazon.awssdk.services.ec2.model.Tag;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteState;
 import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,18 +49,15 @@ public class ReadHandlerTest extends AbstractTestBase {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
-
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse(tags));
-        ResourceModel model = MOCKS.model(tags);
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.readResponse());
+        ResourceModel model = MOCKS.model();
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
-
+        model.setTransitGatewayAttachments(response.getResourceModel().getTransitGatewayAttachments());
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isEqualTo(MOCKS.model(tags));
+        assertThat(response.getResourceModel()).isEqualTo(model);
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
@@ -72,12 +65,10 @@ public class ReadHandlerTest extends AbstractTestBase {
 
     @Test
     public void handleRequest_Error() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("Invalid Request").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
         when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenThrow(exception);
-        ResourceModel model = MOCKS.model(tags);
+        ResourceModel model = MOCKS.model();
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -92,11 +83,9 @@ public class ReadHandlerTest extends AbstractTestBase {
 
     @Test
     public void handleRequest_Empty() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
         ArrayIndexOutOfBoundsException exception = new ArrayIndexOutOfBoundsException("Something went wrong");
         when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenThrow(exception);
-        ResourceModel model = MOCKS.model(tags);
+        ResourceModel model = MOCKS.model();
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -108,14 +97,12 @@ public class ReadHandlerTest extends AbstractTestBase {
         assertThat(response.getMessage().contains("Not Found")).isTrue();
         assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
     }
+
 
     @Test
-    public void handleRequest_DELETED() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
-
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse(tags, TransitGatewayRouteState.DELETED.toString()));
-        ResourceModel model = MOCKS.model(tags);
+    public void handleRequest_Empty2() {
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.emptyReadResponse());
+        ResourceModel model = MOCKS.model();
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -127,5 +114,4 @@ public class ReadHandlerTest extends AbstractTestBase {
         assertThat(response.getMessage().contains("Not Found")).isTrue();
         assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
     }
-
 }

@@ -11,12 +11,10 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayRouteRequest;
 import software.amazon.awssdk.services.ec2.model.SearchTransitGatewayRoutesRequest;
-import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,16 +45,19 @@ public class DeleteHandlerTest extends AbstractTestBase {
 
     @AfterEach
     public void tear_down() {
-        verify(sdkClient, atLeastOnce()).serviceName();
         verifyNoMoreInteractions(sdkClient);
     }
 
+
     @Test
     public void handleRequest_SimpleSuccess() {
-
-        when(proxyClient.client().deleteTransitGatewayRoute(any(DeleteTransitGatewayRouteRequest.class))).thenReturn(MOCKS.deleteResponse());
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse()).thenReturn(MOCKS.describeResponse("deleted"));
-        ResourceModel model = MOCKS.model();
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupSource", "false");
+        AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
+        AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
+        when(proxyClient.client().deleteTransitGatewayRoute(any(DeleteTransitGatewayRouteRequest.class))).thenReturn(MOCKS.deleteResponse(mockMap));
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.readResponse(mockMap)).thenReturn(MOCKS.readResponse(mockMap)).thenThrow(exception);
+        ResourceModel model = MOCKS.model(mockMap);
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
         assertThat(response).isNotNull();
@@ -66,18 +67,44 @@ public class DeleteHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
+
+    }
+
+    @Test
+    public void handleRequest_WaitSuccess() {
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupSource", "false");
+        AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
+        AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
+        when(proxyClient.client().deleteTransitGatewayRoute(any(DeleteTransitGatewayRouteRequest.class))).thenReturn(MOCKS.deleteResponse(mockMap));
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.readResponse(mockMap)).thenReturn(MOCKS.readResponse(mockMap)).thenReturn(MOCKS.emptyReadResponse());
+        ResourceModel model = MOCKS.model(mockMap);
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
+
     }
 
     @Test
     public void handleRequest_Error() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupSource", "false");
+
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("Invalid Request").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
-        when(proxyClient.client().deleteTransitGatewayRoute(any(DeleteTransitGatewayRouteRequest.class))).thenThrow(exception);
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse()).thenReturn(MOCKS.describeResponse("deleted"));
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.readResponse(mockMap));
 
-        ResourceModel model = MOCKS.model(tags);
+        when(proxyClient.client().deleteTransitGatewayRoute(any(DeleteTransitGatewayRouteRequest.class))).thenThrow(exception);
+
+        ResourceModel model = MOCKS.model(mockMap);
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -88,18 +115,22 @@ public class DeleteHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage().contains("Something went wrong")).isTrue();
         assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InvalidRequest);
+        verify(sdkClient, atLeastOnce()).serviceName();
+
     }
+
 
     @Test
     public void handleRequest_NotFound() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("groupSource", "false");
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
-        when(proxyClient.client().deleteTransitGatewayRoute(any(DeleteTransitGatewayRouteRequest.class))).thenThrow(exception);
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse()).thenReturn(MOCKS.describeResponse("deleted"));
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.readResponse(mockMap));
 
-        ResourceModel model = MOCKS.model(tags);
+        when(proxyClient.client().deleteTransitGatewayRoute(any(DeleteTransitGatewayRouteRequest.class))).thenThrow(exception);
+
+        ResourceModel model = MOCKS.model(mockMap);
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -110,6 +141,27 @@ public class DeleteHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
+
+    }
+
+
+    @Test
+    public void handleRequest_NotFoundBeforeDelete() {
+        HashMap<String, String> mockMap = new HashMap<>();
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.emptyReadResponse());
+
+        ResourceModel model = MOCKS.model(mockMap);
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage().contains( "cannot be modified by ACTION:")).isTrue();
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
     }
 
 }

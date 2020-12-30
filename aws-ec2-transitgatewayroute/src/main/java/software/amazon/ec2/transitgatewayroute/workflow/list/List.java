@@ -68,8 +68,6 @@ public class List {
             .map(resource -> ResourceModel.builder()
                 .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
                 .destinationCidrBlock(resource.destinationCidrBlock())
-                .blackhole(resource.state().equals(TransitGatewayRouteState.BLACKHOLE))
-                .transitGatewayAttachmentId(resource.transitGatewayAttachments().get(0).transitGatewayAttachmentId())
             .build())
             .collect(Collectors.toList());
     }

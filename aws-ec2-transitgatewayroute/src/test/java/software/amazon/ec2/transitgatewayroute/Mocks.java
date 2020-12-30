@@ -3,12 +3,9 @@ package software.amazon.ec2.transitgatewayroute;
 import org.apache.commons.lang3.SerializationUtils;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
-
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteAttachment;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,10 +18,14 @@ public class Mocks {
     public Mocks() {
         this.currentTime = Instant.now();
         this.counter = 0;
+
         this.defaults = Stream.of(new String[][] {
             { "transitGatewayRouteTableId", "tgw-rtb-0ce6c384EXAMPLE" },
             { "transitGatewayAttachmentId", "tgw-att-02bb79002EXAMPLE" },
+            { "prefixListId", "prefixListId-02bb79002EXAMPLE" },
             { "blackhole", "false" },
+            { "state", "active" },
+            { "type", "static" },
             { "destinationCidrBlock", "172.0.0.0/24" },
         }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
     }
@@ -56,6 +57,9 @@ public class Mocks {
             .transitGatewayAttachmentId(values.get("transitGatewayAttachmentId"))
             .destinationCidrBlock(values.get("destinationCidrBlock"))
             .blackhole(values.get("blackhole").equals("true"))
+            .type(values.get("type"))
+            .prefixListId(values.get("prefixListId"))
+            .state(values.get("blackhole").equals("true") ? "blackhole" : values.get("state"))
             .build();
     }
 
@@ -67,15 +71,19 @@ public class Mocks {
 
     public TransitGatewayRoute sdkModel(Map<String, String> newMap) {
         Map<String, String> values = this.modelMap(newMap);
-
+        TransitGatewayRouteAttachment attachment = TransitGatewayRouteAttachment.builder()
+            .transitGatewayAttachmentId(values.get("transitGatewayAttachmentId"))
+            .resourceType("vpc")
+            .resourceId("vpc-asfefa4")
+            .build();
+        Collection<TransitGatewayRouteAttachment> attachments = new ArrayList<>();
+        attachments.add(attachment);
         return TransitGatewayRoute.builder()
-            /*.transitGatewayAttachments(
-                TransitGatewayRouteAttachment.builder()
-                    .transitGatewayAttachmentId(values.get("transitGatewayAttachmentId"))
-                .build()
-            )*/
+            .transitGatewayAttachments(attachment)
             .destinationCidrBlock(values.get("destinationCidrBlock"))
-            .state(values.get("blackhole").equals("true") ? "BLACKHOLE" : "ACTIVE")
+            .prefixListId(values.get("prefixListId"))
+            .state(values.get("blackhole").equals("true") ? "blackhole" : values.get("state"))
+            .type(values.get("type"))
             .build();
     }
 

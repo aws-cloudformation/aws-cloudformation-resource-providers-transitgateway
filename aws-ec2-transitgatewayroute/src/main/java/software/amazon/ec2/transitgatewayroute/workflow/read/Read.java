@@ -9,6 +9,8 @@ import software.amazon.ec2.transitgatewayroute.CallbackContext;
 import software.amazon.ec2.transitgatewayroute.ResourceModel;
 import software.amazon.ec2.transitgatewayroute.TransitGatewayRouteAttachment;
 import software.amazon.ec2.transitgatewayroute.workflow.ExceptionMapper;
+
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class Read {
@@ -49,8 +51,12 @@ public class Read {
     }
 
     private SearchTransitGatewayRoutesRequest translateModelToRequest(ResourceModel model) {
-        return SearchTransitGatewayRoutesRequest.builder().transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
-            .build();
+        java.util.List<Filter> filters = new ArrayList<>();
+        filters.add(Filter.builder().name("destination-cidr-block").values(model.getDestinationCidrBlock()).build());
+        return SearchTransitGatewayRoutesRequest.builder()
+            .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
+            .filters(filters)
+        .build();
     }
 
     private SearchTransitGatewayRoutesResponse makeServiceCall(SearchTransitGatewayRoutesRequest awsRequest, ProxyClient<Ec2Client> client) {
@@ -63,10 +69,9 @@ public class Read {
         } else {
             TransitGatewayRoute response = awsResponse.routes().get(0);
             return ResourceModel.builder()
+                .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
                 .destinationCidrBlock(response.destinationCidrBlock())
-                .prefixListId(response.prefixListId())
-                .type(response.type().toString())
-                .state(response.state().toString())
+                .blackhole(response.state().toString().equals("blackhole") ? true : false)
                 .transitGatewayAttachmentId(response.transitGatewayAttachments().get(0).transitGatewayAttachmentId())
                 .transitGatewayAttachments(
                     response.transitGatewayAttachments().stream().map(e ->
@@ -77,6 +82,9 @@ public class Read {
                         .build()
                     ).collect(Collectors.toList())
                 )
+                .prefixListId(response.prefixListId())
+                .type(response.type().toString())
+                .state(response.state().toString())
             .build();
         }
     }

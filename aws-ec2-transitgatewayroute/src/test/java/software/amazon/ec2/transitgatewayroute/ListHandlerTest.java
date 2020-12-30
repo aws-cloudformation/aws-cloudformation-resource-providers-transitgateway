@@ -10,7 +10,6 @@ import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.SearchTransitGatewayRoutesRequest;
-import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
@@ -51,18 +50,16 @@ public class ListHandlerTest extends AbstractTestBase {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
-
-        final ResourceModel expectedResult = ResourceModel.builder()
-                .{{Config.SdkModel.PrimaryIdentifierMethod}}(MOCKS.primaryIdentifier)
-                .build();
+        ResourceModel model = MOCKS.model();
+        final ResourceModel expectedResult =  ResourceModel.builder()
+            .destinationCidrBlock(model.getDestinationCidrBlock())
+            .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
+            .build();
 
         final List<ResourceModel> expectedResults = new ArrayList<>();
         expectedResults.add(expectedResult);
 
-        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.describeResponse());
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.listResponse());
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(MOCKS.model()), new CallbackContext(), proxyClient, logger);
 
@@ -77,12 +74,10 @@ public class ListHandlerTest extends AbstractTestBase {
 
     @Test
     public void handleRequest_Error() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("Invalid Request").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
         when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenThrow(exception);
-        ResourceModel model = MOCKS.model(tags);
+        ResourceModel model = MOCKS.model();
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 

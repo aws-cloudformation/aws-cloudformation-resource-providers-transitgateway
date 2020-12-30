@@ -48,16 +48,15 @@ public class CreateHandlerTest extends AbstractTestBase {
     }
 
     @Test
-    public void handleRequest_SimpleSuccessGroupSource() {
+    public void handleRequest_SimpleSuccess() {
         HashMap<String, String> mockMap = new HashMap<>();
-        mockMap.put("groupMember", "false");
-        mockMap.put("groupSource", "true");
         ResourceModel model = MOCKS.model(mockMap);
 
         when(proxyClient.client().createTransitGatewayRoute(any(CreateTransitGatewayRouteRequest.class))).thenReturn(MOCKS.createResponse(mockMap));
         when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.readResponse(mockMap));
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+        model.setTransitGatewayAttachments(response.getResourceModel().getTransitGatewayAttachments());
 
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
@@ -73,8 +72,6 @@ public class CreateHandlerTest extends AbstractTestBase {
     @Test
     public void handleRequest_Duplicates() {
         HashMap<String, String> mockMap = new HashMap<>();
-        mockMap.put("groupMember", "false");
-        mockMap.put("groupSource", "true");
 
         when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.readResponse(mockMap));
 
@@ -94,9 +91,7 @@ public class CreateHandlerTest extends AbstractTestBase {
     @Test
     public void handleRequest_InvalidPrimaryIdentifier() {
         HashMap<String, String> mockMap = new HashMap<>();
-        mockMap.put("groupMember", "false");
-        mockMap.put("groupSource", "true");
-        mockMap.put("groupIpAddress", "224.0.0");
+        mockMap.put("blackhole", "true");
 
         ResourceModel model = MOCKS.model(mockMap);
 
