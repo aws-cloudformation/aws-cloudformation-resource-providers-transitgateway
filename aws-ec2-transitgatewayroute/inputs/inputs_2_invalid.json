@@ -1,0 +1,5 @@
+{
+  "TransitGatewayRouteTableId": "tgw-rtb-0ce6c38408cd792ee",
+  "DestinationCidrBlock": "0.0.0.0/24",
+  "Blackhole": false
+}
