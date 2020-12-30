@@ -1,0 +1,48 @@
+SdkClient: Ec2Client
+SdkModel:
+  Class: TransitGatewayRoute
+  PrimaryIdentifierMethods:
+    - destinationCidrBlock
+    - transitGatewayRouteTableId
+ServiceName: ec2
+Create:
+  RequestClass: CreateTransitGatewayRouteRequest
+  ResponseClass: CreateTransitGatewayRouteResponse
+  RequestMethod: createTransitGatewayRoute
+  ResponseMethod: route
+Read:
+  RequestClass: SearchTransitGatewayRoutesRequest
+  ResponseClass: SearchTransitGatewayRoutesResponse
+  RequestMethod: searchTransitGatewayRoutes
+  ResponseMethod: routes
+  PrimaryIdentifierMethods:
+    - destinationCidrBlock
+    - transitGatewayRouteTableId
+Update:
+  RequestClass: null
+  ResponseClass: null
+  RequestMethod: null
+Delete:
+  RequestClass: DeleteTransitGatewayRouteRequest
+  ResponseClass: DeleteTransitGatewayRouteResponse
+  RequestMethod: deleteTransitGatewayRoute
+  ResponseMethod: route
+List:
+  RequestClass: SearchTransitGatewayRoutesRequest
+  ResponseClass: SearchTransitGatewayRoutesResponse
+  RequestMethod: searchTransitGatewayRoutes
+  ResponseMethod: null
+State:
+  Class: TransitGatewayRouteState
+  DELETED: DELETED
+  DELETING: DELETING
+  AVALIABLE: null
+  PENDING: PENDING
+  AVAILABLE: DELETED
+ResourceModel:
+  PrimaryIdentifiers:
+    - DestinationCidrBlock
+    - TransitGatewayRouteTableId
+  PrimaryIdentifierMethod: null
+  GetPrimaryIdentifierMethod: getDestinationCidrBlock
+  SetPrimaryIdentifierMethod: setDestinationCidrBlock

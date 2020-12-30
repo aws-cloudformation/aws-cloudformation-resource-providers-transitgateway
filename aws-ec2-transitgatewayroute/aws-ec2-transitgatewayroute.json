@@ -1,0 +1,110 @@
+{
+  "typeName": "AWS::EC2::TransitGatewayRoute",
+  "description": "The AWS::EC2::TransitGatewayRoute type",
+  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-myservice",
+  "properties": {
+    "TransitGatewayRouteTableId": {
+      "description": "This is the route table id",
+      "type": "string"
+    },
+    "DestinationCidrBlock": {
+      "description": "The CIDR block used for destination matches.",
+      "type": "string"
+    },
+    "Blackhole": {
+      "description": "The Blackhole routes indicate whether traffic matching the route is to be dropped.",
+      "type": "boolean"
+    },
+
+    "TransitGatewayAttachmentId": {
+      "description": "The ID of the attachment.",
+      "type": "string"
+    },
+    "TransitGatewayAttachments": {
+      "description": "The attachments.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/TransitGatewayRouteAttachment"
+      }
+    },
+    "PrefixListId": {
+      "description": "The ID of the prefix list used for destination matches.",
+      "type": "string"
+    },
+    "Type": {
+      "description": "The route type.",
+      "type": "string"
+    },
+    "State": {
+      "description": "The state of the route.",
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "TransitGatewayRouteAttachment": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "description": "The ID of the resource.",
+          "type": "string"
+        },
+        "TransitGatewayAttachmentId": {
+          "description": "The ID of the attachment.",
+          "type": "string"
+        },
+        "ResourceType": {
+          "description": "The resource type. Note that the tgw-peering resource type has been deprecated.",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "createOnlyProperties": [
+    "/properties/State",
+    "/properties/DestinationCidrBlock",
+    "/properties/TransitGatewayRouteTableId",
+    "/properties/TransitGatewayAttachmentId"
+  ],
+  "readOnlyProperties": [
+    "/properties/PrefixListId",
+    "/properties/TransitGatewayAttachments",
+    "/properties/Type",
+    "/properties/State"
+  ],
+  "primaryIdentifier": [
+    "/properties/State",
+    "/properties/DestinationCidrBlock",
+    "/properties/TransitGatewayRouteTableId",
+    "/properties/TransitGatewayAttachmentId"
+  ],
+  "handlers": {
+    "create": {
+      "permissions": [
+        "ec2:CreateTransitGatewayRoute",
+        "ec2:SearchTransitGatewayRoutes"
+      ]
+    },
+    "read": {
+      "permissions": [
+        "ec2:SearchTransitGatewayRoutes"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:SearchTransitGatewayRoutes"
+      ]
+    },
+    "delete": {
+      "permissions": [
+        "ec2:DeleteTransitGatewayRoute",
+        "ec2:SearchTransitGatewayRoutes"
+      ]
+    },
+    "list": {
+      "permissions": [
+        "ec2:SearchTransitGatewayRoutes"
+      ]
+    }
+  }
+}
