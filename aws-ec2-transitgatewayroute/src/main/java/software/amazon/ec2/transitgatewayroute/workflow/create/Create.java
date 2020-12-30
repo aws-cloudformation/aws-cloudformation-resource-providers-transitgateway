@@ -3,6 +3,7 @@ package software.amazon.ec2.transitgatewayroute.workflow.create;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRouteRequest;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRouteResponse;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteState;
 import software.amazon.cloudformation.proxy.*;
 import software.amazon.ec2.transitgatewayroute.CallbackContext;
 import software.amazon.ec2.transitgatewayroute.ResourceModel;
@@ -61,7 +62,7 @@ public class Create {
         CallbackContext context
     ) {
         ResourceModel current = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
-        return current != null;
+        return current != null && (current.getState().equals(TransitGatewayRouteState.ACTIVE.toString()) || current.getState().equals(TransitGatewayRouteState.BLACKHOLE.toString()));
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(CreateTransitGatewayRouteRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {

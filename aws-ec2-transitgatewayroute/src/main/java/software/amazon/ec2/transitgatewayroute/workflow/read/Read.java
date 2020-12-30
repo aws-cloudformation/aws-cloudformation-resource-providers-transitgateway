@@ -52,7 +52,7 @@ public class Read {
 
     private SearchTransitGatewayRoutesRequest translateModelToRequest(ResourceModel model) {
         java.util.List<Filter> filters = new ArrayList<>();
-        filters.add(Filter.builder().name("destination-cidr-block").values(model.getDestinationCidrBlock()).build());
+        filters.add(Filter.builder().name("route-search.exact-match").values(model.getDestinationCidrBlock()).build());
         return SearchTransitGatewayRoutesRequest.builder()
             .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
             .filters(filters)

@@ -61,10 +61,8 @@
   },
   "additionalProperties": false,
   "createOnlyProperties": [
-    "/properties/State",
     "/properties/DestinationCidrBlock",
-    "/properties/TransitGatewayRouteTableId",
-    "/properties/TransitGatewayAttachmentId"
+    "/properties/TransitGatewayRouteTableId"
   ],
   "readOnlyProperties": [
     "/properties/PrefixListId",
@@ -73,10 +71,8 @@
     "/properties/State"
   ],
   "primaryIdentifier": [
-    "/properties/State",
     "/properties/DestinationCidrBlock",
-    "/properties/TransitGatewayRouteTableId",
-    "/properties/TransitGatewayAttachmentId"
+    "/properties/TransitGatewayRouteTableId"
   ],
   "handlers": {
     "create": {

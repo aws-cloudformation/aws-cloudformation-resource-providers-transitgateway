@@ -1,6 +1,7 @@
 package software.amazon.ec2.transitgatewayroute.workflow.list;
 
 import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.Filter;
 import software.amazon.awssdk.services.ec2.model.SearchTransitGatewayRoutesRequest;
 import software.amazon.awssdk.services.ec2.model.SearchTransitGatewayRoutesResponse;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteState;
@@ -9,6 +10,7 @@ import software.amazon.ec2.transitgatewayroute.CallbackContext;
 import software.amazon.ec2.transitgatewayroute.ResourceModel;
 import software.amazon.ec2.transitgatewayroute.workflow.ExceptionMapper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,8 +55,11 @@ public class List {
     }
 
     private SearchTransitGatewayRoutesRequest translateModelToRequest(ResourceModel model) {
+        java.util.List<Filter> filters = new ArrayList<>();
+        filters.add(Filter.builder().name("route-search.exact-match").values(model.getDestinationCidrBlock()).build());
         return SearchTransitGatewayRoutesRequest.builder()
             .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
+            .filters(filters)
             .maxResults(50)
             .build();
     }
