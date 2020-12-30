@@ -96,4 +96,3 @@ The route type.
 #### State
 
 The state of the route.
-
