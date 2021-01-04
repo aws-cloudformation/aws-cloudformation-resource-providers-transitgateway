@@ -65,7 +65,7 @@ public class CreatePrecheck {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> invalidModel() {
-        String errorMessage = ResourceModel.TYPE_NAME + "Cannot be modified by ACTION: CREATE. Blackhole must be true or you must provide a TransitGatewayAttachmentId";
+        String errorMessage = ResourceModel.TYPE_NAME + "Cannot be modified by ACTION: CREATE. Blackhole must be true or you must provide a TransitGatewayAttachmentId, but Blackhole is set to: " + this.model.getBlackhole() + " and TransitGatewayAttachmentId is set to: " + this.model.getTransitGatewayRouteTableId()  ;
         AwsServiceException emptyResponseException = AwsServiceException.builder().awsErrorDetails(AwsErrorDetails.builder().errorCode("InvalidRequest").errorMessage(errorMessage).build()).build();
         return ProgressEvent.defaultFailureHandler(emptyResponseException, HandlerErrorCode.InvalidRequest);
     }

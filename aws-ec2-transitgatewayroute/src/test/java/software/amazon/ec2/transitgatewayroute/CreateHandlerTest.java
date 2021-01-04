@@ -70,6 +70,29 @@ public class CreateHandlerTest extends AbstractTestBase {
 
 
     @Test
+    public void handleRequest_NoAttachments() {
+        HashMap<String, String> mockMap = new HashMap<>();
+        mockMap.put("transitGatewayAttachmentId", null);
+        mockMap.put("blackhole", "true");
+        ResourceModel model = MOCKS.model(mockMap);
+
+        when(proxyClient.client().createTransitGatewayRoute(any(CreateTransitGatewayRouteRequest.class))).thenReturn(MOCKS.createResponse(mockMap));
+        when(proxyClient.client().searchTransitGatewayRoutes(any(SearchTransitGatewayRoutesRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.readResponse(mockMap));
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isEqualTo(model);
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+        verify(sdkClient, atLeastOnce()).serviceName();
+    }
+
+
+    @Test
     public void handleRequest_Duplicates() {
         HashMap<String, String> mockMap = new HashMap<>();
 

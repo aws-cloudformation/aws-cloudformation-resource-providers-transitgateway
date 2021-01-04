@@ -71,20 +71,29 @@ public class Mocks {
 
     public TransitGatewayRoute sdkModel(Map<String, String> newMap) {
         Map<String, String> values = this.modelMap(newMap);
-        TransitGatewayRouteAttachment attachment = TransitGatewayRouteAttachment.builder()
-            .transitGatewayAttachmentId(values.get("transitGatewayAttachmentId"))
-            .resourceType("vpc")
-            .resourceId("vpc-asfefa4")
-            .build();
-        Collection<TransitGatewayRouteAttachment> attachments = new ArrayList<>();
-        attachments.add(attachment);
-        return TransitGatewayRoute.builder()
-            .transitGatewayAttachments(attachment)
-            .destinationCidrBlock(values.get("destinationCidrBlock"))
-            .prefixListId(values.get("prefixListId"))
-            .state(values.get("blackhole").equals("true") ? "blackhole" : values.get("state"))
-            .type(values.get("type"))
-            .build();
+        if(values.get("transitGatewayAttachmentId") == null) {
+            return TransitGatewayRoute.builder()
+                .destinationCidrBlock(values.get("destinationCidrBlock"))
+                .prefixListId(values.get("prefixListId"))
+                .state(values.get("blackhole").equals("true") ? "blackhole" : values.get("state"))
+                .type(values.get("type"))
+                .build();
+        } else {
+            TransitGatewayRouteAttachment attachment = TransitGatewayRouteAttachment.builder()
+                .transitGatewayAttachmentId(values.get("transitGatewayAttachmentId"))
+                .resourceType("vpc")
+                .resourceId("vpc-asfefa4")
+                .build();
+            Collection<TransitGatewayRouteAttachment> attachments = new ArrayList<>();
+            attachments.add(attachment);
+            return TransitGatewayRoute.builder()
+                .transitGatewayAttachments(attachment)
+                .destinationCidrBlock(values.get("destinationCidrBlock"))
+                .prefixListId(values.get("prefixListId"))
+                .state(values.get("blackhole").equals("true") ? "blackhole" : values.get("state"))
+                .type(values.get("type"))
+                .build();
+        }
     }
 
 

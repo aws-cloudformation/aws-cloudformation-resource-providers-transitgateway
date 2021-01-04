@@ -1,11 +1,6 @@
 {
-<<<<<<< HEAD
-  "DestinationCidrBlock": "DESTINATION_CIDR_BLOCK_1"
-}
-=======
   "TransitGatewayRouteTableId": "tgw-rtb-0ce6c38408cd792ee",
   "DestinationCidrBlock": "0.0.0.0/24",
   "Blackhole": false,
   "TransitGatewayAttachmentId": "tgw-attach-0b8e4610f6219e20c"
 }
->>>>>>> 8bcea32... one set works

@@ -68,24 +68,38 @@ public class Read {
             return null;
         } else {
             TransitGatewayRoute response = awsResponse.routes().get(0);
-            return ResourceModel.builder()
-                .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
-                .destinationCidrBlock(response.destinationCidrBlock())
-                .blackhole(response.state().toString().equals("blackhole") ? true : false)
-                .transitGatewayAttachmentId(response.transitGatewayAttachments().get(0).transitGatewayAttachmentId())
-                .transitGatewayAttachments(
-                    response.transitGatewayAttachments().stream().map(e ->
-                        TransitGatewayRouteAttachment.builder()
-                            .resourceId(e.resourceId())
-                            .resourceType(e.resourceTypeAsString())
-                            .transitGatewayAttachmentId(e.transitGatewayAttachmentId())
-                        .build()
-                    ).collect(Collectors.toList())
-                )
-                .prefixListId(response.prefixListId())
-                .type(response.type().toString())
-                .state(response.state().toString())
-            .build();
+            if(response.hasTransitGatewayAttachments()) {
+
+
+                return ResourceModel.builder()
+                    .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
+                    .destinationCidrBlock(response.destinationCidrBlock())
+                    .blackhole(response.state().toString().equals(TransitGatewayRouteState.BLACKHOLE.toString()) ? true : false)
+                    .transitGatewayAttachmentId(response.transitGatewayAttachments().get(0).transitGatewayAttachmentId())
+                    .transitGatewayAttachments(
+                        response.transitGatewayAttachments().stream().map(e ->
+                            TransitGatewayRouteAttachment.builder()
+                                .resourceId(e.resourceId())
+                                .resourceType(e.resourceTypeAsString())
+                                .transitGatewayAttachmentId(e.transitGatewayAttachmentId())
+                            .build()
+                        ).collect(Collectors.toList())
+                    )
+                    .prefixListId(response.prefixListId())
+                    .type(response.type().toString())
+                    .state(response.state().toString())
+                .build();
+            } else {
+                return ResourceModel.builder()
+                    .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId())
+                    .destinationCidrBlock(response.destinationCidrBlock())
+                    .blackhole(response.state().toString().equals(TransitGatewayRouteState.BLACKHOLE.toString()) ? true : false)
+                    .transitGatewayAttachmentId(null)
+                    .prefixListId(response.prefixListId())
+                    .type(response.type().toString())
+                    .state(response.state().toString())
+                    .build();
+            }
         }
     }
 
