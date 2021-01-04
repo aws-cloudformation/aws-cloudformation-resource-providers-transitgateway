@@ -29,7 +29,7 @@ jobs:
           docker pull docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:latest
       - name: Run precommit
         run: |
-          docker run -v $GITHUB_WORKSPACE/:/app -t docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:latest pre-commit run --all-files
+          docker run -v $GITHUB_WORKSPACE/:/app -t docker.pkg.github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/precommit:latest pre-commit run --all-files || true
       - name: Recommit
         run: |
           git config --global user.name "${GITHUB_ACTOR}"
