@@ -14,6 +14,8 @@ import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomain;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayMulticastDomainState;
 import software.amazon.cloudformation.proxy.*;
 
+import java.util.ArrayList;
+
 public class Read {
     AmazonWebServicesClientProxy proxy;
     ResourceHandlerRequest<ResourceModel> request;
@@ -66,20 +68,30 @@ public class Read {
 
     private ResourceModel translateResponsesToModel(DescribeTransitGatewayMulticastDomainsResponse awsResponse) {
         TransitGatewayMulticastDomain response = awsResponse.transitGatewayMulticastDomains().get(0);
+        if(response.options() == null) {
+            return ResourceModel.builder()
+                .transitGatewayMulticastDomainId(response.transitGatewayMulticastDomainId())
+                .transitGatewayId(response.transitGatewayId())
+                .state(response.state().toString())
+                .creationTime(response.creationTime().toString())
+                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
+                .build();
+        } else {
+            return ResourceModel.builder()
+                .transitGatewayMulticastDomainId(response.transitGatewayMulticastDomainId())
+                .transitGatewayId(response.transitGatewayId())
+                .state(response.state().toString())
+                .creationTime(response.creationTime().toString())
+                .options(
+                    Options.builder()
+                        .autoAcceptSharedAssociations(response.options().autoAcceptSharedAssociationsAsString())
+                        .igmpv2Support(response.options().igmpv2SupportAsString())
+                        .staticSourcesSupport(response.options().staticSourcesSupportAsString())
+                        .build())
+                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
+                .build();
+        }
 
-        return ResourceModel.builder()
-            .transitGatewayMulticastDomainId(response.transitGatewayMulticastDomainId())
-            .transitGatewayId(response.transitGatewayId())
-            .state(response.state().toString())
-            .creationTime(response.creationTime().toString())
-            .options(
-                Options.builder()
-                    .autoAcceptSharedAssociations(response.options().autoAcceptSharedAssociationsAsString())
-                    .igmpv2Support(response.options().igmpv2SupportAsString())
-                    .staticSourcesSupport(response.options().staticSourcesSupportAsString())
-                .build())
-            .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
-            .build();
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewayMulticastDomainsRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
