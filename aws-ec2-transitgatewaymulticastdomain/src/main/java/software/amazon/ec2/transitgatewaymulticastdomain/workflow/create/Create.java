@@ -41,7 +41,7 @@ public class Create {
     }
 
     private CreateTransitGatewayMulticastDomainRequest translateModelToRequest(ResourceModel model) {
-        if(model.getOptions() != null) {
+        if(model.getOptions() == null) {
             return CreateTransitGatewayMulticastDomainRequest.builder()
                 .transitGatewayId(model.getTransitGatewayId())
                 .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))

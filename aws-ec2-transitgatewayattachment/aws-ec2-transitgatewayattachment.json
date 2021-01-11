@@ -51,13 +51,11 @@
     "SubnetIds",
     "TransitGatewayId"
   ],
-  "createOnlyProperties": [
+  "readOnlyProperties": [
     "/properties/Tags",
     "/properties/TransitGatewayId",
     "/properties/VpcId",
-    "/properties/SubnetIds"
-  ],
-  "readOnlyProperties": [
+    "/properties/SubnetIds",
     "/properties/Id"
   ],
   "primaryIdentifier": [

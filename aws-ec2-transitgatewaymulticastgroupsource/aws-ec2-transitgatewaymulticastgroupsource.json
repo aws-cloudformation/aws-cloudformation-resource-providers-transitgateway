@@ -56,9 +56,7 @@
     "/properties/GroupSource",
     "/properties/GroupMember",
     "/properties/MemberType",
-    "/properties/SourceType"
-  ],
-  "createOnlyProperties": [
+    "/properties/SourceType",
     "/properties/TransitGatewayMulticastDomainId",
     "/properties/GroupIpAddress",
     "/properties/NetworkInterfaceId"

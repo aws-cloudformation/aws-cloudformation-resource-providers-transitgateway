@@ -62,10 +62,8 @@
     }
   },
   "additionalProperties": false,
-  "createOnlyProperties": [
-    "/properties/TransitGatewayId"
-  ],
   "readOnlyProperties": [
+    "/properties/TransitGatewayId",
     "/properties/TransitGatewayMulticastDomainId",
     "/properties/State",
     "/properties/CreationTime"

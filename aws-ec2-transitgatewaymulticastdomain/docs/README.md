@@ -12,7 +12,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "AWS::EC2::TransitGatewayMulticastDomain",
     "Properties" : {
-        "<a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>" : <i>String</i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
         "<a href="#options" title="Options">Options</a>" : <i><a href="options.md">Options</a></i>
     }
@@ -24,23 +23,12 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: AWS::EC2::TransitGatewayMulticastDomain
 Properties:
-    <a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>: <i>String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
     <a href="#options" title="Options">Options</a>: <i><a href="options.md">Options</a></i>
 </pre>
 
 ## Properties
-
-#### TransitGatewayId
-
-The ID of the transit gateway.
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
 #### Tags
 
@@ -74,6 +62,10 @@ The `Fn::GetAtt` intrinsic function returns a value for a specified attribute of
 
 For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::GetAtt](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html).
 
+#### TransitGatewayId
+
+The ID of the transit gateway.
+
 #### TransitGatewayMulticastDomainId
 
 The ID of the transit gateway multicast domain.
@@ -85,3 +77,4 @@ The state of the transit gateway multicast domain.
 #### CreationTime
 
 The time the transit gateway multicast domain was created.
+

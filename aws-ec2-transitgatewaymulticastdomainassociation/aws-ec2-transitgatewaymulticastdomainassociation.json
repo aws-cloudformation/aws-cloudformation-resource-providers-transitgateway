@@ -32,9 +32,7 @@
   "readOnlyProperties": [
     "/properties/ResourceId",
     "/properties/ResourceType",
-    "/properties/Subnet"
-  ],
-  "createOnlyProperties": [
+    "/properties/Subnet",
     "/properties/TransitGatewayMulticastDomainId",
     "/properties/TransitGatewayAttachmentId",
     "/properties/SubnetId"
