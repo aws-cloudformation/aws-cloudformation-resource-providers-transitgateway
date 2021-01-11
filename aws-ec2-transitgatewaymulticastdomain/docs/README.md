@@ -77,4 +77,3 @@ The state of the transit gateway multicast domain.
 #### CreationTime
 
 The time the transit gateway multicast domain was created.
-

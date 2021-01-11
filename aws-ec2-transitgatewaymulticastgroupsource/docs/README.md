@@ -84,4 +84,3 @@ The IP address assigned to the transit gateway multicast group.
 #### NetworkInterfaceId
 
 The ID of the transit gateway attachment.
-
