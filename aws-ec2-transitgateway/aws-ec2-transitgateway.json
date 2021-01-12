@@ -60,7 +60,7 @@
   "primaryIdentifier": [
     "/properties/Id"
   ],
-  "readOnlyProperties": [
+  "createOnlyProperties": [
     "/properties/Id",
     "/properties/DnsSupport",
     "/properties/DefaultRouteTableAssociation",
