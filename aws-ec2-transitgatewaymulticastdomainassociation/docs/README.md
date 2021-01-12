@@ -12,7 +12,10 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "AWS::EC2::TransitGatewayMulticastDomainAssociation",
     "Properties" : {
+        "<a href="#transitgatewaymulticastdomainid" title="TransitGatewayMulticastDomainId">TransitGatewayMulticastDomainId</a>" : <i>String</i>,
+        "<a href="#transitgatewayattachmentid" title="TransitGatewayAttachmentId">TransitGatewayAttachmentId</a>" : <i>String</i>,
         "<a href="#state" title="State">State</a>" : <i>String</i>,
+        "<a href="#subnetid" title="SubnetId">SubnetId</a>" : <i>String</i>
     }
 }
 </pre>
@@ -22,10 +25,33 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: AWS::EC2::TransitGatewayMulticastDomainAssociation
 Properties:
+    <a href="#transitgatewaymulticastdomainid" title="TransitGatewayMulticastDomainId">TransitGatewayMulticastDomainId</a>: <i>String</i>
+    <a href="#transitgatewayattachmentid" title="TransitGatewayAttachmentId">TransitGatewayAttachmentId</a>: <i>String</i>
     <a href="#state" title="State">State</a>: <i>String</i>
+    <a href="#subnetid" title="SubnetId">SubnetId</a>: <i>String</i>
 </pre>
 
 ## Properties
+
+#### TransitGatewayMulticastDomainId
+
+The ID of the transit gateway multicast domain.
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+
+#### TransitGatewayAttachmentId
+
+The ID of the transit gateway attachment.
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
 #### State
 
@@ -36,6 +62,16 @@ _Required_: No
 _Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### SubnetId
+
+The IDs of the subnets to associate with the transit gateway multicast domain.
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
 ## Return Values
 
@@ -56,15 +92,3 @@ The type of resource, for example a VPC attachment.
 #### Subnet
 
 Returns the <code>Subnet</code> value.
-
-#### TransitGatewayMulticastDomainId
-
-The ID of the transit gateway multicast domain.
-
-#### TransitGatewayAttachmentId
-
-The ID of the transit gateway attachment.
-
-#### SubnetId
-
-The IDs of the subnets to associate with the transit gateway multicast domain.
