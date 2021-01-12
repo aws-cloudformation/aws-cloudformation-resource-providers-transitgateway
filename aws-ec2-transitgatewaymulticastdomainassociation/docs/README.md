@@ -68,3 +68,4 @@ The ID of the transit gateway attachment.
 #### SubnetId
 
 The IDs of the subnets to associate with the transit gateway multicast domain.
+

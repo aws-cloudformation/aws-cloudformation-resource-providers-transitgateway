@@ -57,6 +57,7 @@
     "/properties/GroupMember",
     "/properties/MemberType",
     "/properties/SourceType"
+
   ],
   "createOnlyProperties": [
     "/properties/TransitGatewayMulticastDomainId",
