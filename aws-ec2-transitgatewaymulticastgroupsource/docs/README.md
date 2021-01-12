@@ -108,4 +108,7 @@ The member type (for example, static).
 #### SourceType
 
 The source type.
+<<<<<<< HEAD
 
+=======
+>>>>>>> ac51bc8... Restore create only properties (#33)

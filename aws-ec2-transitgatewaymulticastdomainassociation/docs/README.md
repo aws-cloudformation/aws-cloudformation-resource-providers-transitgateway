@@ -92,4 +92,7 @@ The type of resource, for example a VPC attachment.
 #### Subnet
 
 Returns the <code>Subnet</code> value.
+<<<<<<< HEAD
 
+=======
+>>>>>>> ac51bc8... Restore create only properties (#33)
