@@ -92,4 +92,3 @@ The type of resource, for example a VPC attachment.
 #### Subnet
 
 Returns the <code>Subnet</code> value.
-

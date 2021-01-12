@@ -108,4 +108,3 @@ The member type (for example, static).
 #### SourceType
 
 The source type.
-
