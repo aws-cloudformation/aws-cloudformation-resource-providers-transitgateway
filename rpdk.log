@@ -38,3 +38,83 @@ Traceback (most recent call last):
     raise InvalidProjectError(msg) from e
 rpdk.core.exceptions.InvalidProjectError: Project file not found. Have you run 'init'?
 [2020-12-04T23:15:44Z] CRITICAL - Project file not found. Have you run 'init'?
+[2020-12-30T21:56:44Z] DEBUG    - Logging set up successfully
+[2020-12-30T21:56:44Z] DEBUG    - Running validate: Namespace(version=False, subparser_name='validate', command=<function validate at 0x10ab464c0>, verbose=0)
+[2020-12-30T21:56:44Z] DEBUG    - Root directory: /Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway
+[2020-12-30T21:56:44Z] DEBUG    - Loading project file '/Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway/.rpdk-config'
+[2020-12-30T21:56:44Z] DEBUG    - Project file not found. Have you run 'init'?
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 343, in load
+    self.load_settings()
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 166, in load_settings
+    with self.settings_path.open("r", encoding="utf-8") as f:
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1241, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1109, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway/.rpdk-config'
+[2020-12-30T21:56:44Z] DEBUG    - Caught exit recommendation
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 343, in load
+    self.load_settings()
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 166, in load_settings
+    with self.settings_path.open("r", encoding="utf-8") as f:
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1241, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1109, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway/.rpdk-config'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/cli.py", line 100, in main
+    args.command(args)
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/validate.py", line 14, in validate
+    project.load()
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 345, in load
+    self._raise_invalid_project(
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 161, in _raise_invalid_project
+    raise InvalidProjectError(msg) from e
+rpdk.core.exceptions.InvalidProjectError: Project file not found. Have you run 'init'?
+[2020-12-30T21:56:44Z] CRITICAL - Project file not found. Have you run 'init'?
+[2020-12-30T21:56:44Z] DEBUG    - Logging set up successfully
+[2020-12-30T21:56:44Z] DEBUG    - Running generate: Namespace(version=False, subparser_name='generate', command=<function generate at 0x104a32040>, verbose=0)
+[2020-12-30T21:56:44Z] DEBUG    - Root directory: /Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway
+[2020-12-30T21:56:44Z] DEBUG    - Loading project file '/Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway/.rpdk-config'
+[2020-12-30T21:56:44Z] DEBUG    - Project file not found. Have you run 'init'?
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 343, in load
+    self.load_settings()
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 166, in load_settings
+    with self.settings_path.open("r", encoding="utf-8") as f:
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1241, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1109, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway/.rpdk-config'
+[2020-12-30T21:56:44Z] DEBUG    - Caught exit recommendation
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 343, in load
+    self.load_settings()
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 166, in load_settings
+    with self.settings_path.open("r", encoding="utf-8") as f:
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1241, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/local/Cellar/python@3.9/3.9.1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1109, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/birksb/uluru/aws-cloudformation-resource-providers-transitgateway/.rpdk-config'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/cli.py", line 100, in main
+    args.command(args)
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/generate.py", line 14, in generate
+    project.load()
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 345, in load
+    self._raise_invalid_project(
+  File "/usr/local/lib/python3.9/site-packages/rpdk/core/project.py", line 161, in _raise_invalid_project
+    raise InvalidProjectError(msg) from e
+rpdk.core.exceptions.InvalidProjectError: Project file not found. Have you run 'init'?
+[2020-12-30T21:56:44Z] CRITICAL - Project file not found. Have you run 'init'?
