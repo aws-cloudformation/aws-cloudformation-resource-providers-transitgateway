@@ -1,0 +1,94 @@
+{
+  "typeName": "AWS::EC2::TransitGatewayRouteTable",
+  "description": "The AWS::EC2::TransitGatewayRouteTable type",
+  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayroutetable",
+  "properties": {
+    "TransitGatewayRouteTableId": {
+      "description": "The ID of the transit gateway route table.",
+      "type": "string"
+    },
+    "TransitGatewayId": {
+      "description": "The ID of the transit gateway.",
+      "type": "string"
+    },
+    "State": {
+      "description": "The state of the transit gateway route table.",
+      "type": "string"
+    },
+    "DefaultAssociationRouteTable": {
+      "description": "Indicates whether this is the default association route table for the transit gateway.",
+      "type": "boolean"
+    },
+    "DefaultPropagationRouteTable": {
+      "description": "Indicates whether this is the default propagation route table for the transit gateway.",
+      "type": "boolean"
+    },
+    "CreationTime": {
+      "description": "The creation time.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "Tags": {
+      "description": "Any tags assigned to the route table.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
+      }
+    }
+  },
+  "definitions": {
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "Key": {
+          "description": "The key of the tag. Constraints: Tag keys are case-sensitive and accept a maximum of 127 Unicode characters. May not begin with aws:.",
+          "type": "string"
+        },
+        "Value": {
+          "description": "The value of the tag. Constraints: Tag values are case-sensitive and accept a maximum of 255 Unicode characters.",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "readOnlyProperties": [
+    "/properties/TransitGatewayRouteTableId",
+    "/properties/State",
+    "/properties/DefaultAssociationRouteTable",
+    "/properties/DefaultPropagationRouteTable",
+    "/properties/CreationTime"
+  ],
+  "primaryIdentifier": [
+    "/properties/TransitGatewayRouteTableId"
+  ],
+  "handlers": {
+    "create": {
+      "permissions": [
+        "ec2:CreateTransitGatewayRouteTable",
+        "ec2:DescribeTransitGatewayRouteTables"
+      ]
+    },
+    "read": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayRouteTables"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayRouteTables"
+      ]
+    },
+    "delete": {
+      "permissions": [
+        "ec2:DeleteTransitGatewayRouteTable",
+        "ec2:DescribeTransitGatewayRouteTables"
+      ]
+    },
+    "list": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayRouteTables"
+      ]
+    }
+  }
+}

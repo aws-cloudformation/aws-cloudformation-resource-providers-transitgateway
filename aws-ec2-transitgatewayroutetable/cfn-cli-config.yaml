@@ -1,0 +1,43 @@
+SdkClient: Ec2Client
+SdkModel:
+  Class: TransitGatewayRouteTable
+  PrimaryIdentifierMethod: transitGatewayRouteTableId
+ServiceName: ec2
+Create:
+  RequestClass: CreateTransitGatewayRouteTableRequest
+  ResponseClass: CreateTransitGatewayRouteTableResponse
+  RequestMethod: createTransitGatewayRouteTable
+  ResponseMethod: transitGatewayRouteTable
+Read:
+  RequestClass: DescribeTransitGatewayRouteTablesRequest
+  ResponseClass: DescribeTransitGatewayRouteTablesResponse
+  RequestMethod: describeTransitGatewayRouteTables
+  ResponseMethod: transitGatewayRouteTables
+  GetPrimaryIdentifierMethod: null
+  GetByPrimaryIdentifierMethod: transitGatewayRouteTableIds
+Update:
+  RequestClass: null
+  ResponseClass: null
+  RequestMethod: null
+Delete:
+  RequestClass: DeleteTransitGatewayRouteTableRequest
+  ResponseClass: DeleteTransitGatewayRouteTableResponse
+  RequestMethod: deleteTransitGatewayRouteTable
+  ResponseMethod: transitGatewayRouteTable
+List:
+  RequestClass: DescribeTransitGatewayRouteTablesRequest
+  ResponseClass: DescribeTransitGatewayRouteTablesResponse
+  RequestMethod: describeTransitGatewayRouteTables
+  ResponseMethod: transitGatewayRouteTables
+State:
+  Class: TransitGatewayRouteTableState
+  DELETED: DELETED
+  DELETING: DELETING
+  AVAILABLE: AVAILABLE
+  PENDING: PENDING
+ResourceModel:
+  PrimaryIdentifiers:
+    - TransitGatewayRouteTableId
+  PrimaryIdentifierMethod: transitGatewayRouteTableId
+  GetPrimaryIdentifierMethod: getTransitGatewayRouteTableId
+  SetPrimaryIdentifierMethod: setTransitGatewayRouteTableId
