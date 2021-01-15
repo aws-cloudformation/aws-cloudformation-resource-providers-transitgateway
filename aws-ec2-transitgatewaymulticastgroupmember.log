@@ -1,0 +1,278 @@
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:processResources NO-SOURCE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :
+BrazilPlugin was loaded for project 'AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests'
+BrazilGradleQualityDefaults plugin loaded for project 'AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests'
+
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+
+> Task :integ-local
+
+Gradle Test Executor 4 STANDARD_OUT
+    ...
+    ... TestNG 6.9.5 by Cédric Beust (cedric@beust.com)
+    ...
+
+
+Gradle Test Executor 4 STANDARD_ERROR
+    SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+    SLF4J: Defaulting to no-operation (NOP) logger implementation
+    SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+
+Gradle Test Executor 4 STANDARD_OUT
+    eu-west-3
+
+Gradle Test Executor 4 STANDARD_ERROR
+    log4j:WARN No appenders could be found for logger (com.amazonaws.AmazonWebServiceClient).
+    log4j:WARN Please initialize the log4j system properly.
+
+Gradle Test Executor 4 STANDARD_OUT
+    eu-west-3
+
+TestSuite STANDARD_OUT
+    START CLEAN SUITE
+    -------THIS IS A BIG DEAL--------
+    END CLEAN SUITE
+
+TestSuite > AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests STANDARD_OUT
+    [TestRunner] Starting executor for test AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests with time out:2147483647 milliseconds.
+    Before test-method. Thread id is: 18
+    Before test-method. Thread id is: 16
+    Before test-method. Thread id is: 17
+
+TestSuite > AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests > com.aws.ec2.cfnregistry.integration.resources.TransitGatewayMulticastGroupMember.IntegrationTests.createStack STANDARD_OUT
+    eu-west-3
+    Test:: TransitGatewayMulticastGroupMember-invoke0 :: ThreadID:16
+    Test:: TransitGatewayMulticastGroupMember-invoke0 :: ThreadID:17
+    Test:: TransitGatewayMulticastGroupMember-invoke0 :: ThreadID:18
+    START createStackTest
+    START createStackTest
+    START createStackAfterResourceExistsFromAnotherStackTest
+    STACK INITIATED
+    STACK INITIATED
+    com.aws.ec2.cfnregistry.integration.resources.StackUtility@847ba7a
+    com.aws.ec2.cfnregistry.integration.resources.StackUtility@1fe4b321
+    STACK INITIATED
+    com.aws.ec2.cfnregistry.integration.resources.StackUtility@3b0de38e
+    DUPLICATE STACK INITIATED
+    com.aws.ec2.cfnregistry.integration.resources.StackUtility@53f095b6
+    STACK CREATED
+    arn:aws:cloudformation:eu-west-3:164459928424:stack/TransitGatewayMulticastGroupMember-deleteStackTest-2021-01-14-14-40-32-574-97891/5d637f90-56a0-11eb-9f5d-0e7359a301de
+    assertCreateStackCompletes
+    STACK CREATED
+    arn:aws:cloudformation:eu-west-3:164459928424:stack/TransitGatewayMulticastGroupMember-createStackTest-2021-01-14-14-40-32-574-77538/5da850c0-56a0-11eb-a28c-0edaab511742
+    assertCreateStackCompletes
+    STACK CREATED
+    arn:aws:cloudformation:eu-west-3:164459928424:stack/TransitGatewayMulticastGroupMember-createStackAfterResourceExistsFromAnotherStackTest-2021-01-14-14-40-32-575-116789/5dabfa40-56a0-11eb-b204-0e71ef17ca32
+    assertDeleteStackCompletes
+    STACK OUTPUTS
+    {TransitGatewayId=tgw-03d560326fe022cb0, VpcId=vpc-00c6dcfa9534b7045, SubnetId=subnet-088154cc2abc88f28, TransitGatewayMulticastGroupMemberId=tgw-mcast-domain-051bbe1508f5be899|224.0.0.0|eni-0ea3c3550749fde2f, TransitGatewayAttachmentId=tgw-attach-01cca388abecded09}
+    ensureStackDeletesQuietly
+    parametersForOutOfBandCreateTest
+    {TransitGatewayId=tgw-0f9ce0c4a2da248a0, VpcId=vpc-00e38c6d2082bfcb9, SubnetId=subnet-055f95fe55ed24cd8, TransitGatewayMulticastGroupMemberId=tgw-mcast-domain-0e50fc4a5bfa26958|224.0.0.0|eni-0e5a3dd190772bba7, TransitGatewayAttachmentId=tgw-attach-09223cdf2f5f713db}
+    transformed parametersForOutOfBandCreateTest
+    {TransitGatewayMulticastDomainId=tgw-mcast-domain-0e50fc4a5bfa26958, NetworkInterfaceId=eni-0e5a3dd190772bba7, GroupIpAddress=224.0.0.0}
+    Parameters for template
+    {TransitGatewayMulticastDomainId=tgw-mcast-domain-0e50fc4a5bfa26958, NetworkInterfaceId=eni-0e5a3dd190772bba7, GroupIpAddress=224.0.0.0}
+    Template
+    AWSTemplateFormatVersion: 2010-09-09
+    Description: TGWMulticastDomainGroupMember invalid duplicate creation test template
+    Parameters:
+      GroupIpAddress:
+        Type: String
+      NetworkInterfaceId:
+        Type: String
+      TransitGatewayMulticastDomainId:
+        Type: String
+    Resources:
+      TransitGatewayMulticastGroupMember:
+        Type: 'AWS::EC2::TransitGatewayMulticastGroupMember'
+        Properties:
+          TransitGatewayMulticastDomainId: !Ref TransitGatewayMulticastDomainId
+          GroupIpAddress: !Ref GroupIpAddress
+          NetworkInterfaceId: !Ref NetworkInterfaceId
+
+    DUPLICATE STACK CREATED
+    arn:aws:cloudformation:eu-west-3:164459928424:stack/TransitGatewayMulticastGroupMember-createStackAfterResourceExistsFromAnotherStackTest-2021-01-14-14-40-32-575-447331/e2716350-56a0-11eb-af28-0e35ab016c20
+    assertCreateStackFails
+    ensureStackDeletesQuietly
+    END createStackAfterResourceExistsFromAnotherStackTest
+
+TestSuite > AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests STANDARD_OUT
+    After test-method. Thread id is: 17
+    Before test-method. Thread id is: 17
+
+TestSuite > AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests > com.aws.ec2.cfnregistry.integration.resources.TransitGatewayMulticastGroupMember.IntegrationTests.deleteStackAfterExternalDelete STANDARD_OUT
+    Test:: TransitGatewayMulticastGroupMember-invoke0 :: ThreadID:17
+    START deleteStackAfterExternalDeleteTest
+    STACK INITIATED
+    com.aws.ec2.cfnregistry.integration.resources.StackUtility@45592e29
+    STACK CREATED
+    arn:aws:cloudformation:eu-west-3:164459928424:stack/TransitGatewayMulticastGroupMember-deleteStackAfterExternalDeleteTest-2021-01-14-14-47-38-659-401912/5b5b8520-56a1-11eb-8490-06aa8856d94e
+    assertCreateStackCompletes
+    END deleteStackTest
+
+TestSuite > AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests STANDARD_OUT
+    After test-method. Thread id is: 18
+    Before test-method. Thread id is: 18
+
+TestSuite > AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests > com.aws.ec2.cfnregistry.integration.resources.TransitGatewayMulticastGroupMember.IntegrationTests.updateStack STANDARD_OUT
+    Test:: TransitGatewayMulticastGroupMember-invoke0 :: ThreadID:18
+    this.createParametersForUpdateStackTest()
+    {GroupIpAddress=224.0.0.0}
+    this.updateParametersForUpdateStackTest()
+    {GroupIpAddress=224.0.0.1}
+    START updateStackTest
+    createParameters
+    {GroupIpAddress=224.0.0.0}
+    updateParameters
+    {GroupIpAddress=224.0.0.1}
+    STACK INITIATED
+    com.aws.ec2.cfnregistry.integration.resources.StackUtility@46716
+    Parameters for template
+    {GroupIpAddress=224.0.0.0}
+    Template
+    AWSTemplateFormatVersion: 2010-09-09
+    Description: TGWMulticastDomain integ test template
+    Parameters:
+      GroupIpAddress:
+        Type: String
+        Default: 224.0.0.0
+    Resources:
+      TransitGateway:
+        Type: "AWS::EC2::TransitGateway"
+        Properties:
+          Description: "TGW Attachment Integration Resource"
+          MulticastSupport: enable
+          Tags:
+            - Key: Application
+              Value: !Ref 'AWS::StackId'
+      Vpc:
+        Type: 'AWS::EC2::VPC'
+        Properties:
+          CidrBlock: 172.16.0.0/16
+          EnableDnsSupport: 'true'
+          EnableDnsHostnames: 'true'
+          Tags:
+            - Key: Application
+              Value: !Ref 'AWS::StackId'
+      Subnet:
+        Type: 'AWS::EC2::Subnet'
+        DependsOn: Vpc
+        Properties:
+          VpcId: !Ref Vpc
+          CidrBlock: 172.16.1.0/24
+          AvailabilityZone:
+            Fn::Select:
+              - 0
+              - Fn::GetAZs: ""
+      TransitGatewayMulticastDomain:
+        Type: 'AWS::EC2::TransitGatewayMulticastDomain'
+        Properties:
+          TransitGatewayId: !Ref TransitGateway
+      TransitGatewayAttachment:
+        Type: "AWS::EC2::TransitGatewayAttachment"
+        Properties:
+          VpcId: !Ref Vpc
+          TransitGatewayId: !Ref TransitGateway
+          SubnetIds:
+            - !Ref Subnet
+      TransitGatewayMulticastDomainAssociation:
+        Type: 'AWS::EC2::TransitGatewayMulticastDomainAssociation'
+        Properties:
+          TransitGatewayMulticastDomainId: !Ref TransitGatewayMulticastDomain
+          TransitGatewayAttachmentId: !Ref TransitGatewayAttachment
+          SubnetId: !Ref Subnet
+      NetworkInterface:
+        Type: AWS::EC2::NetworkInterface
+        Properties:
+          SubnetId: !Ref Subnet
+      TransitGatewayMulticastGroupMember:
+        Type: 'AWS::EC2::TransitGatewayMulticastGroupMember'
+        DependsOn : TransitGatewayMulticastDomainAssociation
+        Properties:
+          TransitGatewayMulticastDomainId: !Ref TransitGatewayMulticastDomain
+          GroupIpAddress: !Ref GroupIpAddress
+          NetworkInterfaceId: !Ref NetworkInterface
+    Outputs:
+      TransitGatewayMulticastGroupMemberId:
+        Value: !Ref TransitGatewayMulticastGroupMember
+      TransitGatewayId:
+        Value: !Ref TransitGateway
+      VpcId:
+        Value: !Ref Vpc
+      SubnetId:
+        Value: !Ref Subnet
+      TransitGatewayAttachmentId:
+        Value: !Ref TransitGatewayAttachment
+    STACK CREATED
+    arn:aws:cloudformation:eu-west-3:164459928424:stack/TransitGatewayMulticastGroupMember-updateStackTest-2021-01-14-14-47-39-758-110811/5c0336d0-56a1-11eb-8d58-0ec1d1533b2a
+    assertCreateStackCompletes
+    END createStackTest
+
+TestSuite > AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests STANDARD_OUT
+    After test-method. Thread id is: 16
+    CREATE ORIGINAL STACK
+    createdStackOutputs
+    {TransitGatewayId=tgw-0577c102b490dc529, VpcId=vpc-04ede3a30e1daf586, SubnetId=subnet-054f5f282af992be0, TransitGatewayMulticastGroupMemberId=tgw-mcast-domain-0d2c61ba405c4503b|224.0.0.0|eni-0eaa874520a51eb4d, TransitGatewayAttachmentId=tgw-attach-05d94d755829524c7}
+    createdResourceValues
+    {TransitGatewayMulticastDomainId=tgw-mcast-domain-0d2c61ba405c4503b, NetworkInterfaceId=eni-0eaa874520a51eb4d, GroupIpAddress=224.0.0.0}
+    createdResourceId
+    tgw-mcast-domain-0d2c61ba405c4503b|224.0.0.0|eni-0eaa874520a51eb4d
+    CREATE UPDATED STACK
+    assertCreateStackCompletes
+    deleteResource
+    {TransitGatewayId=tgw-0e26a29ec6b9d2d65, VpcId=vpc-0d16f39c186b1e0e7, SubnetId=subnet-01eb692acb833d31c, TransitGatewayMulticastGroupMemberId=tgw-mcast-domain-011731a8c278f6807|224.0.0.0|eni-03aef411a7b3d6f7c, TransitGatewayAttachmentId=tgw-attach-0af3748bccae73375}
+    assertDeleteStackCompletes
+    UPDATED STACK CREATED
+    updatedResourceValues
+    {TransitGatewayMulticastDomainId=tgw-mcast-domain-0d2c61ba405c4503b, NetworkInterfaceId=eni-0eaa874520a51eb4d, GroupIpAddress=224.0.0.1}
+    updatedStackOutputs
+    {TransitGatewayId=tgw-0577c102b490dc529, VpcId=vpc-04ede3a30e1daf586, SubnetId=subnet-054f5f282af992be0, TransitGatewayMulticastGroupMemberId=tgw-mcast-domain-0d2c61ba405c4503b|224.0.0.1|eni-0eaa874520a51eb4d, TransitGatewayAttachmentId=tgw-attach-05d94d755829524c7}
+    updatedResourceId
+    tgw-mcast-domain-0d2c61ba405c4503b|224.0.0.1|eni-0eaa874520a51eb4d
+    ensureStackDeletesQuietly
+    ensureStackDeletesQuietly
+    END deleteStackAfterExternalDeleteTest
+    After test-method. Thread id is: 17
+    END updateStackTest
+    After test-method. Thread id is: 18
+    PASSED: createStackAfterResourceExistsFromAnotherStack
+    PASSED: deleteStack
+    PASSED: createStack
+    PASSED: deleteStackAfterExternalDelete
+    PASSED: updateStack
+
+    ===============================================
+        AWSCloudFormationResourceProvidersTransitGatewayIntegrationTests
+        Tests run: 5, Failures: 0, Skips: 0
+    ===============================================
+
+
+Gradle Test Executor 4 STANDARD_OUT
+    [TestNG] Time taken by org.testng.reporters.JUnitReportReporter@7d9b548b: 6 ms
+    [TestNG] Time taken by org.testng.reporters.SuiteHTMLReporter@6e6bbf6a: 50 ms
+    [TestNG] Time taken by [FailedReporter passed=0 failed=0 skipped=0]: 0 ms
+    [TestNG] Time taken by org.testng.reporters.jq.Main@854ad62: 38 ms
+    [TestNG] Time taken by org.testng.reporters.EmailableReporter2@5daf6916: 5 ms
+    [TestNG] Time taken by org.testng.reporters.XMLReporter@39d4e45e: 10 ms
+
+BUILD SUCCESSFUL in 15m 19s
+3 actionable tasks: 1 executed, 2 up-to-date
