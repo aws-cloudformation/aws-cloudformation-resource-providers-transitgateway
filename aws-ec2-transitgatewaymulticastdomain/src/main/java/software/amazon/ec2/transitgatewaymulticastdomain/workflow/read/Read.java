@@ -70,6 +70,7 @@ public class Read {
         return ResourceModel.builder()
             .transitGatewayMulticastDomainId(response.transitGatewayMulticastDomainId())
             .transitGatewayId(response.transitGatewayId())
+            .transitGatewayMulticastDomainArn(response.transitGatewayMulticastDomainArn())
             .state(response.state().toString())
             .creationTime(response.creationTime().toString())
             .options(

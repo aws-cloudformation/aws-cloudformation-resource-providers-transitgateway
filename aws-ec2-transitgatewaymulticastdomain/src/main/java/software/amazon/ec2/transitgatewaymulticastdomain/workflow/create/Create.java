@@ -84,6 +84,7 @@ public class Create {
         CallbackContext context
     ) {
         model.setTransitGatewayMulticastDomainId(awsResponse.transitGatewayMulticastDomain().transitGatewayMulticastDomainId());
+        model.setTransitGatewayMulticastDomainArn(awsResponse.transitGatewayMulticastDomain().transitGatewayMulticastDomainArn());
         String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
         return TransitGatewayMulticastDomainState.AVAILABLE.toString().equals(currentState);
     }
