@@ -41,11 +41,19 @@ public class Create {
     }
 
     private CreateTransitGatewayMulticastDomainRequest translateModelToRequest(ResourceModel model) {
-        return CreateTransitGatewayMulticastDomainRequest.builder()
-            .transitGatewayId(model.getTransitGatewayId())
-            .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
-            .options(this.translateModelToOptions(model))
-            .build();
+        if(model.getOptions() == null) {
+            return CreateTransitGatewayMulticastDomainRequest.builder()
+                .transitGatewayId(model.getTransitGatewayId())
+                .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
+                .build();
+        }
+        else {
+            return CreateTransitGatewayMulticastDomainRequest.builder()
+                .transitGatewayId(model.getTransitGatewayId())
+                .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
+                .options(this.translateModelToOptions(model))
+                .build();
+        }
     }
 
     private CreateTransitGatewayMulticastDomainRequestOptions translateModelToOptions(ResourceModel model) {
