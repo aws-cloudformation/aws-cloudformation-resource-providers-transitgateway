@@ -80,18 +80,18 @@ public class Read {
             return ResourceModel.builder()
                 .transitGatewayMulticastDomainId(response.transitGatewayMulticastDomainId())
                 .transitGatewayId(response.transitGatewayId())
+                .transitGatewayMulticastDomainArn(response.transitGatewayMulticastDomainArn())
                 .state(response.state().toString())
                 .creationTime(response.creationTime().toString())
                 .options(
-                    Options.builder()
-                        .autoAcceptSharedAssociations(response.options().autoAcceptSharedAssociationsAsString())
-                        .igmpv2Support(response.options().igmpv2SupportAsString())
-                        .staticSourcesSupport(response.options().staticSourcesSupportAsString())
-                        .build())
+                        Options.builder()
+                            .autoAcceptSharedAssociations(response.options().autoAcceptSharedAssociationsAsString())
+                            .igmpv2Support(response.options().igmpv2SupportAsString())
+                            .staticSourcesSupport(response.options().staticSourcesSupportAsString())
+                            .build())
                 .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
                 .build();
         }
-
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewayMulticastDomainsRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {

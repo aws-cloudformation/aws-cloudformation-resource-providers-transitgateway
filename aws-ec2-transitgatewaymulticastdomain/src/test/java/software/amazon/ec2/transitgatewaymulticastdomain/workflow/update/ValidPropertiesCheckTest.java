@@ -54,8 +54,9 @@ public class ValidPropertiesCheckTest extends AbstractTestBase {
         tags.add(MOCKS.tag());
 
         ResourceModel model = MOCKS.modelWithInvalidProperties(tags);
+        ResourceModel previousModel = MOCKS.modelWithInvalidProperties(tags, model.getState(), "TGW-123abc");
         CallbackContext context =  new CallbackContext();
-        ProgressEvent<ResourceModel, CallbackContext> response = new ValidPropertiesCheck(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
+        ProgressEvent<ResourceModel, CallbackContext> response = new ValidPropertiesCheck(proxy, MOCKS.request(model, previousModel), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);

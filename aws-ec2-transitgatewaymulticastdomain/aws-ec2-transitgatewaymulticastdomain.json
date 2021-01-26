@@ -7,6 +7,10 @@
       "description": "The ID of the transit gateway multicast domain.",
       "type": "string"
     },
+    "TransitGatewayMulticastDomainArn": {
+      "description": "The Amazon Resource Name (ARN) of the transit gateway multicast domain.",
+      "type": "string"
+    },
     "TransitGatewayId": {
       "description": "The ID of the transit gateway.",
       "type": "string"
@@ -68,7 +72,8 @@
   "readOnlyProperties": [
     "/properties/TransitGatewayMulticastDomainId",
     "/properties/State",
-    "/properties/CreationTime"
+    "/properties/CreationTime",
+    "/properties/TransitGatewayMulticastDomainArn"
   ],
   "primaryIdentifier": [
     "/properties/TransitGatewayMulticastDomainId"

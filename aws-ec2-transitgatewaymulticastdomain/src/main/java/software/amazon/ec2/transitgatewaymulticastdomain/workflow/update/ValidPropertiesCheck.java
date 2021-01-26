@@ -75,10 +75,14 @@ public class ValidPropertiesCheck {
 
     private List<String> invalidProperties() {
         ResourceModel model = this.request.getDesiredResourceState();
+        ResourceModel previousModel = this.request.getPreviousResourceState();
         return this.createOnlyProperties().stream().filter((prop) -> {
             try {
                 Method method = model.getClass().getMethod("get" + prop);
-                return method.invoke(model) != null;
+                logger.log(String.valueOf(method));
+                Method previoudMethod = previousModel.getClass().getMethod("get"+prop);
+                logger.log(String.valueOf(previoudMethod));
+                return !method.invoke(model).equals(previoudMethod.invoke(previousModel));
             } catch(Exception e ) {
                 return false;
             }

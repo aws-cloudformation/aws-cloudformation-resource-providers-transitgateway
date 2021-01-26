@@ -21,10 +21,15 @@ public class Mocks {
         this.currentTime = Instant.now();
         this.counter = 0;
     }
-    public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model) {
+    public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model, ResourceModel previousModel) {
         return ResourceHandlerRequest.<ResourceModel>builder()
             .desiredResourceState(model)
+            .previousResourceState(previousModel)
             .build();
+    }
+
+    public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model) {
+        return request(model, null);
     }
 
     public  ResourceModel modelWithoutCreateOnlyProperties(List<Tag> tags, String state) {
@@ -58,7 +63,7 @@ public class Mocks {
     }
 
 
-    public  ResourceModel modelWithInvalidProperties(List<Tag> tags, String state) {
+    public  ResourceModel modelWithInvalidProperties(List<Tag> tags, String state, String transitGatewayId) {
         return ResourceModel.builder()
                 .creationTime(this.currentTime.toString())
                 .state(state)
@@ -68,12 +73,15 @@ public class Mocks {
                     .staticSourcesSupport("disable")
                     .build()
                 )
-                .transitGatewayId(this.parentIdentifier)
+                .transitGatewayId(transitGatewayId)
                 .transitGatewayMulticastDomainId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
     }
 
+    public  ResourceModel modelWithInvalidProperties(List<Tag> tags, String state) {
+        return modelWithInvalidProperties(tags, state, this.parentIdentifier);
+    }
 
     public ResourceModel modelWithInvalidProperties() {
         final List<Tag> tags = new ArrayList<>();
