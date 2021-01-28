@@ -5,12 +5,9 @@ import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.awssdk.services.ec2.model.TagSpecification;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TagUtils {
     public static List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> sdkTagsToCfnTags(final List<Tag> tags) {
@@ -36,6 +33,18 @@ public class TagUtils {
                 .build())
             .collect(Collectors.toList());
     }
+
+
+    public static List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> mergeResourceModelAndStackTags(List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> modelTags, Map<String, String> stackTags) {
+        List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> tags = new ArrayList<software.amazon.ec2.transitgatewaymulticastdomain.Tag>();
+        for (Map.Entry<String, String> entry : stackTags.entrySet()) {
+            software.amazon.ec2.transitgatewaymulticastdomain.Tag tag = software.amazon.ec2.transitgatewaymulticastdomain.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();
+            tags.add(tag);
+        }
+        return Stream.concat(modelTags.stream(), tags.stream())
+            .collect(Collectors.toList());
+    }
+
 
     public static List<TagSpecification> cfnTagsToSdkTagSpecifications(final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> tags) {
          if(tags == null) return null;
