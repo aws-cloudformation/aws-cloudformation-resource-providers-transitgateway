@@ -7,6 +7,7 @@ import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Mocks {
@@ -23,6 +24,7 @@ public class Mocks {
     }
     public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model, ResourceModel previousModel) {
         return ResourceHandlerRequest.<ResourceModel>builder()
+            .desiredResourceTags(new HashMap<>())
             .desiredResourceState(model)
             .previousResourceState(previousModel)
             .build();

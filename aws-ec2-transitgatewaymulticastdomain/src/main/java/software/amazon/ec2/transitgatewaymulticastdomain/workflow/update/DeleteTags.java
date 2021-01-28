@@ -61,7 +61,7 @@ public class DeleteTags {
 
     private List<Tag> tagsToDelete(ResourceModel model) {
         final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> prevTags =  new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTags();
-        final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> currTags = model.getTags();
+        List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> currTags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
         return TagUtils.difference(prevTags, currTags);
     }
 
