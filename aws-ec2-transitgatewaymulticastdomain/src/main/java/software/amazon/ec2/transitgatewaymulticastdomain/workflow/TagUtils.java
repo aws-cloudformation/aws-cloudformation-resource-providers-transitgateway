@@ -36,18 +36,27 @@ public class TagUtils {
 
 
     public static List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> mergeResourceModelAndStackTags(List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> modelTags, Map<String, String> stackTags) {
+        if(modelTags == null) {
+            modelTags = new ArrayList<software.amazon.ec2.transitgatewaymulticastdomain.Tag>();
+        }
         List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> tags = new ArrayList<software.amazon.ec2.transitgatewaymulticastdomain.Tag>();
         for (Map.Entry<String, String> entry : stackTags.entrySet()) {
             software.amazon.ec2.transitgatewaymulticastdomain.Tag tag = software.amazon.ec2.transitgatewaymulticastdomain.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();
             tags.add(tag);
         }
-        return Stream.concat(modelTags.stream(), tags.stream())
-            .collect(Collectors.toList());
+        if(tags.isEmpty()) {
+            return modelTags;
+        } else if(modelTags == null || modelTags.isEmpty()) {
+            return tags;
+        } else {
+            return Stream.concat(modelTags.stream(), tags.stream())
+                .collect(Collectors.toList());
+        }
     }
 
 
     public static List<TagSpecification> cfnTagsToSdkTagSpecifications(final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> tags) {
-         if(tags == null) return null;
+         if(tags == null || tags.isEmpty()) return null;
         List<Tag> listTags = TagUtils.cfnTagsToSdkTags(tags);
         return TagUtils.translateTagsToTagSpecifications(listTags);
     }
