@@ -50,9 +50,6 @@ public class Create {
 
     private CreateTransitGatewayMulticastDomainRequest translateModelToRequest(ResourceModel model) {
         List<Tag> tags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
-        this.logger.log("TAGS");
-        this.logger.log(tags.toString());
-
 
         if(model.getOptions() == null) {
             return CreateTransitGatewayMulticastDomainRequest.builder()
@@ -94,8 +91,6 @@ public class Create {
     }
 
     private CreateTransitGatewayMulticastDomainResponse makeServiceCall(CreateTransitGatewayMulticastDomainRequest request, ProxyClient<Ec2Client> client) {
-        this.logger.log("request.toString()");
-        this.logger.log(request.toString());
         return proxy.injectCredentialsAndInvokeV2(request, client.client()::createTransitGatewayMulticastDomain);
     }
 
