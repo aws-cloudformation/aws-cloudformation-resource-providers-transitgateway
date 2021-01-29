@@ -50,6 +50,7 @@ public class Create {
 
     private CreateTransitGatewayMulticastDomainRequest translateModelToRequest(ResourceModel model) {
         List<Tag> tags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
+
         if(model.getOptions() == null) {
             return CreateTransitGatewayMulticastDomainRequest.builder()
                 .transitGatewayId(model.getTransitGatewayId())
