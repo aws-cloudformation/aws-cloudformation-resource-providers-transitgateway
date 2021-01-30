@@ -1,4 +1,4 @@
-# AWS::EC2::TransitGatewayMulticastDomain Tag
+# AWS::EC2::TransitGatewayConnect Tag
 
 ## Syntax
 
