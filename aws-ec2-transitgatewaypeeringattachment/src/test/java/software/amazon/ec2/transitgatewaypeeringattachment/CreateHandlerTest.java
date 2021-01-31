@@ -1,4 +1,4 @@
-package software.amazon.ec2.transitgatewaymulticastdomain;
+package software.amazon.ec2.transitgatewaypeeringattachment;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,9 +9,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayMulticastDomainRequest;
-import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayMulticastDomainRequest;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayMulticastDomainsRequest;
+import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayPeeringAttachmentRequest;
+import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayPeeringAttachmentRequest;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayPeeringAttachmentsRequest;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
 
@@ -56,47 +56,8 @@ public class CreateHandlerTest extends AbstractTestBase {
 
         ResourceModel model = MOCKS.model();
 
-        when(proxyClient.client().createTransitGatewayMulticastDomain(any(CreateTransitGatewayMulticastDomainRequest.class))).thenReturn(MOCKS.createResponse());
-        when(proxyClient.client().describeTransitGatewayMulticastDomains(any(DescribeTransitGatewayMulticastDomainsRequest.class))).thenReturn(MOCKS.describeResponse());
-
-        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
-
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
-        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isEqualTo(model);
-        assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage()).isNull();
-        assertThat(response.getErrorCode()).isNull();
-    }
-
-
-    @Test
-    public void handleRequest_NonDefaultOptions() {
-
-        ResourceModel model = MOCKS.modelWithNonDefaultOptions();
-
-        when(proxyClient.client().createTransitGatewayMulticastDomain(any(CreateTransitGatewayMulticastDomainRequest.class))).thenReturn(MOCKS.createResponse());
-        when(proxyClient.client().describeTransitGatewayMulticastDomains(any(DescribeTransitGatewayMulticastDomainsRequest.class))).thenReturn(MOCKS.describeResponseWithNonDefaultOptions());
-
-        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
-
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
-        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isEqualTo(model);
-        assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage()).isNull();
-        assertThat(response.getErrorCode()).isNull();
-    }
-
-    @Test
-    public void handleRequest_WithoutOptions() {
-
-        ResourceModel model = MOCKS.modelWithoutOptions();
-
-        when(proxyClient.client().createTransitGatewayMulticastDomain(any(CreateTransitGatewayMulticastDomainRequest.class))).thenReturn(MOCKS.createResponse());
-        when(proxyClient.client().describeTransitGatewayMulticastDomains(any(DescribeTransitGatewayMulticastDomainsRequest.class))).thenReturn(MOCKS.describeResponseWithoutOptions());
+        when(proxyClient.client().createTransitGatewayPeeringAttachment(any(CreateTransitGatewayPeeringAttachmentRequest.class))).thenReturn(MOCKS.createResponse());
+        when(proxyClient.client().describeTransitGatewayPeeringAttachments(any(DescribeTransitGatewayPeeringAttachmentsRequest.class))).thenReturn(MOCKS.describeResponse());
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -116,7 +77,7 @@ public class CreateHandlerTest extends AbstractTestBase {
         tags.add(MOCKS.tag());
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("Invalid Request").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
-        when(proxyClient.client().createTransitGatewayMulticastDomain(any(CreateTransitGatewayMulticastDomainRequest.class))).thenThrow(exception);
+        when(proxyClient.client().createTransitGatewayPeeringAttachment(any(CreateTransitGatewayPeeringAttachmentRequest.class))).thenThrow(exception);
 
         ResourceModel model = MOCKS.model(tags);
 

@@ -89,4 +89,7 @@ The time the transit gateway multicast domain was created.
 #### TransitGatewayMulticastDomainArn
 
 The Amazon Resource Name (ARN) of the transit gateway multicast domain.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6e881ce3252caaa8635e824e94bb88b0f44f1b7a
