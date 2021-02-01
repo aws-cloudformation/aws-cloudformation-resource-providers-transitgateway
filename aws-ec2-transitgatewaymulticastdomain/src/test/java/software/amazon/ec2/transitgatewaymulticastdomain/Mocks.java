@@ -7,6 +7,7 @@ import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Mocks {
@@ -23,6 +24,7 @@ public class Mocks {
     }
     public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model, ResourceModel previousModel) {
         return ResourceHandlerRequest.<ResourceModel>builder()
+            .desiredResourceTags(new HashMap<>())
             .desiredResourceState(model)
             .previousResourceState(previousModel)
             .build();
@@ -223,6 +225,35 @@ public class Mocks {
     }
 
 
+    public  ResourceModel modelWithoutOptions(List<Tag> tags, String state) {
+        return ResourceModel.builder()
+            .transitGatewayId(this.parentIdentifier)
+            .creationTime(this.currentTime.toString())
+            .state(state)
+            .options(Options.builder()
+                .build()
+            )
+            .transitGatewayMulticastDomainId(this.primaryIdentifier)
+            .tags(TagUtils.sdkTagsToCfnTags(tags))
+            .build();
+    }
+
+
+    public ResourceModel modelWithoutOptions() {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modelWithoutOptions(tags, "available");
+    }
+
+    public ResourceModel modelWithoutOptions(String state) {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modelWithoutOptions(tags, state);
+    }
+
+    public ResourceModel modelWithoutOptions(List<Tag> tags) {
+        return this.modelWithoutOptions(tags, "available");
+    }
+
+
 
     public  ResourceModel modelWithNonDefaultOptions(List<Tag> tags, String state) {
         return ResourceModel.builder()
@@ -308,6 +339,18 @@ public class Mocks {
                 .build();
     }
 
+    public TransitGatewayMulticastDomain sdkModelWithoutOptions(List<Tag> tags, String state) {
+        return TransitGatewayMulticastDomain.builder()
+                .transitGatewayId(this.parentIdentifier)
+                .creationTime(this.currentTime)
+                .state(state)
+                .options(TransitGatewayMulticastDomainOptions.builder()
+                    .build())
+                .transitGatewayMulticastDomainId(this.primaryIdentifier)
+                .tags(tags)
+                .build();
+    }
+
 
     public TransitGatewayMulticastDomain sdkModelWithNonDefaultOptions(String state) {
         final List<software.amazon.awssdk.services.ec2.model.Tag> tags = new ArrayList<>();
@@ -364,6 +407,28 @@ public class Mocks {
 
     public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithNonDefaultOptions() {
         return this.describeResponseWithNonDefaultOptions(new ArrayList<>(), "available");
+    }
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithoutOptions(List<Tag> tags, String state) {
+        return DescribeTransitGatewayMulticastDomainsResponse.builder()
+            .transitGatewayMulticastDomains(
+               this.sdkModelWithoutOptions(tags, state)
+            )
+            .build();
+    }
+
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithoutOptions(String state) {
+        final List<software.amazon.awssdk.services.ec2.model.Tag> tags = new ArrayList<>();
+        return this.describeResponseWithoutOptions(tags, state);
+    }
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithoutOptions(List<Tag> tags) {
+        return this.describeResponseWithoutOptions(tags, "available");
+    }
+
+    public DescribeTransitGatewayMulticastDomainsResponse describeResponseWithoutOptions() {
+        return this.describeResponseWithoutOptions(new ArrayList<>(), "available");
     }
 
     public CreateTagsResponse createTagsResponse() {

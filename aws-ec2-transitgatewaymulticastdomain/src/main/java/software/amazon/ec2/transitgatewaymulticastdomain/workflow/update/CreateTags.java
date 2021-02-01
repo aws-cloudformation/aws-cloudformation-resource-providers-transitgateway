@@ -12,7 +12,9 @@ import software.amazon.awssdk.services.ec2.model.CreateTagsResponse;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CreateTags {
     AmazonWebServicesClientProxy proxy;
@@ -21,7 +23,8 @@ public class CreateTags {
     ProxyClient<Ec2Client> client;
     Logger logger;
     ProgressEvent<ResourceModel, CallbackContext>  progress;
-
+    Map<String, String> stackTags;
+    Map<String, String> previousStackTags;
     public CreateTags(
         AmazonWebServicesClientProxy proxy,
         ResourceHandlerRequest<ResourceModel> request,
@@ -33,7 +36,6 @@ public class CreateTags {
         this.request = request;
         this.callbackContext = callbackContext;
         this.client = client;
-        this.logger = logger;
     }
 
     public ProgressEvent<ResourceModel, CallbackContext>  run(ProgressEvent<ResourceModel, CallbackContext> progress) {
@@ -62,7 +64,7 @@ public class CreateTags {
 
     private List<Tag> tagsToCreate(ResourceModel model) {
         List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> prevTags = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTags();
-        List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> currTags = model.getTags();
+        List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> currTags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
         return TagUtils.difference(currTags, prevTags);
     }
 
