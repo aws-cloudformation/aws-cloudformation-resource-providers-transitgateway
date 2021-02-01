@@ -82,10 +82,12 @@
     }
   },
   "additionalProperties": false,
+  "createOnlyProperties": [
+    "/properties/RequesterTgwInfo",
+    "/properties/AccepterTgwInfo"
+  ],
   "readOnlyProperties": [
     "/properties/TransitGatewayAttachmentId",
-    "/properties/RequesterTgwInfo",
-    "/properties/AccepterTgwInfo",
     "/properties/Status",
     "/properties/State",
     "/properties/CreationTime"

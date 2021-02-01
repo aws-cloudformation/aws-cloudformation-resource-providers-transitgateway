@@ -62,6 +62,7 @@ public class List {
 
     private java.util.List<ResourceModel> translateResponseToModel(DescribeTransitGatewayPeeringAttachmentsResponse awsResponse) {
         return streamOfOrEmpty(awsResponse. transitGatewayPeeringAttachments())
+            .filter(resource -> !(resource.stateAsString().equals("deleted")))
             .map(resource -> ResourceModel.builder()
                 .transitGatewayAttachmentId(resource.transitGatewayAttachmentId())
                 .build())

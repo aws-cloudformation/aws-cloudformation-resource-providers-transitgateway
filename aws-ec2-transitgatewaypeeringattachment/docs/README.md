@@ -84,14 +84,6 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 
 The ID of the transit gateway peering attachment.
 
-#### RequesterTgwInfo
-
-Returns the <code>RequesterTgwInfo</code> value.
-
-#### AccepterTgwInfo
-
-Returns the <code>AccepterTgwInfo</code> value.
-
 #### Status
 
 Returns the <code>Status</code> value.

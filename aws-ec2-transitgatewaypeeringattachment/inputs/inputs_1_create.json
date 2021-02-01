@@ -1,8 +1,18 @@
 {
-  "Tags": [
+  "RequesterTgwInfo": {
+    "TransitGatewayId": "tgw-05c50fa80d48e892a",
+    "OwnerId": "987599583120",
+    "Region": "us-east-1"
+  },
+  "AccepterTgwInfo": {
+    "TransitGatewayId": "tgw-049bbbf7e5b45e721",
+    "OwnerId": "987599583120",
+    "Region": "us-east-2"
+  },
+  "Tags":[
     {
-      "Key": "KEY_1",
-      "Value": "VALUE_1"
+      "Key": "key-1",
+      "Value": "value-1"
     }
   ]
 }

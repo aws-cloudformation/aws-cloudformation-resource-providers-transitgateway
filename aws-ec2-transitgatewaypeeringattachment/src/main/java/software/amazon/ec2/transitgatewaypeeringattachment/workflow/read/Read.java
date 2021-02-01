@@ -54,7 +54,7 @@ public class Read {
     private DescribeTransitGatewayPeeringAttachmentsRequest translateModelToRequest(ResourceModel model) {
         return DescribeTransitGatewayPeeringAttachmentsRequest.builder()
                    .transitGatewayAttachmentIds(model.getTransitGatewayAttachmentId())
-            .build();
+                   .build();
     }
 
     private DescribeTransitGatewayPeeringAttachmentsResponse makeServiceCall(DescribeTransitGatewayPeeringAttachmentsRequest awsRequest, ProxyClient<Ec2Client> client) {
@@ -67,7 +67,7 @@ public class Read {
         } else {
             TransitGatewayPeeringAttachment response = awsResponse.transitGatewayPeeringAttachments().get(0);
             return ResourceModel.builder()
-                .transitGatewayAttachmentId(response.transitGatewayAttachmentId())
+            .transitGatewayAttachmentId(response.transitGatewayAttachmentId())
             .accepterTgwInfo(PeeringTgwInfo.builder()
                     .ownerId(response.accepterTgwInfo().ownerId())
                     .region(response.accepterTgwInfo().region())

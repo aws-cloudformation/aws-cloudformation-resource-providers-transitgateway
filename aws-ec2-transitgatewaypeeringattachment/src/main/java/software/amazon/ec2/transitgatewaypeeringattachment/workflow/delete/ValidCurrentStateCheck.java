@@ -21,6 +21,7 @@ public class ValidCurrentStateCheck extends ValidCurrentStateCheckBase {
     protected List<String> validStates() {
         List<String> list = new ArrayList<>();
         list.add(TransitGatewayAttachmentState.AVAILABLE.toString());
+        list.add(TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString());
         list.add(TransitGatewayAttachmentState.DELETING.toString());
         return list;
     }

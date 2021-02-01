@@ -1,11 +1,13 @@
 {
-    "TPSCode": "...",
-    "Title": "...",
-    "CoverSheetIncluded": "...",
-    "DueDate": "...",
-    "ApprovalDate": "...",
-    "Memo": "...",
-    "SecondCopyOfMemo": "...",
-    "TestCode": "...",
-    "Authors": "..."
+    "TransitGatewayId": "tgw-05c50fa80d48e892a",
+    "PeerTransitGatewayId": "tgw-049bbbf7e5b45e721",
+    "PeerAccountId": "987599583120",
+    "PeerRegion": "us-east-2",
+    "Tags":[
+        {
+            "Key": "key-1",
+            "Value": "value-1"
+        }
+    ]
+
 }
