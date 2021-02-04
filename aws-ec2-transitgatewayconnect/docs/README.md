@@ -13,7 +13,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "Type" : "AWS::EC2::TransitGatewayConnect",
     "Properties" : {
         "<a href="#transporttransitgatewayattachmentid" title="TransportTransitGatewayAttachmentId">TransportTransitGatewayAttachmentId</a>" : <i>String</i>,
-        "<a href="#options" title="Options">Options</a>" : <i><a href="transitgatewayconnectoptions.md">TransitGatewayConnectOptions</a></i>,
+        "<a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>" : <i>String</i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>
     }
 }
@@ -25,7 +25,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 Type: AWS::EC2::TransitGatewayConnect
 Properties:
     <a href="#transporttransitgatewayattachmentid" title="TransportTransitGatewayAttachmentId">TransportTransitGatewayAttachmentId</a>: <i>String</i>
-    <a href="#options" title="Options">Options</a>: <i><a href="transitgatewayconnectoptions.md">TransitGatewayConnectOptions</a></i>
+    <a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>: <i>String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
 </pre>
@@ -40,15 +40,17 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
-#### Options
+#### TransitGatewayId
+
+The ID of the transit gateway.
 
 _Required_: No
 
-_Type_: <a href="transitgatewayconnectoptions.md">TransitGatewayConnectOptions</a>
+_Type_: String
 
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
 #### Tags
 
@@ -75,10 +77,6 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### TransitGatewayAttachmentId
 
 The ID of the Connect attachment.
-
-#### TransitGatewayId
-
-The ID of the transit gateway.
 
 #### State
 

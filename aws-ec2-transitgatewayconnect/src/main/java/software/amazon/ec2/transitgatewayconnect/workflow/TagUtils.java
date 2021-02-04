@@ -44,7 +44,7 @@ public class TagUtils {
 
     public static List<TagSpecification> translateTagsToTagSpecifications(final List<Tag> tags) {
         return Arrays.asList(TagSpecification.builder()
-            .resourceType("transit-gateway-connect")
+            .resourceType("transit-gateway-attachment")
             .tags(tags).build());
     }
 

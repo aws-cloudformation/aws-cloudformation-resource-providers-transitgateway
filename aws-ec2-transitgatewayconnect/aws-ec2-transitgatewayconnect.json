@@ -21,12 +21,7 @@
     },
     "CreationTime": {
       "description": "The creation time.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "Options": {
-      "$ref": "#/definitions/TransitGatewayConnectOptions",
-      "description": "The Connect attachment options."
+      "type": "string"
     },
     "Tags": {
       "description": "The tags for the attachment.",
@@ -37,15 +32,6 @@
     }
   },
   "definitions": {
-    "TransitGatewayConnectOptions": {
-      "type": "object",
-      "properties": {
-        "Protocol": {
-          "description": "The tunnel protocol.",
-          "type": "string"
-        }
-      }
-    },
     "Tag": {
       "type": "object",
       "properties": {
@@ -57,15 +43,19 @@
           "description": "The value of the tag. Constraints: Tag values are case-sensitive and accept a maximum of 255 Unicode characters.",
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false,
   "readOnlyProperties": [
     "/properties/TransitGatewayAttachmentId",
-    "/properties/TransitGatewayId",
     "/properties/State",
     "/properties/CreationTime"
+  ],
+  "createOnlyProperties": [
+    "/properties/TransitGatewayId",
+    "/properties/TransportTransitGatewayAttachmentId"
   ],
   "primaryIdentifier": [
     "/properties/TransitGatewayAttachmentId"
@@ -74,7 +64,8 @@
     "create": {
       "permissions": [
         "ec2:CreateTransitGatewayConnect",
-        "ec2:DescribeTransitGatewayConnects"
+        "ec2:DescribeTransitGatewayConnects",
+        "ec2:CreateTags"
       ]
     },
     "read": {
@@ -90,7 +81,8 @@
     "delete": {
       "permissions": [
         "ec2:DeleteTransitGatewayConnect",
-        "ec2:DescribeTransitGatewayConnects"
+        "ec2:DescribeTransitGatewayConnects",
+        "ec2:DeleteTags"
       ]
     },
     "list": {

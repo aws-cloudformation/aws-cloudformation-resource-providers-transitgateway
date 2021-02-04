@@ -1,0 +1,10 @@
+{
+    "TransportTransitGatewayAttachmentId": "tgw-attach-0b803fc61fe7205ae",
+    "TransitGatewayId": "tgw-05c50fa80d48e892a",
+    "Tags": [
+        {
+            "Key": "key",
+            "Value": "value"
+        }
+    ]
+}

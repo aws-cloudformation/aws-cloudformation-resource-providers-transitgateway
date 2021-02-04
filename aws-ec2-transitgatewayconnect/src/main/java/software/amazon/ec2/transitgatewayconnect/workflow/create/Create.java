@@ -1,15 +1,12 @@
 package software.amazon.ec2.transitgatewayconnect.workflow.create;
 
-import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayConnectRequestOptions;
+import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.ec2.transitgatewayconnect.CallbackContext;
 import software.amazon.ec2.transitgatewayconnect.ResourceModel;
 import software.amazon.ec2.transitgatewayconnect.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewayconnect.workflow.TagUtils;
 import software.amazon.ec2.transitgatewayconnect.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayConnectRequest;
-import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayConnectResponse;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
 import software.amazon.cloudformation.proxy.*;
 
 public class Create {
@@ -46,7 +43,7 @@ public class Create {
     private CreateTransitGatewayConnectRequest translateModelToRequest(ResourceModel model) {
         return CreateTransitGatewayConnectRequest.builder()
             .transportTransitGatewayAttachmentId(model.getTransportTransitGatewayAttachmentId())
-            .options(CreateTransitGatewayConnectRequestOptions.builder().protocol(model.getOptions().getProtocol()).build())
+            .options(CreateTransitGatewayConnectRequestOptions.builder().protocol("gre").build())
             .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
             .build();
     }
@@ -70,4 +67,5 @@ public class Create {
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(CreateTransitGatewayConnectRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
+
 }

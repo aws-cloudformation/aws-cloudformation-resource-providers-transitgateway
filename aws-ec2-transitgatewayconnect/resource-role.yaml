@@ -23,7 +23,9 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
+                - "ec2:CreateTags"
                 - "ec2:CreateTransitGatewayConnect"
+                - "ec2:DeleteTags"
                 - "ec2:DeleteTransitGatewayConnect"
                 - "ec2:DescribeTransitGatewayConnects"
                 Resource: "*"

@@ -61,6 +61,8 @@ public class ReadHandlerTest extends AbstractTestBase {
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
+        System.out.println(model);
+        System.out.println(response.getResourceModel());
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);

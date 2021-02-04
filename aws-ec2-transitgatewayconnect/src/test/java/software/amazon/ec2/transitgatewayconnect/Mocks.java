@@ -14,12 +14,14 @@ public class Mocks {
     public String parentIdentifier;
     public Instant currentTime;
     public Integer counter;
+    public String protocol;
     public Mocks(
     ) {
         this.primaryIdentifier = "tgw-mcast-domain-02bb79002EXAMPLE";
         this.parentIdentifier = "tgw-0d88d2d0d5EXAMPLE";;
         this.currentTime = Instant.now();
         this.counter = 0;
+        this.protocol = "abc";
     }
     public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model) {
         return ResourceHandlerRequest.<ResourceModel>builder()
@@ -187,6 +189,7 @@ public class Mocks {
         this.counter++;
         return this.tag("KEY_" + this.counter, "VALUE_" + this.counter);
     }
+
 
     public TransitGatewayConnect sdkModel(List<Tag> tags, String state) {
         return TransitGatewayConnect.builder()
