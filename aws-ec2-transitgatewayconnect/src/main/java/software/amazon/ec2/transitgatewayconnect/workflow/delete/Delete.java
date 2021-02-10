@@ -61,7 +61,6 @@ public class Delete {
         ResourceModel model,
         CallbackContext context
     ) {
-        model.setTransitGatewayAttachmentId(response.transitGatewayConnect().transitGatewayAttachmentId());
         String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
         return currentState.equals(TransitGatewayAttachmentState.DELETED.toString());
     }

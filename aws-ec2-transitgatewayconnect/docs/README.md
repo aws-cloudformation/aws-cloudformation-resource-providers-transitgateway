@@ -36,7 +36,7 @@ Properties:
 
 The ID of the attachment from which the Connect attachment was created.
 
-_Required_: No
+_Required_: Yes
 
 _Type_: String
 
@@ -46,7 +46,7 @@ _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/l
 
 The ID of the transit gateway.
 
-_Required_: No
+_Required_: Yes
 
 _Type_: String
 

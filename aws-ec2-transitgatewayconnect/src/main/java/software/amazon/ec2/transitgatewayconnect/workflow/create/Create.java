@@ -3,11 +3,14 @@ package software.amazon.ec2.transitgatewayconnect.workflow.create;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.ec2.transitgatewayconnect.CallbackContext;
 import software.amazon.ec2.transitgatewayconnect.ResourceModel;
+import software.amazon.ec2.transitgatewayconnect.Tag;
 import software.amazon.ec2.transitgatewayconnect.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewayconnect.workflow.TagUtils;
 import software.amazon.ec2.transitgatewayconnect.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.proxy.*;
+
+import java.util.List;
 
 public class Create {
     AmazonWebServicesClientProxy proxy;
@@ -41,10 +44,11 @@ public class Create {
     }
 
     private CreateTransitGatewayConnectRequest translateModelToRequest(ResourceModel model) {
+        List<Tag> tags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
         return CreateTransitGatewayConnectRequest.builder()
             .transportTransitGatewayAttachmentId(model.getTransportTransitGatewayAttachmentId())
             .options(CreateTransitGatewayConnectRequestOptions.builder().protocol("gre").build())
-            .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
+            .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(tags))
             .build();
     }
 

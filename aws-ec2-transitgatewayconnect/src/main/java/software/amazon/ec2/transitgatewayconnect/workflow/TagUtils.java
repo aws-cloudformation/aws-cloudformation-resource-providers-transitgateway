@@ -5,18 +5,13 @@ import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.awssdk.services.ec2.model.TagSpecification;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TagUtils {
     public static List<software.amazon.ec2.transitgatewayconnect.Tag> sdkTagsToCfnTags(final List<Tag> tags) {
-        if(tags == null) {
-            return new ArrayList<>();
-        }
+        if (tags == null) return new ArrayList<>();;
         return tags.stream()
             .map(e -> software.amazon.ec2.transitgatewayconnect.Tag.builder()
                 .key(e.key())
@@ -38,6 +33,7 @@ public class TagUtils {
     }
 
     public static List<TagSpecification> cfnTagsToSdkTagSpecifications(final List<software.amazon.ec2.transitgatewayconnect.Tag> tags) {
+        if(tags == null || tags.isEmpty()) return null;
         List<Tag> listTags = TagUtils.cfnTagsToSdkTags(tags);
         return TagUtils.translateTagsToTagSpecifications(listTags);
     }
@@ -56,6 +52,25 @@ public class TagUtils {
         final List<Tag> sdkTags1 = TagUtils.cfnTagsToSdkTags(tags1);
         final List<Tag> sdkTags2 = TagUtils.cfnTagsToSdkTags(tags2);
         return Sets.difference(TagUtils.listToSet(sdkTags1), TagUtils.listToSet(sdkTags2)).immutableCopy().asList();
+    }
+
+    public static List<software.amazon.ec2.transitgatewayconnect.Tag> mergeResourceModelAndStackTags(List<software.amazon.ec2.transitgatewayconnect.Tag> modelTags, Map<String, String> stackTags) {
+        if(modelTags == null) modelTags = new ArrayList<software.amazon.ec2.transitgatewayconnect.Tag>();
+        List<software.amazon.ec2.transitgatewayconnect.Tag> tags = new ArrayList<software.amazon.ec2.transitgatewayconnect.Tag>();
+        if(stackTags != null){
+            for (Map.Entry<String, String> entry : stackTags.entrySet()) {
+                software.amazon.ec2.transitgatewayconnect.Tag tag = software.amazon.ec2.transitgatewayconnect.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();
+                tags.add(tag);
+            }
+        }
+        if(tags.isEmpty()) {
+            return modelTags;
+        } else if(modelTags == null || modelTags.isEmpty()) {
+            return tags;
+        } else {
+            return Stream.concat(modelTags.stream(), tags.stream())
+                    .collect(Collectors.toList());
+        }
     }
 
 }

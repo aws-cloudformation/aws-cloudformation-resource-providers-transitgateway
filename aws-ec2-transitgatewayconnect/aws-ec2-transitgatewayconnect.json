@@ -31,6 +31,10 @@
       }
     }
   },
+  "required": [
+    "TransitGatewayId",
+    "TransportTransitGatewayAttachmentId"
+  ],
   "definitions": {
     "Tag": {
       "type": "object",
@@ -75,7 +79,9 @@
     },
     "update": {
       "permissions": [
-        "ec2:DescribeTransitGatewayConnects"
+        "ec2:DescribeTransitGatewayConnects",
+        "ec2:DeleteTags",
+        "ec2:CreateTags"
       ]
     },
     "delete": {

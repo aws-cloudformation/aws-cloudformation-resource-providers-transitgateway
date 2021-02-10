@@ -62,7 +62,7 @@ public class CreateTags {
 
     private List<Tag> tagsToCreate(ResourceModel model) {
         List<software.amazon.ec2.transitgatewayconnect.Tag> prevTags = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTags();
-        List<software.amazon.ec2.transitgatewayconnect.Tag> currTags = model.getTags();
+        List<software.amazon.ec2.transitgatewayconnect.Tag> currTags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
         return TagUtils.difference(currTags, prevTags);
     }
 
