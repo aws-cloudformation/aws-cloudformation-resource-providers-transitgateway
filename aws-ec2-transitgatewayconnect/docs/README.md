@@ -85,4 +85,3 @@ The state of the attachment.
 #### CreationTime
 
 The creation time.
-
