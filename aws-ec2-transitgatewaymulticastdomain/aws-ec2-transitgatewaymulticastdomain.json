@@ -21,8 +21,7 @@
     },
     "CreationTime": {
       "description": "The time the transit gateway multicast domain was created.",
-      "type": "string",
-      "format": "date-time"
+      "type": "string"
     },
     "Tags": {
       "description": "The tags for the transit gateway multicast domain.",
@@ -47,9 +46,13 @@
           "description": "Indicates whether support for statically configuring transit gateway multicast group sources is turned on. Valid Values: enable | disable",
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
+  "required": [
+    "TransitGatewayId"
+  ],
   "definitions": {
     "Tag": {
       "type": "object",
@@ -62,7 +65,12 @@
           "description": "The value of the tag. Constraints: Tag values are case-sensitive and accept a maximum of 255 Unicode characters.",
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "Key",
+        "Value"
+      ],
+      "additionalProperties": false
     }
   },
   "additionalProperties": false,
