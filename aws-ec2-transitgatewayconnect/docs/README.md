@@ -87,5 +87,3 @@ The creation time.
 #### TransitGatewayId
 
 The ID of the transit gateway.
-
-
