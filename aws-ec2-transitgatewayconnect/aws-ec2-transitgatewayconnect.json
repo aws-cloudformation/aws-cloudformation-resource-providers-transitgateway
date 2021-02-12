@@ -29,13 +29,27 @@
       "items": {
         "$ref": "#/definitions/Tag"
       }
+    },
+    "Options": {
+      "$ref": "#/definitions/TransitGatewayConnectOptions",
+      "description": "The Connect attachment options."
     }
   },
   "required": [
-    "TransitGatewayId",
-    "TransportTransitGatewayAttachmentId"
+    "TransportTransitGatewayAttachmentId",
+    "Options"
   ],
   "definitions": {
+    "TransitGatewayConnectOptions": {
+      "type": "object",
+      "properties": {
+        "Protocol": {
+          "description": "The tunnel protocol.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "Tag": {
       "type": "object",
       "properties": {
@@ -55,10 +69,10 @@
   "readOnlyProperties": [
     "/properties/TransitGatewayAttachmentId",
     "/properties/State",
-    "/properties/CreationTime"
+    "/properties/CreationTime",
+    "/properties/TransitGatewayId"
   ],
   "createOnlyProperties": [
-    "/properties/TransitGatewayId",
     "/properties/TransportTransitGatewayAttachmentId"
   ],
   "primaryIdentifier": [

@@ -47,7 +47,7 @@ public class Create {
         List<Tag> tags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
         return CreateTransitGatewayConnectRequest.builder()
             .transportTransitGatewayAttachmentId(model.getTransportTransitGatewayAttachmentId())
-            .options(CreateTransitGatewayConnectRequestOptions.builder().protocol("gre").build())
+            .options(CreateTransitGatewayConnectRequestOptions.builder().protocol(model.getOptions().getProtocol()).build())
             .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(tags))
             .build();
     }

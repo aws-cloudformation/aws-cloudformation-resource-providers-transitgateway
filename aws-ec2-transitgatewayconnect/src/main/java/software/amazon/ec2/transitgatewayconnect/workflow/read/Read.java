@@ -7,6 +7,7 @@ import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.*;
 import software.amazon.ec2.transitgatewayconnect.CallbackContext;
 import software.amazon.ec2.transitgatewayconnect.ResourceModel;
+import software.amazon.ec2.transitgatewayconnect.TransitGatewayConnectOptions;
 import software.amazon.ec2.transitgatewayconnect.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewayconnect.workflow.TagUtils;
 
@@ -65,6 +66,7 @@ public class Read {
         } else {
             TransitGatewayConnect response = awsResponse.transitGatewayConnects().get(0);
             return ResourceModel.builder()
+                .options(TransitGatewayConnectOptions.builder().protocol(response.options().protocol().toString()).build())
                 .transitGatewayAttachmentId(response.transitGatewayAttachmentId())
                 .transportTransitGatewayAttachmentId(response.transportTransitGatewayAttachmentId())
                 .transitGatewayId(response.transitGatewayId())
