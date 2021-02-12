@@ -21,7 +21,7 @@ public class Mocks {
         this.parentIdentifier = "tgw-0d88d2d0d5EXAMPLE";;
         this.currentTime = Instant.now();
         this.counter = 0;
-        this.protocol = "abc";
+        this.protocol = "gre";
     }
     public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model) {
         return ResourceHandlerRequest.<ResourceModel>builder()
@@ -33,6 +33,7 @@ public class Mocks {
         return ResourceModel.builder()
                 .creationTime(this.currentTime.toString())
                 .state(state)
+                .options(TransitGatewayConnectOptions.builder().protocol(this.protocol).build())
                 .transitGatewayAttachmentId(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
@@ -158,6 +159,7 @@ public class Mocks {
     public  ResourceModel model(List<Tag> tags, String state) {
         return ResourceModel.builder()
             .transitGatewayId(this.parentIdentifier)
+            .options(TransitGatewayConnectOptions.builder().protocol(this.protocol).build())
             .creationTime(this.currentTime.toString())
             .state(state)
             .transitGatewayAttachmentId(this.primaryIdentifier)
@@ -195,6 +197,7 @@ public class Mocks {
         return TransitGatewayConnect.builder()
                 .transitGatewayId(this.parentIdentifier)
                 .creationTime(this.currentTime)
+                .options(software.amazon.awssdk.services.ec2.model.TransitGatewayConnectOptions.builder().protocol(this.protocol).build())
                 .state(state)
                 .transitGatewayAttachmentId(this.primaryIdentifier)
                 .tags(tags)
