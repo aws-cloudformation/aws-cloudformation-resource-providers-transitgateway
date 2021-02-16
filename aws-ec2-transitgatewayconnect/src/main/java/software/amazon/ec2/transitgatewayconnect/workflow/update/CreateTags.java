@@ -1,10 +1,10 @@
-package software.amazon.ec2.transitgatewaymulticastdomain.workflow.update;
+package software.amazon.ec2.transitgatewayconnect.workflow.update;
 
-import software.amazon.ec2.transitgatewaymulticastdomain.CallbackContext;
-import software.amazon.ec2.transitgatewaymulticastdomain.ResourceModel;
-import software.amazon.ec2.transitgatewaymulticastdomain.workflow.ExceptionMapper;
-import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
-import software.amazon.ec2.transitgatewaymulticastdomain.workflow.read.Read;
+import software.amazon.ec2.transitgatewayconnect.CallbackContext;
+import software.amazon.ec2.transitgatewayconnect.ResourceModel;
+import software.amazon.ec2.transitgatewayconnect.workflow.ExceptionMapper;
+import software.amazon.ec2.transitgatewayconnect.workflow.TagUtils;
+import software.amazon.ec2.transitgatewayconnect.workflow.read.Read;
 import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.CreateTagsRequest;
@@ -12,9 +12,7 @@ import software.amazon.awssdk.services.ec2.model.CreateTagsResponse;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CreateTags {
     AmazonWebServicesClientProxy proxy;
@@ -23,8 +21,7 @@ public class CreateTags {
     ProxyClient<Ec2Client> client;
     Logger logger;
     ProgressEvent<ResourceModel, CallbackContext>  progress;
-    Map<String, String> stackTags;
-    Map<String, String> previousStackTags;
+
     public CreateTags(
         AmazonWebServicesClientProxy proxy,
         ResourceHandlerRequest<ResourceModel> request,
@@ -36,6 +33,7 @@ public class CreateTags {
         this.request = request;
         this.callbackContext = callbackContext;
         this.client = client;
+        this.logger = logger;
     }
 
     public ProgressEvent<ResourceModel, CallbackContext>  run(ProgressEvent<ResourceModel, CallbackContext> progress) {
@@ -49,7 +47,7 @@ public class CreateTags {
     private CreateTagsRequest translateModelToRequest(ResourceModel model) {
         List<Tag> tags = this.tagsToCreate(model);
         return CreateTagsRequest.builder()
-            .resources(model.getTransitGatewayMulticastDomainId())
+            .resources(model.getTransitGatewayAttachmentId())
             .tags(tags)
             .build();
     }
@@ -63,8 +61,8 @@ public class CreateTags {
     }
 
     private List<Tag> tagsToCreate(ResourceModel model) {
-        List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> prevTags = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTags();
-        List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> currTags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
+        List<software.amazon.ec2.transitgatewayconnect.Tag> prevTags = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTags();
+        List<software.amazon.ec2.transitgatewayconnect.Tag> currTags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
         return TagUtils.difference(currTags, prevTags);
     }
 

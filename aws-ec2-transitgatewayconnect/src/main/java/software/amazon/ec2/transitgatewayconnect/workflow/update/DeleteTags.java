@@ -1,10 +1,10 @@
-package software.amazon.ec2.transitgatewaymulticastdomain.workflow.update;
+package software.amazon.ec2.transitgatewayconnect.workflow.update;
 
-import software.amazon.ec2.transitgatewaymulticastdomain.CallbackContext;
-import software.amazon.ec2.transitgatewaymulticastdomain.ResourceModel;
-import software.amazon.ec2.transitgatewaymulticastdomain.workflow.ExceptionMapper;
-import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
-import software.amazon.ec2.transitgatewaymulticastdomain.workflow.read.Read;
+import software.amazon.ec2.transitgatewayconnect.CallbackContext;
+import software.amazon.ec2.transitgatewayconnect.ResourceModel;
+import software.amazon.ec2.transitgatewayconnect.workflow.ExceptionMapper;
+import software.amazon.ec2.transitgatewayconnect.workflow.TagUtils;
+import software.amazon.ec2.transitgatewayconnect.workflow.read.Read;
 import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DeleteTagsRequest;
@@ -46,7 +46,7 @@ public class DeleteTags {
     private DeleteTagsRequest translateModelToRequest(ResourceModel model) {
         List<Tag> tags = this.tagsToDelete(model);
         return DeleteTagsRequest.builder()
-            .resources(model.getTransitGatewayMulticastDomainId())
+            .resources(model.getTransitGatewayAttachmentId())
             .tags(tags)
             .build();
     }
@@ -60,8 +60,8 @@ public class DeleteTags {
     }
 
     private List<Tag> tagsToDelete(ResourceModel model) {
-        final List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> prevTags =  new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTags();
-        List<software.amazon.ec2.transitgatewaymulticastdomain.Tag> currTags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
+        final List<software.amazon.ec2.transitgatewayconnect.Tag> prevTags =  new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTags();
+        final List<software.amazon.ec2.transitgatewayconnect.Tag> currTags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
         return TagUtils.difference(prevTags, currTags);
     }
 

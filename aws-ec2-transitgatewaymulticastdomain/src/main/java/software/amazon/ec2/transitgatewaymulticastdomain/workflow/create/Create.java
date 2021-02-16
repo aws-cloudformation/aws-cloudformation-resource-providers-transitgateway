@@ -3,11 +3,19 @@ package software.amazon.ec2.transitgatewaymulticastdomain.workflow.create;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.ec2.transitgatewaymulticastdomain.CallbackContext;
 import software.amazon.ec2.transitgatewaymulticastdomain.ResourceModel;
+import software.amazon.ec2.transitgatewaymulticastdomain.Tag;
 import software.amazon.ec2.transitgatewaymulticastdomain.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewaymulticastdomain.workflow.TagUtils;
 import software.amazon.ec2.transitgatewaymulticastdomain.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.proxy.*;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Create {
     AmazonWebServicesClientProxy proxy;
@@ -15,7 +23,6 @@ public class Create {
     CallbackContext callbackContext;
     ProxyClient<Ec2Client> client;
     Logger logger;
-    ProgressEvent<ResourceModel, CallbackContext>  progress;
 
     public Create(
         AmazonWebServicesClientProxy proxy,
@@ -26,10 +33,11 @@ public class Create {
     ) {
         this.proxy = proxy;
         this.request = request;
+        this.logger = logger;
         this.callbackContext = callbackContext;
         this.client = client;
-        this.logger = logger;
     }
+
 
     public ProgressEvent<ResourceModel, CallbackContext> run(ProgressEvent<ResourceModel, CallbackContext> progress) {
         return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())
@@ -41,11 +49,21 @@ public class Create {
     }
 
     private CreateTransitGatewayMulticastDomainRequest translateModelToRequest(ResourceModel model) {
-        return CreateTransitGatewayMulticastDomainRequest.builder()
-            .transitGatewayId(model.getTransitGatewayId())
-            .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
-            .options(this.translateModelToOptions(model))
-            .build();
+        List<Tag> tags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
+
+        if(model.getOptions() == null) {
+            return CreateTransitGatewayMulticastDomainRequest.builder()
+                .transitGatewayId(model.getTransitGatewayId())
+                .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(tags))
+                .build();
+        }
+        else {
+            return CreateTransitGatewayMulticastDomainRequest.builder()
+                .transitGatewayId(model.getTransitGatewayId())
+                .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(tags))
+                .options(this.translateModelToOptions(model))
+                .build();
+        }
     }
 
     private CreateTransitGatewayMulticastDomainRequestOptions translateModelToOptions(ResourceModel model) {

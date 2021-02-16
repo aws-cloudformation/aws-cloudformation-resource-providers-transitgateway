@@ -1,0 +1,47 @@
+SdkClient: Ec2Client
+SdkModel:
+  Class: TransitGatewayConnect
+  PrimaryIdentifierMethods:
+    - transitGatewayAttachmentId
+  PrimaryIdentifierMethod: transitGatewayAttachmentId
+ServiceName: ec2
+Create:
+  RequestClass: CreateTransitGatewayConnectRequest
+  ResponseClass: CreateTransitGatewayConnectResponse
+  RequestMethod: createTransitGatewayConnect
+  ResponseMethod: transitGatewayConnect
+Read:
+  RequestClass: DescribeTransitGatewayConnectsRequest
+  ResponseClass: DescribeTransitGatewayConnectsResponse
+  RequestMethod: describeTransitGatewayConnects
+  ResponseMethod: transitGatewayConnects
+  PrimaryIdentifierMethods:
+    - transitGatewayAttachmentIds
+  PrimaryIdentifierMethod: transitGatewayAttachmentIds
+Update:
+  RequestClass: null
+  ResponseClass: null
+  RequestMethod: null
+Delete:
+  RequestClass: DeleteTransitGatewayConnectRequest
+  ResponseClass: DeleteTransitGatewayConnectResponse
+  RequestMethod: deleteTransitGatewayConnect
+  ResponseMethod: transitGatewayConnect
+List:
+  RequestClass: DescribeTransitGatewayConnectsRequest
+  ResponseClass: DescribeTransitGatewayConnectsResponse
+  RequestMethod: describeTransitGatewayConnects
+  ResponseMethod: transitGatewayConnects
+State:
+  Class: TransitGatewayAttachmentState
+  DELETED: DELETED
+  DELETING: DELETING
+  AVALIABLE: null
+  PENDING: PENDING
+  AVAILABLE: AVAILABLE
+ResourceModel:
+  PrimaryIdentifiers:
+    - TransitGatewayAttachmentId
+  PrimaryIdentifierMethod: transitGatewayAttachmentId
+  GetPrimaryIdentifierMethod: getTransitGatewayAttachmentId
+  SetPrimaryIdentifierMethod: setTransitGatewayAttachmentId
