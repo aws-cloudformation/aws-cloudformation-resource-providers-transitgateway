@@ -49,9 +49,9 @@
     }
   },
   "required": [
-     "TransitGatewayMulticastDomainId",
-     "NetworkInterfaceId",
-     "GroupIpAddress"
+    "TransitGatewayMulticastDomainId",
+    "NetworkInterfaceId",
+    "GroupIpAddress"
   ],
   "additionalProperties": false,
   "readOnlyProperties": [

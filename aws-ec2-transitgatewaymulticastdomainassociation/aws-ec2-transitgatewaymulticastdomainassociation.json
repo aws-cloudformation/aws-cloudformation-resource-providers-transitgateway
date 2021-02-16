@@ -29,9 +29,9 @@
     }
   },
   "required": [
-   "TransitGatewayMulticastDomainId",
-   "TransitGatewayAttachmentId",
-   "SubnetId"
+    "TransitGatewayMulticastDomainId",
+    "TransitGatewayAttachmentId",
+    "SubnetId"
   ],
   "additionalProperties": false,
   "readOnlyProperties": [
