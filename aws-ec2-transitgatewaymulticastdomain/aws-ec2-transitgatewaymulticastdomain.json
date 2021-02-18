@@ -51,6 +51,9 @@
       "additionalProperties": false
     }
   },
+  "required": [
+    "TransitGatewayId"
+  ],
   "definitions": {
     "Tag": {
       "type": "object",
