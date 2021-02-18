@@ -73,7 +73,8 @@
     "/properties/TransitGatewayId"
   ],
   "createOnlyProperties": [
-    "/properties/TransportTransitGatewayAttachmentId"
+    "/properties/TransportTransitGatewayAttachmentId",
+    "/properties/Options"
   ],
   "primaryIdentifier": [
     "/properties/TransitGatewayAttachmentId"

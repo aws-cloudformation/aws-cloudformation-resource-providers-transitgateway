@@ -1,6 +1,8 @@
 {
-    "TransportTransitGatewayAttachmentId": "tgw-attach-0b803fc61fe7205ae",
-    "TransitGatewayId": "tgw-05c50fa80d48e892a",
+    "TransportTransitGatewayAttachmentId": "tgw-attach-0c638a01858e0b215",
+    "Options": {
+        "Protocol": "gre"
+    },
     "Tags": [
         {
             "Key": "key",
