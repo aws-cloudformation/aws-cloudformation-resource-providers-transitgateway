@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TagUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewayconnect-handler</a> &gt; <a href="index.source.html" class="el_package">software.amazon.ec2.transitgatewayconnect.workflow</a> &gt; <span class="el_source">TagUtils.java</span></div><h1>TagUtils.java</h1><pre class="source lang-java linenums">package software.amazon.ec2.transitgatewayconnect.workflow;
+
+import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
+import software.amazon.awssdk.services.ec2.model.Tag;
+import software.amazon.awssdk.services.ec2.model.TagSpecification;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+<span class="fc" id="L12">public class TagUtils {</span>
+    public static List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt; sdkTagsToCfnTags(final List&lt;Tag&gt; tags) {
+<span class="fc bfc" id="L14" title="All 2 branches covered.">        if (tags == null) return new ArrayList&lt;&gt;();;</span>
+<span class="fc" id="L15">        return tags.stream()</span>
+<span class="fc" id="L16">            .map(e -&gt; software.amazon.ec2.transitgatewayconnect.Tag.builder()</span>
+<span class="fc" id="L17">                .key(e.key())</span>
+<span class="fc" id="L18">                .value(e.value())</span>
+<span class="fc" id="L19">                .build())</span>
+<span class="fc" id="L20">            .collect(Collectors.toList());</span>
+    }
+
+    public static List&lt;Tag&gt; cfnTagsToSdkTags(final List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt; tags) {
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (tags == null) {</span>
+<span class="fc" id="L25">            return new ArrayList&lt;&gt;();</span>
+        }
+<span class="fc" id="L27">        return tags.stream()</span>
+<span class="fc" id="L28">            .map(e -&gt; Tag.builder()</span>
+<span class="fc" id="L29">                .key(e.getKey())</span>
+<span class="fc" id="L30">                .value(e.getValue())</span>
+<span class="fc" id="L31">                .build())</span>
+<span class="fc" id="L32">            .collect(Collectors.toList());</span>
+    }
+
+    public static List&lt;TagSpecification&gt; cfnTagsToSdkTagSpecifications(final List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt; tags) {
+<span class="pc bpc" id="L36" title="1 of 4 branches missed.">        if(tags == null || tags.isEmpty()) return null;</span>
+<span class="fc" id="L37">        List&lt;Tag&gt; listTags = TagUtils.cfnTagsToSdkTags(tags);</span>
+<span class="fc" id="L38">        return TagUtils.translateTagsToTagSpecifications(listTags);</span>
+    }
+
+    public static List&lt;TagSpecification&gt; translateTagsToTagSpecifications(final List&lt;Tag&gt; tags) {
+<span class="fc" id="L42">        return Arrays.asList(TagSpecification.builder()</span>
+<span class="fc" id="L43">            .resourceType(&quot;transit-gateway-attachment&quot;)</span>
+<span class="fc" id="L44">            .tags(tags).build());</span>
+    }
+
+    public static Set&lt;Tag&gt; listToSet(final List&lt;Tag&gt; tags) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        return CollectionUtils.isEmpty(tags) ? new HashSet&lt;&gt;() : new HashSet&lt;&gt;(tags);</span>
+    }
+
+    public static List&lt;Tag&gt; difference(List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt;  tags1, List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt; tags2) {
+<span class="fc" id="L52">        final List&lt;Tag&gt; sdkTags1 = TagUtils.cfnTagsToSdkTags(tags1);</span>
+<span class="fc" id="L53">        final List&lt;Tag&gt; sdkTags2 = TagUtils.cfnTagsToSdkTags(tags2);</span>
+<span class="fc" id="L54">        return Sets.difference(TagUtils.listToSet(sdkTags1), TagUtils.listToSet(sdkTags2)).immutableCopy().asList();</span>
+    }
+
+    public static List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt; mergeResourceModelAndStackTags(List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt; modelTags, Map&lt;String, String&gt; stackTags) {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if(modelTags == null) modelTags = new ArrayList&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt;();</span>
+<span class="fc" id="L59">        List&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt; tags = new ArrayList&lt;software.amazon.ec2.transitgatewayconnect.Tag&gt;();</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if(stackTags != null){</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            for (Map.Entry&lt;String, String&gt; entry : stackTags.entrySet()) {</span>
+<span class="nc" id="L62">                software.amazon.ec2.transitgatewayconnect.Tag tag = software.amazon.ec2.transitgatewayconnect.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();</span>
+<span class="nc" id="L63">                tags.add(tag);</span>
+<span class="nc" id="L64">            }</span>
+        }
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if(tags.isEmpty()) {</span>
+<span class="fc" id="L67">            return modelTags;</span>
+<span class="nc bnc" id="L68" title="All 4 branches missed.">        } else if(modelTags == null || modelTags.isEmpty()) {</span>
+<span class="nc" id="L69">            return tags;</span>
+        } else {
+<span class="nc" id="L71">            return Stream.concat(modelTags.stream(), tags.stream())</span>
+<span class="nc" id="L72">                    .collect(Collectors.toList());</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

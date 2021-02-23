@@ -1,0 +1,22 @@
+{
+  "credentials": {
+    "accessKeyId": "ASIA6L4MFW6IH6KUCR4X",
+    "secretAccessKey": "DAbXWXKPG3lGu5rZdtrlrvxra5Aret//Gz1dop9y",
+    "sessionToken": "IQoJb3JpZ2luX2VjEJr//////////wEaCXVzLWVhc3QtMSJHMEUCIQCYWlLrL625qu/jj6mWts+H1kes0ijCcy1G/FNljnr/7wIgFSlOqGcrPaMIFJ+gYECqB6T3+V6c1PSmtw+duUkgKyAqpwIIg///////////ARAAGgw5ODc1OTk1ODMxMjAiDEtVl+UUZqiRkuv9Dir7AUkl34a8Wq9GEstQvS2OsJJ17BV8dk92sOy7LZq1BaKKrwXFJxLik4ir35NVBDvD1dyY0qh4NiRwBDEy8DsjfYqAXMonxp6j/gOfxlZ05qGPKSXBYvFDdrkfK7nbg4xBYQr0F+up+/83V6JEwIL+AK0yFey6Wt26X0PS09QaX28TLwOY1VrtYUDd55Cz6Lsg67dl+FcOHRm7O5vTLyafskKhdq5/QirmfejCA3hJGXfbLolJSe9JOCqw+zn5mLc3TNbCRGW+r5O4QFU3j6+kDl8jvC54Gx1a+viirGrNhZHG5TLQYlIZlOYcitFsF2n50s+istCwDQgT1IdOMOn20oAGOp0BsFxlkBYqfD6W+l+Z+Yl0EM1dWbKr+gdz3RRSfJ0UG4AJmJI7ihLqTAn8moRS6vRmGW4azWago58UFbSk0csvidDkzWiQFCk1a+FGgHt1IDKNKPQwat2eNAaDXMCwQ0lih/hN9fC1s7AZlgGrlsxjC0FlDd4BKHLumrimv2rjWKnirIcVuYyLShBjTG7uxu/epu08LwRtKA4abVDPWw==",
+    "expiration": 1612014633000
+  },
+  "action": "UPDATE",
+  "request": {
+    "clientRequestToken": "e55f7582-a1ba-3a61-7ae7-a7071137bf56",
+    "desiredResourceState": {
+      "Tags": [
+        {
+          "Key": "KEY_1",
+          "Value": "VALUE_1"
+        }
+      ]
+    },
+    "logicalResourceIdentifier": "e7475a4d-e804-4a5d-dd0a-91351acd0183"
+  },
+  "callbackContext": null
+}

@@ -1,0 +1,45 @@
+SdkClient: Ec2Client
+SdkModel:
+  Class: TransitGatewayPrefixListReference
+  PrimaryIdentifierMethods:
+    - prefixListId
+ServiceName: ec2
+Create:
+  RequestClass: CreateTransitGatewayPrefixListReferenceRequest
+  ResponseClass: CreateTransitGatewayPrefixListReferenceResponse
+  RequestMethod: createTransitGatewayPrefixListReference
+  ResponseMethod: transitGatewayPrefixListReference
+Read:
+  RequestClass: GetTransitGatewayPrefixListReferencesRequest
+  ResponseClass: GetTransitGatewayPrefixListReferencesResponse
+  RequestMethod: getTransitGatewayPrefixListReferences
+  ResponseMethod: transitGatewayPrefixListReferences
+  PrimaryIdentifierMethods:
+    - prefixListIds
+Update:
+  RequestClass: null
+  ResponseClass: null
+  RequestMethod: null
+Delete:
+  RequestClass: DeleteTransitGatewayPrefixListReferenceRequest
+  ResponseClass: DeleteTransitGatewayPrefixListReferenceResponse
+  RequestMethod: deleteTransitGatewayPrefixListReference
+  ResponseMethod: transitGatewayPrefixListReference
+List:
+  RequestClass: GetTransitGatewayPrefixListReferencesRequest
+  ResponseClass: GetTransitGatewayPrefixListReferencesResponse
+  RequestMethod: getTransitGatewayPrefixListReferences
+  ResponseMethod: transitGatewayPrefixListReferences
+State:
+  Class: TransitGatewayPrefixListReferenceState
+  DELETED: DELETING
+  DELETING: DELETING
+  AVALIABLE: null
+  PENDING: PENDING
+  AVAILABLE: AVAILABLE
+ResourceModel:
+  PrimaryIdentifiers:
+    - PrefixListId
+  PrimaryIdentifierMethod: null
+  GetPrimaryIdentifierMethod: getPrefixListId
+  SetPrimaryIdentifierMethod: setPrefixListId

@@ -1,0 +1,22 @@
+{
+    "typeName": "AWS::EC2::TransitGatewayPrefixListReference",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "software.amazon.ec2.transitgatewayprefixlistreference.HandlerWrapper::handleRequest",
+    "testEntrypoint": "software.amazon.ec2.transitgatewayprefixlistreference.HandlerWrapper::testEntrypoint",
+    "settings": {
+        "version": false,
+        "subparser_name": null,
+        "verbose": 0,
+        "force": false,
+        "type_name": "AWS::EC2::TransitGatewayPrefixListReference",
+        "namespace": [
+            "software",
+            "amazon",
+            "ec2",
+            "transitgatewayprefixlistreference"
+        ],
+        "codegen_template_path": "default",
+        "protocolVersion": "2.0.0"
+    }
+}

@@ -1,0 +1,69 @@
+{
+  "typeName": "AWS::EC2::TransitGatewayPrefixListReference",
+  "description": "The AWS::EC2::TransitGatewayPrefixListReference type",
+  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-myservice",
+  "properties": {
+    "TransitGatewayRouteTableId": {
+      "description": "The ID of the transit gateway route table.",
+      "type": "string"
+    },
+    "PrefixListId": {
+      "description": "The ID of the prefix list.",
+      "type": "string"
+    },
+    "PrefixListOwnerId": {
+      "description": "The ID of the prefix list owner.",
+      "type": "string"
+    },
+    "State": {
+      "description": "The state of the prefix list reference.",
+      "type": "string"
+    },
+    "Blackhole": {
+      "description": "Indicates whether traffic that matches this route is dropped.",
+      "type": "boolean"
+    },
+    "TransitGatewayAttachmentId": {
+      "description": "Information about the transit gateway attachment.",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "readOnlyProperties": [
+    "/properties/PrefixListOwnerId",
+    "/properties/State",
+    "/properties/TransitGatewayAttachmentId"
+  ],
+  "primaryIdentifier": [
+    "/properties/PrefixListId"
+  ],
+  "handlers": {
+    "create": {
+      "permissions": [
+        "ec2:CreateTransitGatewayPrefixListReference",
+        "ec2:GetTransitGatewayPrefixListReferences"
+      ]
+    },
+    "read": {
+      "permissions": [
+        "ec2:GetTransitGatewayPrefixListReferences"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:GetTransitGatewayPrefixListReferences"
+      ]
+    },
+    "delete": {
+      "permissions": [
+        "ec2:DeleteTransitGatewayPrefixListReference",
+        "ec2:GetTransitGatewayPrefixListReferences"
+      ]
+    },
+    "list": {
+      "permissions": [
+        "ec2:GetTransitGatewayPrefixListReferences"
+      ]
+    }
+  }
+}

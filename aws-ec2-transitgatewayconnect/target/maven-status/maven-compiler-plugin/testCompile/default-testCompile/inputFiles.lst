@@ -1,0 +1,15 @@
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/ConfigurationTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/workflow/ValidCurrentStateCheckBaseTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/AbstractTestBase.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/DeleteHandlerTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/UpdateHandlerTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/workflow/update/ValidPropertiesCheckTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/workflow/TagUtilsTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/ReadHandlerTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/Mocks.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/CreateHandlerTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/ListHandlerTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/workflow/update/ValidCurrentStateCheckTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/workflow/ExceptionMapperTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/ClientBuilderTest.java
+/Users/lsuhani/workspace/final-commit/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayconnect/src/test/java/software/amazon/ec2/transitgatewayconnect/workflow/delete/ValidCurrentStateCheckTest.java
