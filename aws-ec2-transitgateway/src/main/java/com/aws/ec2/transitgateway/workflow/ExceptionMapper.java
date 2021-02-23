@@ -23,6 +23,8 @@ public final class ExceptionMapper {
                 return HandlerErrorCode.ServiceInternalError;
             } else if(errorCode.equals("ServerInternal")) {
                 return HandlerErrorCode.InternalFailure;
+            } else if(errorCode.equals("IncorrectStateException")){
+                return HandlerErrorCode.ResourceConflict;
             } else {
                 return HandlerErrorCode.GeneralServiceException;
             }
