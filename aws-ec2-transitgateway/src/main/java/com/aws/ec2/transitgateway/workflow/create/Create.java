@@ -1,17 +1,15 @@
 package com.aws.ec2.transitgateway.workflow.create;
 
 import com.aws.ec2.transitgateway.CallbackContext;
-import com.aws.ec2.transitgateway.ClientBuilder;
 import com.aws.ec2.transitgateway.ResourceModel;
 import com.aws.ec2.transitgateway.workflow.ExceptionMapper;
-import com.aws.ec2.transitgateway.workflow.OptionUtils;
 import com.aws.ec2.transitgateway.workflow.TagUtils;
 import com.aws.ec2.transitgateway.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRequest;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayResponse;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRequestOptions;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
-import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.*;
 
 public class Create {
@@ -48,7 +46,15 @@ public class Create {
     private CreateTransitGatewayRequest translateModelToRequest(ResourceModel model) {
         return CreateTransitGatewayRequest.builder()
             .description(model.getDescription())
-            .options(OptionUtils.transitGatewayRequestOptions(model))
+            .options(TransitGatewayRequestOptions.builder()
+                .amazonSideAsn(model.getAmazonSideAsn().longValue())
+                .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                .defaultRouteTablePropagation(model.getDefaultRouteTablePropagation())
+                .dnsSupport(model.getDnsSupport())
+                .multicastSupport(model.getMulticastSupport())
+                .vpnEcmpSupport(model.getVpnEcmpSupport())
+                .build())
             .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
             .build();
     }
