@@ -61,8 +61,8 @@ public class Delete {
         ResourceModel model,
         CallbackContext context
     ) {
-        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
-        return currentState.equals(TransitGatewayPrefixListReferenceState.DELETING.toString());
+        ResourceModel current = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
+        return current == null;
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DeleteTransitGatewayPrefixListReferenceRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {

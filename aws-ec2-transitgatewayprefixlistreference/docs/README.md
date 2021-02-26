@@ -15,7 +15,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#transitgatewayroutetableid" title="TransitGatewayRouteTableId">TransitGatewayRouteTableId</a>" : <i>String</i>,
         "<a href="#prefixlistid" title="PrefixListId">PrefixListId</a>" : <i>String</i>,
         "<a href="#blackhole" title="Blackhole">Blackhole</a>" : <i>Boolean</i>,
-        "<a href="#transitgatewayattachmentid" title="TransitGatewayAttachmentId">TransitGatewayAttachmentId</a>" : <i>String</i>
     }
 }
 </pre>
@@ -28,7 +27,6 @@ Properties:
     <a href="#transitgatewayroutetableid" title="TransitGatewayRouteTableId">TransitGatewayRouteTableId</a>: <i>String</i>
     <a href="#prefixlistid" title="PrefixListId">PrefixListId</a>: <i>String</i>
     <a href="#blackhole" title="Blackhole">Blackhole</a>: <i>Boolean</i>
-    <a href="#transitgatewayattachmentid" title="TransitGatewayAttachmentId">TransitGatewayAttachmentId</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -63,16 +61,6 @@ _Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### TransitGatewayAttachmentId
-
-Information about the transit gateway attachment.
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
 ## Return Values
 
 ### Ref
@@ -93,7 +81,7 @@ The ID of the prefix list owner.
 
 The state of the prefix list reference.
 
-#### TransitGatewayAttachment
+#### TransitGatewayAttachmentId
 
-Returns the <code>TransitGatewayAttachment</code> value.
+Information about the transit gateway attachment.
 

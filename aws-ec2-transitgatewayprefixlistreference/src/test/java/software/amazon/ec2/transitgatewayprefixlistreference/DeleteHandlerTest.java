@@ -47,24 +47,6 @@ public class DeleteHandlerTest extends AbstractTestBase {
 
 
     @Test
-    public void handleRequest_SimpleSuccess() {
-
-        AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
-        AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
-        when(proxyClient.client().deleteTransitGatewayPrefixListReference(any(DeleteTransitGatewayPrefixListReferenceRequest.class))).thenReturn(MOCKS.deleteResponse());
-        ResourceModel model = MOCKS.model();
-        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
-
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
-        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isNull();
-        assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage()).isNull();
-        assertThat(response.getErrorCode()).isNull();
-    }
-
-    @Test
     public void handleRequest_Error() {
         AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("Invalid Request").build();
         AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();

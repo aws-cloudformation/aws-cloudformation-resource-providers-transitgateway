@@ -1,1 +1,4 @@
-{}
+{
+  "TransitGatewayRouteTableId": "tgw-rtb-07db84fb80a3fcd44",
+  "PrefixListId": "pl-02cd2c6b"
+}

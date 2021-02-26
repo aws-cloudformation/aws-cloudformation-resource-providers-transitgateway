@@ -156,6 +156,10 @@ public class Mocks {
         return this.sdkModel("available");
     }
 
+    public TransitGatewayPrefixListReference deletedSdkModel() {
+        return this.sdkModel(null);
+    }
+
     public GetTransitGatewayPrefixListReferencesResponse describeResponse(String state) {
         return GetTransitGatewayPrefixListReferencesResponse.builder()
             .transitGatewayPrefixListReferences(
@@ -174,7 +178,7 @@ public class Mocks {
 
     public DeleteTransitGatewayPrefixListReferenceResponse deleteResponse() {
         return DeleteTransitGatewayPrefixListReferenceResponse.builder()
-            .transitGatewayPrefixListReference(this.sdkModel())
+            .transitGatewayPrefixListReference(this.deletedSdkModel())
             .build();
     }
 
