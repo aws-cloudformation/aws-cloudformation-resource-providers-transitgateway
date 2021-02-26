@@ -1,0 +1,13 @@
+{
+  "TransitGatewayId": "tgw-06d4b2a0e616906f5",
+  "VpcId": "vpc-0b6fefef4e752f0fd",
+  "SubnetIds": [
+    "subnet-0a00435ae85165f31"
+  ],
+  "Tags": [
+    {
+      "Key": "key1",
+      "Value": "value1"
+    }
+  ]
+}
