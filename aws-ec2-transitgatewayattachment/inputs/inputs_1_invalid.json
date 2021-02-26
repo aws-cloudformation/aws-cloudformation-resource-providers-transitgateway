@@ -1,0 +1,15 @@
+{
+  "Id": "tgw-attach-09017663fea56c134",
+  "TransitGatewayId": "tgw-02c783c4653c2bdad",
+  "VpcId": "vpc-0e32b4e0c1ca43f43",
+  "SubnetIds": [
+    "subnet-0d2d2e34a920cd263",
+    "subnet-0c1dcbe37e3db157b"
+  ],
+  "Tags": [
+    {
+      "Key": "key1",
+      "Value": "value1"
+    }
+  ]
+}
