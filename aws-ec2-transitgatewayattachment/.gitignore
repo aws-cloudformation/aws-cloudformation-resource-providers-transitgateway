@@ -16,7 +16,6 @@ target/
 rpdk.log
 # contains credentials
 sam-tests/
-build.gradle
 .idea/
 /.integration-tests/
 .integration-tests/
