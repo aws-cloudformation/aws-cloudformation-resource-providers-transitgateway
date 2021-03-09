@@ -1,6 +1,7 @@
 package com.aws.ec2.transitgateway.workflow;
 
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.cloudformation.exceptions.CfnThrottlingException;
 import software.amazon.cloudformation.exceptions.ResourceNotFoundException;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 
@@ -31,6 +32,8 @@ public final class ExceptionMapper {
         } else {
             if(e instanceof ResourceNotFoundException) {
                 return HandlerErrorCode.NotFound;
+            } else if(e instanceof CfnThrottlingException) {
+                return HandlerErrorCode.Throttling;
             } else {
                 return HandlerErrorCode.GeneralServiceException;
             }
