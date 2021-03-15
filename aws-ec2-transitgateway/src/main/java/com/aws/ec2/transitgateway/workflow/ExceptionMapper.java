@@ -26,14 +26,14 @@ public final class ExceptionMapper {
                 return HandlerErrorCode.InternalFailure;
             } else if(errorCode.equals("IncorrectStateException")){
                 return HandlerErrorCode.ResourceConflict;
+            } else if(errorCode.equals("ProvisionedThroughputExceededException")){
+                return HandlerErrorCode.Throttling;
             } else {
                 return HandlerErrorCode.GeneralServiceException;
             }
         } else {
             if(e instanceof ResourceNotFoundException) {
                 return HandlerErrorCode.NotFound;
-            } else if(e instanceof CfnThrottlingException) {
-                return HandlerErrorCode.Throttling;
             } else {
                 return HandlerErrorCode.GeneralServiceException;
             }
