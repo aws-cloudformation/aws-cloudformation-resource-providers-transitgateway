@@ -1,0 +1,167 @@
+{
+  "typeName": "AWS::EC2::TransitGatewayConnectPeer",
+  "description": "The AWS::EC2::TransitGatewayConnectPeer type",
+  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-myservice",
+  "properties": {
+    "TransitGatewayAttachmentId": {
+      "description": "The ID of the Connect attachment.",
+      "type": "string"
+    },
+    "TransitGatewayConnectPeerId": {
+      "description": "The ID of the ConnectPeer.",
+      "type": "string"
+    },
+    "State": {
+      "description": "The state of the attachment.",
+      "type": "string"
+    },
+    "CreationTime": {
+      "description": "The creation time.",
+      "type": "string"
+    },
+    "Tags": {
+      "description": "The tags for the attachment.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
+      }
+    },
+    "ConnectPeerConfiguration": {
+      "$ref": "#/definitions/TransitGatewayConnectPeerConfiguration",
+      "description": "The ConnectPeer attachment options."
+    },
+    "BgpOptions": {
+      "$ref": "#/definitions/TransitGatewayConnectRequestBgpOptions",
+      "description": "The BGP options for the Connect attachment."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "TransportTransitGatewayAttachmentId",
+    "Options"
+  ],
+  "definitions": {
+    "TransitGatewayConnectPeerConfiguration": {
+      "type": "object",
+      "properties": {
+        "Protocol": {
+          "description": "The tunnel protocol.",
+          "type": "string"
+        },
+        "BgpConfigurations": {
+          "description": "The BGP configuration details..",
+          "type": "object",
+          "properties": {
+            "BgpStatus": {
+              "description": "The tunnel protocol.",
+              "type": "string"
+            },
+            "PeerAddress": {
+              "description": "The interior BGP peer IP address for the appliance.",
+              "type": "string"
+            },
+            "PeerAsn": {
+              "description": "The tunnel protocol.",
+              "type": "integer"
+            },
+            "TransitGatewayAddress": {
+              "description": "The tunnel protocol.",
+              "type": "string"
+            },
+            "TransitGatewayAsn": {
+              "description": "The tunnel protocol.",
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        },
+        "InsideCidrBlocks": {
+          "description": "The range of interior BGP peer IP addresses.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "PeerAddress": {
+          "description": "Connect peer IP address on the appliance side of the tunnel.",
+          "type": "string"
+        },
+        "TransitGatewayAddress": {
+          "description": "The Connect peer IP address on the transit gateway side of the tunnel.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TransitGatewayConnectRequestBgpOptions": {
+      "type": "object",
+      "properties": {
+        "PeerAsn": {
+          "description": "The peer Autonomous System Number (ASN).",
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "Key": {
+          "description": "The key of the tag. Constraints: Tag keys are case-sensitive and accept a maximum of 127 Unicode characters. May not begin with aws:.",
+          "type": "string"
+        },
+        "Value": {
+          "description": "The value of the tag. Constraints: Tag values are case-sensitive and accept a maximum of 255 Unicode characters.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "readOnlyProperties": [
+    "/properties/TransitGatewayAttachmentId",
+    "/properties/State",
+    "/properties/CreationTime",
+    "/properties/TransitGatewayId"
+  ],
+  "createOnlyProperties": [
+    "/properties/TransportTransitGatewayAttachmentId"
+  ],
+  "primaryIdentifier": [
+    "/properties/TransitGatewayAttachmentId"
+  ],
+  "handlers": {
+    "create": {
+      "permissions": [
+        "ec2:CreateTransitGatewayConnectPeer",
+        "ec2:DescribeTransitGatewayConnectPeers",
+        "ec2:CreateTags"
+      ]
+    },
+    "read": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayConnectPeers",
+        "ec2:DeleteTags",
+        "ec2:CreateTags"
+      ]
+    },
+    "delete": {
+      "permissions": [
+        "ec2:DeleteTransitGatewayConnectPeer",
+        "ec2:DescribeTransitGatewayConnectPeers",
+        "ec2:DeleteTags"
+      ]
+    },
+    "list": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ]
+    }
+  }
+}

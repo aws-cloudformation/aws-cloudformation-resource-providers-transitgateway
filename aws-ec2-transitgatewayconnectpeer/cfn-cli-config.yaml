@@ -1,0 +1,47 @@
+SdkClient: Ec2Client
+SdkModel:
+  Class: TransitGatewayConnectPeer
+  PrimaryIdentifierMethods:
+    - transitGatewayAttachmentId
+  PrimaryIdentifierMethod: transitGatewayAttachmentId
+ServiceName: ec2
+Create:
+  RequestClass: CreateTransitGatewayConnectPeerRequest
+  ResponseClass: CreateTransitGatewayConnectPeerResponse
+  RequestMethod: createTransitGatewayConnectPeer
+  ResponseMethod: transitGatewayConnectPeer
+Read:
+  RequestClass: DescribeTransitGatewayConnectPeersRequest
+  ResponseClass: DescribeTransitGatewayConnectPeersResponse
+  RequestMethod: describeTransitGatewayConnectPeers
+  ResponseMethod: transitGatewayConnectPeers
+  PrimaryIdentifierMethods:
+    - transitGatewayAttachmentIds
+  PrimaryIdentifierMethod: transitGatewayAttachmentIds
+Update:
+  RequestClass: null
+  ResponseClass: null
+  RequestMethod: null
+Delete:
+  RequestClass: DeleteTransitGatewayConnectPeerRequest
+  ResponseClass: DeleteTransitGatewayConnectPeerResponse
+  RequestMethod: deleteTransitGatewayConnectPeer
+  ResponseMethod: transitGatewayConnectPeer
+List:
+  RequestClass: DescribeTransitGatewayConnectPeersRequest
+  ResponseClass: DescribeTransitGatewayConnectPeersResponse
+  RequestMethod: describeTransitGatewayConnectPeers
+  ResponseMethod: transitGatewayConnectPeers
+State:
+  Class: TransitGatewayAttachmentState
+  DELETED: DELETED
+  DELETING: DELETING
+  AVALIABLE: null
+  PENDING: PENDING
+  AVAILABLE: AVAILABLE
+ResourceModel:
+  PrimaryIdentifiers:
+    - TransitGatewayAttachmentId
+  PrimaryIdentifierMethod: transitGatewayAttachmentId
+  GetPrimaryIdentifierMethod: getTransitGatewayAttachmentId
+  SetPrimaryIdentifierMethod: setTransitGatewayAttachmentId
