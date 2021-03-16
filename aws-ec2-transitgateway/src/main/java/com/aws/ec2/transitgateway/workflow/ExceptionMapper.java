@@ -1,7 +1,6 @@
 package com.aws.ec2.transitgateway.workflow;
 
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
-import software.amazon.cloudformation.exceptions.CfnThrottlingException;
 import software.amazon.cloudformation.exceptions.ResourceNotFoundException;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 
