@@ -26,6 +26,8 @@ public final class ExceptionMapper {
                 return HandlerErrorCode.InternalFailure;
             } else if(errorCode.equals("IncorrectStateException")){
                 return HandlerErrorCode.ResourceConflict;
+            } else if(errorCode.equals("RequestLimitExceeded")){
+                return HandlerErrorCode.Throttling;
             } else {
                 return HandlerErrorCode.GeneralServiceException;
             }
