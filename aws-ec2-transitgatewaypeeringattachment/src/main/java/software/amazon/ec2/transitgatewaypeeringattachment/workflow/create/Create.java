@@ -44,10 +44,10 @@ public class Create {
 
     private CreateTransitGatewayPeeringAttachmentRequest translateModelToRequest(ResourceModel model) {
         return CreateTransitGatewayPeeringAttachmentRequest.builder()
-            .peerRegion(model.getAccepterTgwInfo().getRegion())
-            .peerAccountId(model.getAccepterTgwInfo().getOwnerId())
-            .peerTransitGatewayId(model.getAccepterTgwInfo().getTransitGatewayId())
-            .transitGatewayId(model.getRequesterTgwInfo().getTransitGatewayId())
+            .peerRegion(model.getPeerRegion())
+            .peerAccountId(model.getPeerAccountId())
+            .peerTransitGatewayId(model.getPeerTransitGatewayId())
+            .transitGatewayId(model.getTransitGatewayId())
             .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
             .build();
     }
@@ -65,7 +65,7 @@ public class Create {
     ) {
         model.setTransitGatewayAttachmentId(awsResponse.transitGatewayPeeringAttachment().transitGatewayAttachmentId());
         String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
-        return TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentState);
+        return TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentState) || TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(CreateTransitGatewayPeeringAttachmentRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {

@@ -7,13 +7,21 @@
       "description": "The ID of the transit gateway peering attachment.",
       "type": "string"
     },
-    "RequesterTgwInfo": {
-      "$ref": "#/definitions/PeeringTgwInfo",
-      "description": "Information about the requester transit gateway."
+    "TransitGatewayId": {
+      "description": "The ID of the transit gateway.",
+      "type": "string"
     },
-    "AccepterTgwInfo": {
-      "$ref": "#/definitions/PeeringTgwInfo",
-      "description": "Information about the accepter transit gateway."
+    "PeerTransitGatewayId": {
+      "description": "The ID of the peer transit gateway.",
+      "type": "string"
+    },
+    "PeerAccountId": {
+      "description": "The ID of the peer account",
+      "type": "string"
+    },
+    "PeerRegion": {
+      "description": "Peer Region",
+      "type": "string"
     },
     "Status": {
       "$ref": "#/definitions/PeeringAttachmentStatus",
@@ -37,23 +45,6 @@
     }
   },
   "definitions": {
-    "PeeringTgwInfo": {
-      "type": "object",
-      "properties": {
-        "TransitGatewayId": {
-          "description": "The ID of the transit gateway.",
-          "type": "string"
-        },
-        "OwnerId": {
-          "description": "The AWS account ID of the owner of the transit gateway.",
-          "type": "string"
-        },
-        "Region": {
-          "description": "The Region of the transit gateway.",
-          "type": "string"
-        }
-      }
-    },
     "PeeringAttachmentStatus": {
       "type": "object",
       "properties": {
@@ -65,7 +56,8 @@
           "description": "The status message, if applicable.",
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "Tag": {
       "type": "object",
@@ -78,9 +70,11 @@
           "description": "The value of the tag. Constraints: Tag values are case-sensitive and accept a maximum of 255 Unicode characters.",
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
+  "required": ["TransitGatewayId", "PeerTransitGatewayId", "PeerAccountId", "PeerRegion"],
   "additionalProperties": false,
   "createOnlyProperties": [
     "/properties/RequesterTgwInfo",

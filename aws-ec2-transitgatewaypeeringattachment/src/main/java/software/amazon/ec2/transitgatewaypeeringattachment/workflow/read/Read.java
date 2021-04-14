@@ -7,7 +7,6 @@ import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.*;
 import software.amazon.ec2.transitgatewaypeeringattachment.CallbackContext;
 import software.amazon.ec2.transitgatewaypeeringattachment.PeeringAttachmentStatus;
-import software.amazon.ec2.transitgatewaypeeringattachment.PeeringTgwInfo;
 import software.amazon.ec2.transitgatewaypeeringattachment.ResourceModel;
 import software.amazon.ec2.transitgatewaypeeringattachment.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewaypeeringattachment.workflow.TagUtils;
@@ -68,14 +67,10 @@ public class Read {
             TransitGatewayPeeringAttachment response = awsResponse.transitGatewayPeeringAttachments().get(0);
             return ResourceModel.builder()
             .transitGatewayAttachmentId(response.transitGatewayAttachmentId())
-            .accepterTgwInfo(PeeringTgwInfo.builder()
-                    .ownerId(response.accepterTgwInfo().ownerId())
-                    .region(response.accepterTgwInfo().region())
-                    .transitGatewayId(response.accepterTgwInfo().transitGatewayId()).build())
-            .requesterTgwInfo(PeeringTgwInfo.builder()
-                    .ownerId(response.requesterTgwInfo().ownerId())
-                    .region(response.requesterTgwInfo().region())
-                    .transitGatewayId(response.requesterTgwInfo().transitGatewayId()).build())
+            .transitGatewayId(response.requesterTgwInfo().transitGatewayId())
+            .peerAccountId(response.accepterTgwInfo().ownerId())
+            .peerRegion(response.accepterTgwInfo().region())
+            .peerTransitGatewayId(response.accepterTgwInfo().transitGatewayId())
             .status(PeeringAttachmentStatus.builder()
                     .code(response.status().code())
                     .message(response.status().message())

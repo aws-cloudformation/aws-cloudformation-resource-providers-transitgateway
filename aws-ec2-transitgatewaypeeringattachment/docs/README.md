@@ -12,8 +12,10 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "AWS::EC2::TransitGatewayPeeringAttachment",
     "Properties" : {
-        "<a href="#requestertgwinfo" title="RequesterTgwInfo">RequesterTgwInfo</a>" : <i><a href="peeringtgwinfo.md">PeeringTgwInfo</a></i>,
-        "<a href="#acceptertgwinfo" title="AccepterTgwInfo">AccepterTgwInfo</a>" : <i><a href="peeringtgwinfo.md">PeeringTgwInfo</a></i>,
+        "<a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>" : <i>String</i>,
+        "<a href="#peertransitgatewayid" title="PeerTransitGatewayId">PeerTransitGatewayId</a>" : <i>String</i>,
+        "<a href="#peeraccountid" title="PeerAccountId">PeerAccountId</a>" : <i>String</i>,
+        "<a href="#peerregion" title="PeerRegion">PeerRegion</a>" : <i>String</i>,
         "<a href="#status" title="Status">Status</a>" : <i><a href="peeringattachmentstatus.md">PeeringAttachmentStatus</a></i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>
     }
@@ -25,8 +27,10 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: AWS::EC2::TransitGatewayPeeringAttachment
 Properties:
-    <a href="#requestertgwinfo" title="RequesterTgwInfo">RequesterTgwInfo</a>: <i><a href="peeringtgwinfo.md">PeeringTgwInfo</a></i>
-    <a href="#acceptertgwinfo" title="AccepterTgwInfo">AccepterTgwInfo</a>: <i><a href="peeringtgwinfo.md">PeeringTgwInfo</a></i>
+    <a href="#transitgatewayid" title="TransitGatewayId">TransitGatewayId</a>: <i>String</i>
+    <a href="#peertransitgatewayid" title="PeerTransitGatewayId">PeerTransitGatewayId</a>: <i>String</i>
+    <a href="#peeraccountid" title="PeerAccountId">PeerAccountId</a>: <i>String</i>
+    <a href="#peerregion" title="PeerRegion">PeerRegion</a>: <i>String</i>
     <a href="#status" title="Status">Status</a>: <i><a href="peeringattachmentstatus.md">PeeringAttachmentStatus</a></i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
@@ -34,19 +38,43 @@ Properties:
 
 ## Properties
 
-#### RequesterTgwInfo
+#### TransitGatewayId
 
-_Required_: No
+The ID of the transit gateway.
 
-_Type_: <a href="peeringtgwinfo.md">PeeringTgwInfo</a>
+_Required_: Yes
+
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### AccepterTgwInfo
+#### PeerTransitGatewayId
 
-_Required_: No
+The ID of the peer transit gateway.
 
-_Type_: <a href="peeringtgwinfo.md">PeeringTgwInfo</a>
+_Required_: Yes
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### PeerAccountId
+
+The ID of the peer account
+
+_Required_: Yes
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### PeerRegion
+
+Peer Region
+
+_Required_: Yes
+
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
