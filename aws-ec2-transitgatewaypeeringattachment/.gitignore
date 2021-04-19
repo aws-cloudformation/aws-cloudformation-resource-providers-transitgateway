@@ -22,4 +22,3 @@ contract-test.log
 .DS_Store
 /.sam-test
 sam.log
-*rpdk-*

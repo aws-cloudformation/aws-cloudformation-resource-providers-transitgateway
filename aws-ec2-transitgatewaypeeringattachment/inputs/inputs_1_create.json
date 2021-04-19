@@ -1,14 +1,8 @@
 {
-  "RequesterTgwInfo": {
-    "TransitGatewayId": "tgw-05c50fa80d48e892a",
-    "OwnerId": "987599583120",
-    "Region": "us-east-1"
-  },
-  "AccepterTgwInfo": {
-    "TransitGatewayId": "tgw-049bbbf7e5b45e721",
-    "OwnerId": "987599583120",
-    "Region": "us-east-2"
-  },
+  "TransitGatewayId": "tgw-08b2c98a8c3439f85",
+  "PeerTransitGatewayId": "tgw-02dca3ed7f848587d",
+  "PeerAccountId": "987599583120",
+  "PeerRegion": "us-east-2",
   "Tags":[
     {
       "Key": "key-1",
