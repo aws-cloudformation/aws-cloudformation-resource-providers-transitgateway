@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: software.amazon.ec2.transitgatewaypeeringattachment.workflow.ExceptionMapperTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in software.amazon.ec2.transitgatewaypeeringattachment.workflow.ExceptionMapperTest
