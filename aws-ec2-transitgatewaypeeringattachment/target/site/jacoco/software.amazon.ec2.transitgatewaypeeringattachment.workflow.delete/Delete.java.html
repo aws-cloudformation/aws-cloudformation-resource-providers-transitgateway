@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Delete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aws-ec2-transitgatewaypeeringattachment-handler</a> &gt; <a href="index.source.html" class="el_package">software.amazon.ec2.transitgatewaypeeringattachment.workflow.delete</a> &gt; <span class="el_source">Delete.java</span></div><h1>Delete.java</h1><pre class="source lang-java linenums">package software.amazon.ec2.transitgatewaypeeringattachment.workflow.delete;
+
+import software.amazon.ec2.transitgatewaypeeringattachment.CallbackContext;
+import software.amazon.ec2.transitgatewaypeeringattachment.ResourceModel;
+import software.amazon.ec2.transitgatewaypeeringattachment.workflow.ExceptionMapper;
+import software.amazon.ec2.transitgatewaypeeringattachment.workflow.read.Read;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayPeeringAttachmentRequest;
+import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayPeeringAttachmentResponse;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
+import software.amazon.cloudformation.proxy.*;
+
+public class Delete {
+    AmazonWebServicesClientProxy proxy;
+    ResourceHandlerRequest&lt;ResourceModel&gt; request;
+    CallbackContext callbackContext;
+    ProxyClient&lt;Ec2Client&gt; client;
+    Logger logger;
+    ProgressEvent&lt;ResourceModel, CallbackContext&gt;  progress;
+
+    public Delete(
+        AmazonWebServicesClientProxy proxy,
+        ResourceHandlerRequest&lt;ResourceModel&gt; request,
+        CallbackContext callbackContext,
+        ProxyClient&lt;Ec2Client&gt; client,
+
+        Logger logger
+<span class="fc" id="L28">    ) {</span>
+<span class="fc" id="L29">        this.proxy = proxy;</span>
+<span class="fc" id="L30">        this.request = request;</span>
+<span class="fc" id="L31">        this.callbackContext = callbackContext;</span>
+<span class="fc" id="L32">        this.client = client;</span>
+<span class="fc" id="L33">        this.logger = logger;</span>
+<span class="fc" id="L34">    }</span>
+
+    public ProgressEvent&lt;ResourceModel, CallbackContext&gt;  run(ProgressEvent&lt;ResourceModel, CallbackContext&gt; progress) {
+<span class="fc" id="L37">        this.progress = progress;</span>
+<span class="fc" id="L38">        return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())</span>
+<span class="fc" id="L39">            .translateToServiceRequest(this::translateModelToRequest)</span>
+<span class="fc" id="L40">            .makeServiceCall(this::makeServiceCall)</span>
+<span class="fc" id="L41">            .stabilize(this::stabilize)</span>
+<span class="fc" id="L42">            .handleError(this::handleError)</span>
+<span class="fc" id="L43">            .progress();</span>
+
+    }
+
+    private DeleteTransitGatewayPeeringAttachmentRequest translateModelToRequest(ResourceModel model) {
+<span class="fc" id="L48">        return  DeleteTransitGatewayPeeringAttachmentRequest.builder()</span>
+<span class="fc" id="L49">                   .transitGatewayAttachmentId(model.getTransitGatewayAttachmentId())</span>
+<span class="fc" id="L50">                   .build();</span>
+    }
+
+    private DeleteTransitGatewayPeeringAttachmentResponse makeServiceCall(DeleteTransitGatewayPeeringAttachmentRequest request, ProxyClient&lt;Ec2Client&gt; client) {
+<span class="fc" id="L54">        return proxy.injectCredentialsAndInvokeV2(request, client.client()::deleteTransitGatewayPeeringAttachment);</span>
+    }
+
+    private boolean stabilize (
+        DeleteTransitGatewayPeeringAttachmentRequest request,
+        DeleteTransitGatewayPeeringAttachmentResponse response,
+        ProxyClient&lt;Ec2Client&gt; client,
+        ResourceModel model,
+        CallbackContext context
+    ) {
+        //model.setTransitGatewayAttachmentId(response.transitGatewayPeeringAttachment().{{Config.SdkModel.PrimaryIdentifierMethod}}());
+<span class="fc" id="L65">        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();</span>
+<span class="fc" id="L66">        return currentState.equals(TransitGatewayAttachmentState.DELETED.toString());</span>
+    }
+
+    private ProgressEvent&lt;ResourceModel, CallbackContext&gt;  handleError(DeleteTransitGatewayPeeringAttachmentRequest awsRequest, Exception exception, ProxyClient&lt;Ec2Client&gt; client, ResourceModel model, CallbackContext context) {
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (ExceptionMapper.mapToHandlerErrorCode(exception).equals(HandlerErrorCode.NotFound)) {</span>
+<span class="fc" id="L71">            return ProgressEvent.defaultSuccessHandler(null);</span>
+        } else {
+<span class="fc" id="L73">            return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
