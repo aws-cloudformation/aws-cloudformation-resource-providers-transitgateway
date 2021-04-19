@@ -74,7 +74,12 @@
       "additionalProperties": false
     }
   },
-  "required": ["TransitGatewayId", "PeerTransitGatewayId", "PeerAccountId", "PeerRegion"],
+  "required": [
+    "TransitGatewayId",
+    "PeerTransitGatewayId",
+    "PeerAccountId",
+    "PeerRegion"
+  ],
   "additionalProperties": false,
   "createOnlyProperties": [
     "/properties/RequesterTgwInfo",

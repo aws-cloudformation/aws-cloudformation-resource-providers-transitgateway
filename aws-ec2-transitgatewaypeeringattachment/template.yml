@@ -21,4 +21,3 @@ Resources:
       Handler: software.amazon.ec2.transitgatewaypeeringattachment.HandlerWrapper::testEntrypoint
       Runtime: java8
       CodeUri: ./target/aws-ec2-transitgatewaypeeringattachment-handler-1.0-SNAPSHOT.jar
-

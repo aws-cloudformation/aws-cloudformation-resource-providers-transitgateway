@@ -3,7 +3,7 @@
   "PeerTransitGatewayId": "tgw-02dca3ed7f848587d",
   "PeerAccountId": "987599583120",
   "PeerRegion": "us-east-2",
-  "Tags":[
+  "Tags": [
     {
       "Key": "key-1",
       "Value": "value-1"
