@@ -20,6 +20,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#dnssupport" title="DnsSupport">DnsSupport</a>" : <i>String</i>,
         "<a href="#multicastsupport" title="MulticastSupport">MulticastSupport</a>" : <i>String</i>,
         "<a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>" : <i>Integer</i>,
+        "<a href="#transitgatewaycidrblocks" title="TransitGatewayCidrBlocks">TransitGatewayCidrBlocks</a>" : <i>[ String, ... ]</i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>
     }
 }
@@ -38,6 +39,8 @@ Properties:
     <a href="#dnssupport" title="DnsSupport">DnsSupport</a>: <i>String</i>
     <a href="#multicastsupport" title="MulticastSupport">MulticastSupport</a>: <i>String</i>
     <a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>: <i>Integer</i>
+    <a href="#transitgatewaycidrblocks" title="TransitGatewayCidrBlocks">TransitGatewayCidrBlocks</a>: <i>
+      - String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
 </pre>
@@ -108,13 +111,21 @@ _Type_: Integer
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
+#### TransitGatewayCidrBlocks
+
+_Required_: No
+
+_Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
 #### Tags
 
 _Required_: No
 
 _Type_: List of <a href="tag.md">Tag</a>
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 ## Return Values
 

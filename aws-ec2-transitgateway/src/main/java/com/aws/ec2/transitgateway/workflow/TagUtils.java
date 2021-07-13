@@ -6,11 +6,9 @@ import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.awssdk.services.ec2.model.TagSpecification;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TagUtils {
     public static java.util.List<com.aws.ec2.transitgateway.Tag> sdkTagsToCfnTags(final List<Tag> tags) {
@@ -44,7 +42,7 @@ public class TagUtils {
     }
 
     public static List<TagSpecification> cfnTagsToSdkTagSpecifications(final List<com.aws.ec2.transitgateway.Tag> tags) {
-        if(tags == null) return null;
+        if(tags == null || tags.isEmpty()) return null;
         List<Tag> listTags = TagUtils.cfnTagsToSdkTags(tags);
         return TagUtils.translateTagsToTagSpecifications(listTags);
     }
@@ -57,6 +55,38 @@ public class TagUtils {
             .resourceType("transit-gateway")
             .tags(newTags).build());
     }
+
+    public static List<com.aws.ec2.transitgateway.Tag> mergeResourceModelAndStackTags(List<com.aws.ec2.transitgateway.Tag> modelTags, Map<String, String> stackTags) {
+        if(modelTags == null || modelTags.isEmpty()) {
+            modelTags = new ArrayList<com.aws.ec2.transitgateway.Tag>();
+        }
+        List<com.aws.ec2.transitgateway.Tag> tags = new ArrayList<com.aws.ec2.transitgateway.Tag>();
+        if(stackTags != null) {
+            for (Map.Entry<String, String> entry : stackTags.entrySet()) {
+                com.aws.ec2.transitgateway.Tag tag = com.aws.ec2.transitgateway.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();
+                tags.add(tag);
+            }
+        }
+        if(tags.isEmpty()) {
+            return modelTags;
+        } else if(modelTags == null || modelTags.isEmpty()) {
+            return tags;
+        } else {
+            return Stream.concat(modelTags.stream(), tags.stream())
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public static Set<Tag> listToSet(final List<Tag> tags) {
+        return CollectionUtils.isEmpty(tags) ? new HashSet<>() : new HashSet<>(tags);
+    }
+
+    public static List<Tag> difference(List<com.aws.ec2.transitgateway.Tag>  tags1, List<com.aws.ec2.transitgateway.Tag> tags2) {
+        final List<Tag> sdkTags1 = TagUtils.cfnTagsToSdkTags(tags1);
+        final List<Tag> sdkTags2 = TagUtils.cfnTagsToSdkTags(tags2);
+        return Sets.difference(TagUtils.listToSet(sdkTags1), TagUtils.listToSet(sdkTags2)).immutableCopy().asList();
+    }
+
 
 
 }
