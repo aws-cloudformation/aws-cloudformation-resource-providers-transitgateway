@@ -31,6 +31,10 @@
     "AmazonSideAsn": {
       "type": "integer"
     },
+    "TransitGatewayCidrBlocks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
     "Tags": {
       "type": "array",
       "uniqueItems": false,
@@ -39,6 +43,7 @@
       }
     }
   },
+  "taggable": true,
   "definitions": {
     "Tag": {
       "type": "object",
@@ -67,7 +72,6 @@
     "/properties/DnsSupport",
     "/properties/DefaultRouteTableAssociation",
     "/properties/DefaultRouteTablePropagation",
-    "/properties/Tags",
     "/properties/AutoAcceptSharedAttachments",
     "/properties/AmazonSideAsn",
     "/properties/Description",
@@ -91,6 +95,12 @@
       "permissions": [
         "ec2:DeleteTransitGateway",
         "ec2:DeleteTags"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:DeleteTags",
+        "ec2:CreateTags"
       ]
     },
     "list": {
