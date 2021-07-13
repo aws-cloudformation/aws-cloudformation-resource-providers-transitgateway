@@ -33,7 +33,9 @@
     },
     "TransitGatewayCidrBlocks": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "Tags": {
       "type": "array",
