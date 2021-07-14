@@ -33,7 +33,9 @@
     },
     "TransitGatewayCidrBlocks": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "Tags": {
       "type": "array",
@@ -44,11 +46,15 @@
     },
     "AddTransitGatewayCidrBlocks": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
-    "RemoveTransitGatewayCidrBlocks":{
+    "RemoveTransitGatewayCidrBlocks": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "AssociationDefaultRouteTableId": {
       "type": "string"
