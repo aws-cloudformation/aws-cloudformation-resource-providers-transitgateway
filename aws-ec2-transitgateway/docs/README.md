@@ -21,7 +21,11 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#multicastsupport" title="MulticastSupport">MulticastSupport</a>" : <i>String</i>,
         "<a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>" : <i>Integer</i>,
         "<a href="#transitgatewaycidrblocks" title="TransitGatewayCidrBlocks">TransitGatewayCidrBlocks</a>" : <i>[ String, ... ]</i>,
-        "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>
+        "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
+        "<a href="#addtransitgatewaycidrblocks" title="AddTransitGatewayCidrBlocks">AddTransitGatewayCidrBlocks</a>" : <i>[ String, ... ]</i>,
+        "<a href="#removetransitgatewaycidrblocks" title="RemoveTransitGatewayCidrBlocks">RemoveTransitGatewayCidrBlocks</a>" : <i>[ String, ... ]</i>,
+        "<a href="#associationdefaultroutetableid" title="AssociationDefaultRouteTableId">AssociationDefaultRouteTableId</a>" : <i>String</i>,
+        "<a href="#propagationdefaultroutetableid" title="PropagationDefaultRouteTableId">PropagationDefaultRouteTableId</a>" : <i>String</i>
     }
 }
 </pre>
@@ -43,6 +47,12 @@ Properties:
       - String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
+    <a href="#addtransitgatewaycidrblocks" title="AddTransitGatewayCidrBlocks">AddTransitGatewayCidrBlocks</a>: <i>
+      - String</i>
+    <a href="#removetransitgatewaycidrblocks" title="RemoveTransitGatewayCidrBlocks">RemoveTransitGatewayCidrBlocks</a>: <i>
+      - String</i>
+    <a href="#associationdefaultroutetableid" title="AssociationDefaultRouteTableId">AssociationDefaultRouteTableId</a>: <i>String</i>
+    <a href="#propagationdefaultroutetableid" title="PropagationDefaultRouteTableId">PropagationDefaultRouteTableId</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -53,7 +63,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### Description
 
@@ -61,7 +71,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### AutoAcceptSharedAttachments
 
@@ -69,7 +79,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### DefaultRouteTableAssociation
 
@@ -77,7 +87,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### VpnEcmpSupport
 
@@ -85,7 +95,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### DnsSupport
 
@@ -93,7 +103,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### MulticastSupport
 
@@ -126,6 +136,39 @@ _Required_: No
 _Type_: List of <a href="tag.md">Tag</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### AddTransitGatewayCidrBlocks
+
+_Required_: No
+
+_Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### RemoveTransitGatewayCidrBlocks
+
+_Required_: No
+
+_Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### AssociationDefaultRouteTableId
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### PropagationDefaultRouteTableId
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
 
 ## Return Values
 
