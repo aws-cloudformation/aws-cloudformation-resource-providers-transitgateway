@@ -70,7 +70,7 @@ public class Update {
                     .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
                     .build();
     }
-  
+
     private List<String> cidrBlocksToCreate(ResourceModel model) {
         List<String> prevCidrBlocks = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTransitGatewayCidrBlocks();
         List<String> currCidrBlocks = model.getTransitGatewayCidrBlocks();
