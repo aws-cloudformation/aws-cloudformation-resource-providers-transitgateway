@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 public class Update {
     AmazonWebServicesClientProxy proxy;
     ResourceHandlerRequest<ResourceModel> request;
@@ -59,16 +58,57 @@ public class Update {
 
     private ModifyTransitGatewayOptions getTransitGatewayModifyOptions(ResourceModel model){
 
-            return ModifyTransitGatewayOptions.builder()
-                    .addTransitGatewayCidrBlocks(cidrBlocksToCreate(model))
-                    .removeTransitGatewayCidrBlocks(cidrBlocksToDelete(model))
-                    .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
-                    .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
-                    .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
-                    .vpnEcmpSupport(model.getVpnEcmpSupport())
-                    .dnsSupport(model.getDnsSupport())
-                    .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
-                    .build();
+            List<String> cidrBlocksToCreate = cidrBlocksToCreate(model);
+            List<String> cidrBlocksToDelete = cidrBlocksToDelete(model);
+
+         if((cidrBlocksToCreate == null || cidrBlocksToCreate.isEmpty()) && (cidrBlocksToDelete == null || cidrBlocksToDelete.isEmpty())) {
+             return ModifyTransitGatewayOptions.builder()
+                     .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
+                     .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                     .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                     .vpnEcmpSupport(model.getVpnEcmpSupport())
+                     .dnsSupport(model.getDnsSupport())
+                     .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
+                     .build();
+         }
+         else if((cidrBlocksToCreate == null || cidrBlocksToCreate.isEmpty()) && (cidrBlocksToDelete != null || !cidrBlocksToDelete.isEmpty())) {
+             logger.log("Only removing the CIDR blocks from the TransitGateway, no CIDR ranges to add");
+             return ModifyTransitGatewayOptions.builder()
+                     .removeTransitGatewayCidrBlocks(cidrBlocksToDelete)
+                     .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
+                     .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                     .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                     .vpnEcmpSupport(model.getVpnEcmpSupport())
+                     .dnsSupport(model.getDnsSupport())
+                     .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
+                     .build();
+         }
+         else if((cidrBlocksToCreate != null || !cidrBlocksToCreate.isEmpty()) && (cidrBlocksToDelete == null || cidrBlocksToDelete.isEmpty())) {
+             logger.log("Only Adding the CIDR blocks to the TransitGateway, no CIDR ranges to remove");
+             return ModifyTransitGatewayOptions.builder()
+                     .addTransitGatewayCidrBlocks(cidrBlocksToCreate)
+                     .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
+                     .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                     .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                     .vpnEcmpSupport(model.getVpnEcmpSupport())
+                     .dnsSupport(model.getDnsSupport())
+                     .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
+                     .build();
+         }
+         else{
+             logger.log("Adding and Removing the CIDR blocks to the TransitGateway");
+             return ModifyTransitGatewayOptions.builder()
+                     .addTransitGatewayCidrBlocks(cidrBlocksToCreate)
+                     .removeTransitGatewayCidrBlocks(cidrBlocksToDelete)
+                     .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
+                     .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                     .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                     .vpnEcmpSupport(model.getVpnEcmpSupport())
+                     .dnsSupport(model.getDnsSupport())
+                     .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
+                     .build();
+         }
+
     }
 
     private List<String> cidrBlocksToCreate(ResourceModel model) {
@@ -90,6 +130,7 @@ public class Update {
     public static Set<String> listToSet(final List<String> cidrs) {
         return CollectionUtils.isEmpty(cidrs) ? new HashSet<>() : new HashSet<>(cidrs);
     }
+
 
     private ModifyTransitGatewayResponse makeServiceCall(ModifyTransitGatewayRequest request, ProxyClient<Ec2Client> client) {
         return proxy.injectCredentialsAndInvokeV2(request, client.client()::modifyTransitGateway);
