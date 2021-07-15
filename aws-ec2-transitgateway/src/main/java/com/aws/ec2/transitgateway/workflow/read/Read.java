@@ -82,6 +82,7 @@ public class Read {
                 .multicastSupport(response.options().multicastSupportAsString())
                 .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
                 .vpnEcmpSupport(response.options().vpnEcmpSupportAsString())
+                .transitGatewayCidrBlocks(response.options().transitGatewayCidrBlocks())
                 .build();
     }
 

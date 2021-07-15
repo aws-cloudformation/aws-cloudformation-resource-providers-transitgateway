@@ -22,8 +22,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#amazonsideasn" title="AmazonSideAsn">AmazonSideAsn</a>" : <i>Integer</i>,
         "<a href="#transitgatewaycidrblocks" title="TransitGatewayCidrBlocks">TransitGatewayCidrBlocks</a>" : <i>[ String, ... ]</i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
-        "<a href="#addtransitgatewaycidrblocks" title="AddTransitGatewayCidrBlocks">AddTransitGatewayCidrBlocks</a>" : <i>[ String, ... ]</i>,
-        "<a href="#removetransitgatewaycidrblocks" title="RemoveTransitGatewayCidrBlocks">RemoveTransitGatewayCidrBlocks</a>" : <i>[ String, ... ]</i>,
         "<a href="#associationdefaultroutetableid" title="AssociationDefaultRouteTableId">AssociationDefaultRouteTableId</a>" : <i>String</i>,
         "<a href="#propagationdefaultroutetableid" title="PropagationDefaultRouteTableId">PropagationDefaultRouteTableId</a>" : <i>String</i>
     }
@@ -47,10 +45,6 @@ Properties:
       - String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
-    <a href="#addtransitgatewaycidrblocks" title="AddTransitGatewayCidrBlocks">AddTransitGatewayCidrBlocks</a>: <i>
-      - String</i>
-    <a href="#removetransitgatewaycidrblocks" title="RemoveTransitGatewayCidrBlocks">RemoveTransitGatewayCidrBlocks</a>: <i>
-      - String</i>
     <a href="#associationdefaultroutetableid" title="AssociationDefaultRouteTableId">AssociationDefaultRouteTableId</a>: <i>String</i>
     <a href="#propagationdefaultroutetableid" title="PropagationDefaultRouteTableId">PropagationDefaultRouteTableId</a>: <i>String</i>
 </pre>
@@ -137,22 +131,6 @@ _Type_: List of <a href="tag.md">Tag</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### AddTransitGatewayCidrBlocks
-
-_Required_: No
-
-_Type_: List of String
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
-#### RemoveTransitGatewayCidrBlocks
-
-_Required_: No
-
-_Type_: List of String
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
 #### AssociationDefaultRouteTableId
 
 _Required_: No
@@ -168,7 +146,6 @@ _Required_: No
 _Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
 
 ## Return Values
 

@@ -6,11 +6,15 @@ import com.aws.ec2.transitgateway.Tag;
 import com.aws.ec2.transitgateway.workflow.ExceptionMapper;
 import com.aws.ec2.transitgateway.workflow.TagUtils;
 import com.aws.ec2.transitgateway.workflow.read.Read;
+import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.*;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 
 public class Update {
     AmazonWebServicesClientProxy proxy;
@@ -56,8 +60,8 @@ public class Update {
     private ModifyTransitGatewayOptions getTransitGatewayModifyOptions(ResourceModel model){
 
             return ModifyTransitGatewayOptions.builder()
-                    .addTransitGatewayCidrBlocks(model.getAddTransitGatewayCidrBlocks())
-                    .removeTransitGatewayCidrBlocks(model.getRemoveTransitGatewayCidrBlocks())
+                    .addTransitGatewayCidrBlocks(cidrBlocksToCreate(model))
+                    .removeTransitGatewayCidrBlocks(cidrBlocksToDelete(model))
                     .associationDefaultRouteTableId(model.getAssociationDefaultRouteTableId())
                     .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
                     .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
@@ -65,6 +69,26 @@ public class Update {
                     .dnsSupport(model.getDnsSupport())
                     .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
                     .build();
+    }
+
+    private List<String> cidrBlocksToCreate(ResourceModel model) {
+        List<String> prevCidrBlocks = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTransitGatewayCidrBlocks();
+        List<String> currCidrBlocks = model.getTransitGatewayCidrBlocks();
+        return difference(currCidrBlocks, prevCidrBlocks);
+    }
+
+    private List<String> cidrBlocksToDelete(ResourceModel model) {
+        final List<String> prevCidrBlocks =  new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTransitGatewayCidrBlocks();
+        List<String> currCidrBlocks = model.getTransitGatewayCidrBlocks();
+        return difference(prevCidrBlocks, currCidrBlocks);
+    }
+
+    public static List<String> difference(List<String>  cidr1, List<String> cidr2) {
+        return Sets.difference(listToSet(cidr1), listToSet(cidr2)).immutableCopy().asList();
+    }
+
+    public static Set<String> listToSet(final List<String> cidrs) {
+        return CollectionUtils.isEmpty(cidrs) ? new HashSet<>() : new HashSet<>(cidrs);
     }
 
     private ModifyTransitGatewayResponse makeServiceCall(ModifyTransitGatewayRequest request, ProxyClient<Ec2Client> client) {
