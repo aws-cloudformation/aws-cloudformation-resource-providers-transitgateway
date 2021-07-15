@@ -42,14 +42,6 @@
         "$ref": "#/definitions/Tag"
       }
     },
-    "AddTransitGatewayCidrBlocks": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
-    "RemoveTransitGatewayCidrBlocks":{
-      "type": "array",
-      "items": { "type": "string" }
-    },
     "AssociationDefaultRouteTableId": {
       "type": "string"
     },
