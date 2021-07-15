@@ -11,7 +11,6 @@ import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -109,7 +108,6 @@ public class Update {
                      .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
                      .build();
          }
-
 
     }
 
