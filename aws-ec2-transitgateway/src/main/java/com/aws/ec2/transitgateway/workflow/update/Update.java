@@ -11,10 +11,10 @@ import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.proxy.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 public class Update {
     AmazonWebServicesClientProxy proxy;
@@ -70,7 +70,7 @@ public class Update {
                     .propagationDefaultRouteTableId(model.getPropagationDefaultRouteTableId())
                     .build();
     }
-
+  
     private List<String> cidrBlocksToCreate(ResourceModel model) {
         List<String> prevCidrBlocks = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getTransitGatewayCidrBlocks();
         List<String> currCidrBlocks = model.getTransitGatewayCidrBlocks();
@@ -90,7 +90,6 @@ public class Update {
     public static Set<String> listToSet(final List<String> cidrs) {
         return CollectionUtils.isEmpty(cidrs) ? new HashSet<>() : new HashSet<>(cidrs);
     }
-
 
     private ModifyTransitGatewayResponse makeServiceCall(ModifyTransitGatewayRequest request, ProxyClient<Ec2Client> client) {
         return proxy.injectCredentialsAndInvokeV2(request, client.client()::modifyTransitGateway);
