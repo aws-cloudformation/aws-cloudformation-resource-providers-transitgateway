@@ -83,6 +83,7 @@ public class ValidPropertiesCheck {
                 Method previousMethod = previousModel.getClass().getMethod("get"+prop);
                 logger.log(String.valueOf(previousMethod));
                 return !method.invoke(model).equals(previousMethod.invoke(previousModel));
+
             } catch(Exception e ) {
                 return false;
             }
