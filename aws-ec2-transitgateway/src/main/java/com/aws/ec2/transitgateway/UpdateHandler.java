@@ -5,7 +5,6 @@ import com.aws.ec2.transitgateway.workflow.update.*;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.proxy.*;
 
-import java.util.List;
 
 public class UpdateHandler extends BaseHandlerStd  {
 
