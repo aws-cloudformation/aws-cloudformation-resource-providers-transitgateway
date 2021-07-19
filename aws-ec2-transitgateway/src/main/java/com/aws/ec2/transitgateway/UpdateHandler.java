@@ -15,7 +15,6 @@ public class UpdateHandler extends BaseHandlerStd  {
             final ProxyClient<Ec2Client> proxyClient,
             final Logger logger) {
 
-
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
                 .then(new ValidCurrentStateCheck(proxy, request, callbackContext, proxyClient, logger)::run)
                 .then(new ValidPropertiesCheck(proxy, request, callbackContext, proxyClient, logger)::run)
