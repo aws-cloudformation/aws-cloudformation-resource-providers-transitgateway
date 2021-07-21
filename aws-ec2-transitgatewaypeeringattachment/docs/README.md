@@ -123,3 +123,4 @@ The state of the transit gateway peering attachment. Note that the initiating st
 #### CreationTime
 
 The time the transit gateway peering attachment was created.
+
