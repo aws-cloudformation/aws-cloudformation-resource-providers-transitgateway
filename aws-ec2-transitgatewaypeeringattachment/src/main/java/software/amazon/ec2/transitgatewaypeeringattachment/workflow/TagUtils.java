@@ -38,6 +38,7 @@ public class TagUtils {
     }
 
     public static List<TagSpecification> cfnTagsToSdkTagSpecifications(final List<software.amazon.ec2.transitgatewaypeeringattachment.Tag> tags) {
+        if(tags == null || tags.isEmpty()) return null;
         List<Tag> listTags = TagUtils.cfnTagsToSdkTags(tags);
         return TagUtils.translateTagsToTagSpecifications(listTags);
     }
