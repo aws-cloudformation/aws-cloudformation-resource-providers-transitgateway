@@ -16,10 +16,10 @@ import java.util.function.Function;
 
 public class AbstractTestBase {
   protected static final Credentials MOCK_CREDENTIALS;
-  protected static final com.aws.ec2.transitgatewayattachment.Mocks MOCKS;
+  protected static final Mocks MOCKS;
   protected static final LoggerProxy logger;
   static {
-    MOCKS = new com.aws.ec2.transitgatewayattachment.Mocks();
+    MOCKS = new Mocks();
     MOCK_CREDENTIALS = new Credentials("accessKey", "secretKey", "token");
     logger = new LoggerProxy();
   }

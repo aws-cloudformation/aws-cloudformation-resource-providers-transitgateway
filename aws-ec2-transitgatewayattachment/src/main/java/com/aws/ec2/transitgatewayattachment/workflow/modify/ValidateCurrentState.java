@@ -1,4 +1,4 @@
-package com.aws.ec2.transitgatewayattachment.workflow.delete;
+package com.aws.ec2.transitgatewayattachment.workflow.modify;
 
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
 import com.aws.ec2.transitgatewayattachment.workflow.ValidateCurrentStateBase;
@@ -28,7 +28,7 @@ public class ValidateCurrentState extends ValidateCurrentStateBase {
     protected List<String> validStates() {
         List<String> list = new ArrayList<>();
         list.add(TransitGatewayAttachmentState.AVAILABLE.toString());
-        list.add(TransitGatewayAttachmentState.DELETING.toString());
+        list.add(TransitGatewayAttachmentState.MODIFYING.toString());
         return list;
     }
 

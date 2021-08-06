@@ -1,15 +1,16 @@
 package com.aws.ec2.transitgatewayattachment;
 
+import com.aws.ec2.transitgatewayattachment.CallbackContext;
+import com.aws.ec2.transitgatewayattachment.DeleteHandler;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayRequest;
 import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayVpcAttachmentRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsRequest;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
 import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DeleteHandlerTest extends com.aws.ec2.transitgatewayattachment.AbstractTestBase {
+public class DeleteHandlerTest extends AbstractTestBase {
 
     @Mock
     private AmazonWebServicesClientProxy proxy;

@@ -1,13 +1,11 @@
 package com.aws.ec2.transitgatewayattachment.workflow;
 
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
-import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
-import software.amazon.awssdk.services.cloudwatchevents.model.BatchRetryStrategy;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
 import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
 import software.amazon.cloudformation.proxy.*;
 

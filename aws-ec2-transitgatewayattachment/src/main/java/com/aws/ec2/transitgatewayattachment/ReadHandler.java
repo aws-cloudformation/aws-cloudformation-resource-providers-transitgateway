@@ -6,9 +6,9 @@ import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.proxy.*;
 
 
-public class ReadHandler extends com.aws.ec2.transitgatewayattachment.BaseHandlerStd {
+public class ReadHandler extends BaseHandlerStd {
 
-    protected ProgressEvent<ResourceModel, com.aws.ec2.transitgatewayattachment.CallbackContext> handleRequest(
+    protected ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext> handleRequest(
         final AmazonWebServicesClientProxy proxy,
         final ResourceHandlerRequest<ResourceModel> request,
         final CallbackContext callbackContext,

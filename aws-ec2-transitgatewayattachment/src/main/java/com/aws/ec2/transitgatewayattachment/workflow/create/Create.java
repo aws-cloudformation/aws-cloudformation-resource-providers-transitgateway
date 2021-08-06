@@ -1,15 +1,17 @@
 package com.aws.ec2.transitgatewayattachment.workflow.create;
 
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
-import com.aws.ec2.transitgatewayattachment.ClientBuilder;
-import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
 import com.aws.ec2.transitgatewayattachment.workflow.TagUtils;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
+import com.aws.ec2.transitgatewayattachment.Tag;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
-import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Create {
     AmazonWebServicesClientProxy proxy;
@@ -43,12 +45,38 @@ public class Create {
     }
 
     private CreateTransitGatewayVpcAttachmentRequest translateModelToRequest(ResourceModel model) {
+        List<Tag> tags = (model.getTags() != null) ? TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags())
+                : new ArrayList<Tag>();
+
         return CreateTransitGatewayVpcAttachmentRequest.builder()
-            .subnetIds(model.getSubnetIds())
-            .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
-            .transitGatewayId(model.getTransitGatewayId())
-            .vpcId(model.getVpcId())
-            .build();
+                    .subnetIds(model.getSubnetIds())
+                    .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(tags))
+                    .transitGatewayId(model.getTransitGatewayId())
+                    .vpcId(model.getVpcId()).options(this.translateModelToOptions(model))
+                    .build();
+    }
+
+    private CreateTransitGatewayVpcAttachmentRequestOptions translateModelToOptions(ResourceModel model) {
+        //DEFAULT OPTIONS
+        String ipv6Support = "disable";
+        String applianceModeSupport = "disable";
+        String dnsSupport = "disable";
+        if(model.getOptions() != null) {
+            if(model.getOptions().getIpv6Support() != null) {
+                ipv6Support = model.getOptions().getIpv6Support() ;
+            }
+            if(model.getOptions().getApplianceModeSupport() != null) {
+                applianceModeSupport = model.getOptions().getApplianceModeSupport();
+            }
+            if(model.getOptions().getDnsSupport() != null) {
+                dnsSupport = model.getOptions().getDnsSupport();
+            }
+        }
+        return CreateTransitGatewayVpcAttachmentRequestOptions.builder()
+                .ipv6Support(ipv6Support)
+                .applianceModeSupport(applianceModeSupport)
+                .dnsSupport(dnsSupport)
+                .build();
     }
 
     private CreateTransitGatewayVpcAttachmentResponse makeServiceCall(CreateTransitGatewayVpcAttachmentRequest request, ProxyClient<Ec2Client> client) {

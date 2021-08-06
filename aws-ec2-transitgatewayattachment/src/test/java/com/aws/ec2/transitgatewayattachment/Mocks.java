@@ -8,6 +8,7 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Mocks {
     public String primaryIdentifier;
@@ -18,17 +19,17 @@ public class Mocks {
     public Integer counter;
     public Mocks(
     ) {
-        this.primaryIdentifier = "tgw-0d88d2d0d5EXAMPLE";
-        this.TGW_ID = "tgw-123abc";
-        this.VPC_ID = "vpc-123-abc";
+        this.primaryIdentifier = "tgw-attach-02bb79002EXAMPLE";
+        this.TGW_ID = "tgw-0d88d2d0d5EXAMPLEx";
+        this.VPC_ID = "vpc-123";
         this.subnetId = new ArrayList<>();
-        subnetId.add("subnet-123-abc");
+        subnetId.add("subnet-e4f648c5");
         this.currentTime = Instant.now();
         this.counter = 0;
     }
     public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model) {
         return ResourceHandlerRequest.<ResourceModel>builder()
-            .desiredResourceState(model)
+            .desiredResourceState(model).region("us-east-1")
             .build();
     }
 
@@ -38,9 +39,17 @@ public class Mocks {
                 .vpcId(this.VPC_ID)
                 .transitGatewayId(this.TGW_ID)
                 .subnetIds(this.subnetId)
+                .tags(TagUtils.sdkTagsToCfnTags(tags))
                 .build();
     }
 
+
+    public Options transitGatewayVpcAttachmentOptions(){
+        return Options.builder()
+                .applianceModeSupport("disable")
+                .dnsSupport("disable")
+                .ipv6Support("disable").build();
+    }
 
 
 
@@ -65,7 +74,10 @@ public class Mocks {
             .vpcId(this.VPC_ID)
             .transitGatewayId(this.TGW_ID)
             .subnetIds(this.subnetId)
+              //  .addSubnetIds(new ArrayList<>())
+            //    .removeSubnetIds(new ArrayList<>())
             .tags(TagUtils.sdkTagsToCfnTags(tags))
+           //     .options(this.transitGatewayVpcAttachmentOptions())
             .build();
     }
 
@@ -99,10 +111,17 @@ public class Mocks {
                 .transitGatewayAttachmentId(this.primaryIdentifier)
                 .vpcId(this.VPC_ID)
                 .transitGatewayId(this.TGW_ID)
-                .subnetIds(this.subnetId)
+                .subnetIds(this.subnetId).tags(tags)
+
+                      //  tags(TagUtils.sdkTagsToCfnTags(tags))
+             //   .options(this.options())
                 .state(state)
                 .tags(tags)
                 .build();
+    }
+
+    public TransitGatewayVpcAttachmentOptions options(){
+        return TransitGatewayVpcAttachmentOptions.builder().dnsSupport("disable").build();
     }
 
 
@@ -180,7 +199,20 @@ public class Mocks {
         return this.createResponse(new ArrayList<>(), "available");
     }
 
+    public ModifyTransitGatewayVpcAttachmentResponse modifyResponse(List<Tag> tags, String state) {
+        return ModifyTransitGatewayVpcAttachmentResponse.builder()
+                .transitGatewayVpcAttachment(
+                        this.sdkModel(tags, state)
+                )
+                .build();
+    }
 
+    public ModifyTransitGatewayVpcAttachmentResponse modifyResponse(List<Tag> tags) {
+        return this.modifyResponse(tags, "available");
+    }
 
-
+    public ModifyTransitGatewayVpcAttachmentResponse modifyResponse(String state) {
+        final List<Tag> tags = new ArrayList<>();
+        return this.modifyResponse(tags, state);
+    }
 }

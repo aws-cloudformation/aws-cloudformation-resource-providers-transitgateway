@@ -1,10 +1,9 @@
 package com.aws.ec2.transitgatewayattachment.workflow.delete;
 
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
-import com.aws.ec2.transitgatewayattachment.ClientBuilder;
-import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.cloudformation.exceptions.ResourceNotFoundException;
@@ -16,11 +15,11 @@ public class Delete {
     CallbackContext callbackContext;
     ProxyClient<Ec2Client> client;
     Logger logger;
-    ProgressEvent<ResourceModel, CallbackContext>  progress;
+    ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext>  progress;
 
     public Delete(
         AmazonWebServicesClientProxy proxy,
-        ResourceHandlerRequest<ResourceModel> request,
+        ResourceHandlerRequest<com.aws.ec2.transitgatewayattachment.ResourceModel> request,
         CallbackContext callbackContext,
         ProxyClient<Ec2Client> client,
         Logger logger
@@ -32,7 +31,7 @@ public class Delete {
         this.logger = logger;
     }
 
-    public ProgressEvent<ResourceModel, CallbackContext>  run(ProgressEvent<ResourceModel, CallbackContext> progress) {
+    public ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext>  run(ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext> progress) {
         this.progress = progress;
         return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())
             .translateToServiceRequest(this::translateModelToRequest)
@@ -43,7 +42,7 @@ public class Delete {
 
     }
 
-    private DeleteTransitGatewayVpcAttachmentRequest translateModelToRequest(ResourceModel model) {
+    private DeleteTransitGatewayVpcAttachmentRequest translateModelToRequest(com.aws.ec2.transitgatewayattachment.ResourceModel model) {
         return  DeleteTransitGatewayVpcAttachmentRequest.builder()
             .transitGatewayAttachmentId(model.getId())
             .build();
@@ -57,7 +56,7 @@ public class Delete {
         DeleteTransitGatewayVpcAttachmentRequest request,
         DeleteTransitGatewayVpcAttachmentResponse response,
         ProxyClient<Ec2Client> client,
-        ResourceModel model,
+        com.aws.ec2.transitgatewayattachment.ResourceModel model,
         CallbackContext context
     ) {
         model.setId(response.transitGatewayVpcAttachment().transitGatewayAttachmentId());
@@ -65,7 +64,7 @@ public class Delete {
         return currentState.equals(TransitGatewayAttachmentState.DELETED.toString());
     }
 
-    private ProgressEvent<ResourceModel, CallbackContext>  handleError(DeleteTransitGatewayVpcAttachmentRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
+    private ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext>  handleError(DeleteTransitGatewayVpcAttachmentRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, com.aws.ec2.transitgatewayattachment.ResourceModel model, CallbackContext context) {
         if (exception instanceof ResourceNotFoundException || ExceptionMapper.mapToHandlerErrorCode(exception).equals(HandlerErrorCode.NotFound)) {
             return ProgressEvent.defaultSuccessHandler(null);
         } else {
