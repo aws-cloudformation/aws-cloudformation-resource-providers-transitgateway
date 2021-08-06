@@ -1,5 +1,9 @@
 package com.aws.ec2.transitgatewayattachment;
 
+import com.aws.ec2.transitgatewayattachment.CallbackContext;
+import com.aws.ec2.transitgatewayattachment.ReadHandler;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsRequest;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
 
@@ -17,11 +20,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ReadHandlerTest extends com.aws.ec2.transitgatewayattachment.AbstractTestBase {
+public class ReadHandlerTest extends AbstractTestBase {
 
     @Mock
     private AmazonWebServicesClientProxy proxy;
@@ -41,12 +43,6 @@ public class ReadHandlerTest extends com.aws.ec2.transitgatewayattachment.Abstra
         sdkClient = mock(Ec2Client.class);
         proxyClient = MOCK_PROXY(proxy, sdkClient);
     }
-
-//    @AfterEach
-//    public void tear_down() {
-//        verify(sdkClient, atLeastOnce()).serviceName();
-//        verifyNoMoreInteractions(sdkClient);
-//    }
 
     @Test
     public void handleRequest_SimpleSuccess() {

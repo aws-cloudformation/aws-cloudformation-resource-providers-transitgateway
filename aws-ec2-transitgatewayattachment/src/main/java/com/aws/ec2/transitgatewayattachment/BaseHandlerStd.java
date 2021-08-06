@@ -7,9 +7,9 @@ import software.amazon.cloudformation.proxy.*;
 
 public abstract class BaseHandlerStd extends BaseHandler<CallbackContext> {
   @Override
-  public final ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+  public final ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext> handleRequest(
           final AmazonWebServicesClientProxy proxy,
-          final ResourceHandlerRequest<ResourceModel> request,
+          final ResourceHandlerRequest<com.aws.ec2.transitgatewayattachment.ResourceModel> request,
           final CallbackContext callbackContext,
           final Logger logger) {
     CallbackContext context = callbackContext != null ? callbackContext : new CallbackContext();
@@ -22,7 +22,7 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext> {
             logger
     );
   }
-  protected abstract ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+  protected abstract ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext> handleRequest(
           final AmazonWebServicesClientProxy proxy,
           final ResourceHandlerRequest<ResourceModel> request,
           final CallbackContext callbackContext,

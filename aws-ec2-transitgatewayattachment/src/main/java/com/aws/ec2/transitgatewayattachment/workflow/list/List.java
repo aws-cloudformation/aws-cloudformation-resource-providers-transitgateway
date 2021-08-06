@@ -1,15 +1,12 @@
 package com.aws.ec2.transitgatewayattachment.workflow.list;
 
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
-import com.aws.ec2.transitgatewayattachment.ClientBuilder;
 import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsResponse;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysResponse;
 import software.amazon.cloudformation.proxy.*;
 
 import java.util.Collection;

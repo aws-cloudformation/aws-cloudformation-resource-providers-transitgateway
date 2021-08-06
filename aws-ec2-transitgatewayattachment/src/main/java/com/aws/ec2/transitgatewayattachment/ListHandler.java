@@ -7,7 +7,7 @@ import software.amazon.cloudformation.proxy.*;
 public class ListHandler extends BaseHandlerStd {
 
     @Override
-    public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+    public ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext> handleRequest(
             final AmazonWebServicesClientProxy proxy,
             final ResourceHandlerRequest<ResourceModel> request,
             final CallbackContext callbackContext,

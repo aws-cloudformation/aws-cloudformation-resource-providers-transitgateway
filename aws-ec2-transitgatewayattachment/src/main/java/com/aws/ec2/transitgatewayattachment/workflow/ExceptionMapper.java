@@ -13,7 +13,8 @@ public final class ExceptionMapper {
         if (e instanceof AwsServiceException) {
             AwsServiceException awsServiceException = (AwsServiceException) e;
             String errorCode = awsServiceException.awsErrorDetails().errorCode();
-            if(errorCode.contains("NotFound")) {
+            System.out.println("errorCode:"+errorCode.toString());
+            if(errorCode.contains("NotFound") || errorCode.contains("Invalid Transit Gateway Attachment id")) {
                 return HandlerErrorCode.NotFound;
             } else if(errorCode.contains("LimitExceeded")) {
                 return HandlerErrorCode.ServiceLimitExceeded;

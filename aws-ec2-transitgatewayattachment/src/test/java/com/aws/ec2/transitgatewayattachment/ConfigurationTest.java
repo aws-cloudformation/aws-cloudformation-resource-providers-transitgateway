@@ -1,5 +1,6 @@
 package com.aws.ec2.transitgatewayattachment;
 
+import com.aws.ec2.transitgatewayattachment.Configuration;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class ConfigurationTest extends com.aws.ec2.transitgatewayattachment.AbstractTestBase {
+public class ConfigurationTest extends AbstractTestBase {
 
     @Test
     public void resourceSchemaJSONObject() {

@@ -1,10 +1,8 @@
 {
-  "Id": "tgw-attach-09017663fea56c134",
-  "TransitGatewayId": "tgw-02c783c4653c2bdad",
-  "VpcId": "vpc-0e32b4e0c1ca43f43",
+  "TransitGatewayId": "tgw-0f5e72087fe02e9b6",
+  "VpcId": "vpc-3e569943",
   "SubnetIds": [
-    "subnet-0d2d2e34a920cd263",
-    "subnet-0c1dcbe37e3db157b"
+    "subnet-1bc97644123"
   ],
   "Tags": [
     {

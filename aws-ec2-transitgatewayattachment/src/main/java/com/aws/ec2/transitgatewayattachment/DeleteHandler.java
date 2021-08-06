@@ -7,7 +7,7 @@ import software.amazon.cloudformation.proxy.*;
 
 public class DeleteHandler extends BaseHandlerStd {
 
-    protected ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+    protected ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext> handleRequest(
         final AmazonWebServicesClientProxy proxy,
         final ResourceHandlerRequest<ResourceModel> request,
         final CallbackContext callbackContext,
