@@ -61,7 +61,11 @@
       "additionalProperties": false
     }
   },
-  "required": ["TransitGatewayId", "VpcId", "SubnetIds"],
+  "required": [
+    "TransitGatewayId",
+    "VpcId",
+    "SubnetIds"
+  ],
   "definitions": {
     "Tag": {
       "type": "object",

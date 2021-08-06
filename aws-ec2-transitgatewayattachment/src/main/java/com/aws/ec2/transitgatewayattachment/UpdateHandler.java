@@ -26,4 +26,3 @@ public class UpdateHandler extends BaseHandlerStd {
                 .then(new Read(proxy, request, callbackContext, proxyClient, logger)::run);
     }
 }
-
