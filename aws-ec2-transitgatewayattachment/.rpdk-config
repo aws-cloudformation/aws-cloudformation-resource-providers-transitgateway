@@ -1,0 +1,24 @@
+{
+    "artifact_type": "RESOURCE",
+    "typeName": "AWS::EC2::TransitGatewayAttachment",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "com.aws.ec2.transitgatewayattachment.HandlerWrapper::handleRequest",
+    "testEntrypoint": "software.amazon.mwaa.environment.HandlerWrapper::handleRequest",
+    "settings": {
+        "version": false,
+        "subparser_name": null,
+        "verbose": 0,
+        "force": false,
+        "type_name": "Aws::EC2::TransitGatewayAttachment",
+        "namespace": [
+            "com",
+            "aws",
+            "ec2",
+            "transitgatewayattachment"
+        ],
+        "codegen_template_path": "default",
+        "protocolVersion": "2.0.0"
+    },
+    "executableEntrypoint": "com.aws.ec2.transitgatewayattachment.HandlerWrapperExecutable"
+}
