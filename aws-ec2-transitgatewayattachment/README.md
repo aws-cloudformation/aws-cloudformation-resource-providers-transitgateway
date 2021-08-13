@@ -1,8 +1,8 @@
-# Aws::EC2::TransitGatewayAttachment
+# Aws::EC2::TransitGatewayVpcAttachment
 
 Congratulations on starting development! Next steps:
 
-1. Write the JSON schema describing your resource, `aws-ec2-transitgatewayattachment.json`
+1. Write the JSON schema describing your resource, `aws-ec2-transitgatewayvpcattachment.json`
 1. Implement your resource handlers.
 
 The RPDK will automatically generate the correct resource model from the schema whenever the project is built via Maven. You can also do this manually with the following command: `cfn generate`.
