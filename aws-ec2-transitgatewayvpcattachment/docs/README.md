@@ -45,7 +45,7 @@ Properties:
 
 #### TransitGatewayId
 
-_Required_: Yes
+_Required_: No
 
 _Type_: String
 
@@ -53,7 +53,7 @@ _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/l
 
 #### VpcId
 
-_Required_: Yes
+_Required_: No
 
 _Type_: String
 
@@ -61,7 +61,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### SubnetIds
 
-_Required_: Yes
+_Required_: No
 
 _Type_: List of String
 

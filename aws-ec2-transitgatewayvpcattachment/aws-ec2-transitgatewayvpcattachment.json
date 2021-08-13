@@ -36,7 +36,7 @@
     },
     "Tags": {
       "type": "array",
-      "uniqueItems": false,
+      "uniqueItems": true,
       "items": {
         "$ref": "#/definitions/Tag"
       }
@@ -61,7 +61,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["TransitGatewayId", "VpcId", "SubnetIds"],
   "definitions": {
     "Tag": {
       "type": "object",
