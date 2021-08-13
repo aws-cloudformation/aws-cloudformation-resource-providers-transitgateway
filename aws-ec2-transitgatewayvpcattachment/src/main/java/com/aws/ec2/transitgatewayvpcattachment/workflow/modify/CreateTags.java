@@ -72,4 +72,3 @@ public class CreateTags {
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
 }
-
