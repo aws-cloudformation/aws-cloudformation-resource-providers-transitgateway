@@ -15,28 +15,28 @@
     },
     "SubnetIds": {
       "type": "array",
-      "uniqueItems": true,
+      "uniqueItems": false,
       "items": {
         "type": "string"
       }
     },
     "AddSubnetIds": {
       "type": "array",
-      "uniqueItems": true,
+      "uniqueItems": false,
       "items": {
         "type": "string"
       }
     },
     "RemoveSubnetIds": {
       "type": "array",
-      "uniqueItems": true,
+      "uniqueItems": false,
       "items": {
         "type": "string"
       }
     },
     "Tags": {
       "type": "array",
-      "uniqueItems": true,
+      "uniqueItems": false,
       "items": {
         "$ref": "#/definitions/Tag"
       }
@@ -80,8 +80,11 @@
     }
   },
   "createOnlyProperties": [
-    "/properties/TransitGatewayId"
+    "/properties/TransitGatewayId",
+    "/properties/SubnetIds",
+    "/properties/VpcId"
   ],
+  "taggable": true,
   "readOnlyProperties": [
     "/properties/Id"
   ],
