@@ -76,8 +76,6 @@ public class TagUtils {
         } else if(modelTags == null || modelTags.isEmpty()) {
             return tags;
         } else {
-            for(Tag a: )
-
             return Stream.concat(modelTags.stream(), tags.stream())
                     .collect(Collectors.toList());
         }
