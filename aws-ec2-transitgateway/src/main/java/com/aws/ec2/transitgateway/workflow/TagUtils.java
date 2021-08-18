@@ -64,6 +64,11 @@ public class TagUtils {
         if(stackTags != null) {
             for (Map.Entry<String, String> entry : stackTags.entrySet()) {
                 com.aws.ec2.transitgateway.Tag tag = com.aws.ec2.transitgateway.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();
+                for (com.aws.ec2.transitgateway.Tag t : modelTags) {
+                    if (t.getKey().equals(entry.getKey())) {
+                        modelTags.remove(t);
+                    }
+                }
                 tags.add(tag);
             }
         }
