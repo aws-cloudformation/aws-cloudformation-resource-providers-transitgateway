@@ -60,6 +60,15 @@ public class TagUtils {
         if(stackTags!= null)
         for (Map.Entry<String, String> entry : stackTags.entrySet()) {
             com.aws.ec2.transitgatewayvpcattachment.Tag tag = com.aws.ec2.transitgatewayvpcattachment.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();
+            boolean isPresent = false;
+            for (com.aws.ec2.transitgatewayvpcattachment.Tag t : modelTags) {
+                if (t.getKey().equals(entry.getKey())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+            if(!isPresent)
+                tags.add(tag);
             tags.add(tag);
         }
         if(tags.isEmpty()) {
