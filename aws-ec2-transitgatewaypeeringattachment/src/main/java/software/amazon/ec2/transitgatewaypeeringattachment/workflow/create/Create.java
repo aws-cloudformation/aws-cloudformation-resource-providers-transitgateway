@@ -63,9 +63,9 @@ public class Create {
         ResourceModel model,
         CallbackContext context
     ) {
-        model.setTransitGatewayAttachmentId(awsResponse.transitGatewayPeeringAttachment().transitGatewayAttachmentId());
-        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
-        return (TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentState) || TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState));
+        ResourceModel currentResourceModel = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
+        if(currentResourceModel == null) return false;
+        else return (TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentResourceModel.getState()) || TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentResourceModel.getState()));
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(CreateTransitGatewayPeeringAttachmentRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
