@@ -65,7 +65,7 @@ public class CreatePrecheck {
                 } catch (ResourceNotFoundException e) {
                     // If function not exists, response a IN_PROGRESS to indicate resource not exists.
                     //It will ensure if any failure happen afterward, it will initial rollback to clean up resource to avoid resource leak
-                    logger.log(String.format("[CREATE][IN PROGRESS] Initial check for the Function succeeded"));
+                    logger.log("[CREATE][IN PROGRESS] Initial check for the Function succeeded");
                     return ProgressEvent.<ResourceModel, CallbackContext>builder()
                             .callbackContext(callbackContext)
                             .status(OperationStatus.IN_PROGRESS)
