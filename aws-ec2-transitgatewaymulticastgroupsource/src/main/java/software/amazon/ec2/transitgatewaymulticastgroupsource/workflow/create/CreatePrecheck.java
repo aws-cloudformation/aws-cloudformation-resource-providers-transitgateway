@@ -69,7 +69,7 @@ public class CreatePrecheck {
                     return ProgressEvent.<ResourceModel, CallbackContext>builder()
                             .callbackContext(callbackContext)
                             .status(OperationStatus.IN_PROGRESS)
-                            .resourceModel(model)
+                            .resourceModel(current)
                             .callbackDelaySeconds(1)
                             .build();
                 }
