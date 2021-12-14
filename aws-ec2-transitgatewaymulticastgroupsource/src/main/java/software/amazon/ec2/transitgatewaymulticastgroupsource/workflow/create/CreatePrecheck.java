@@ -3,12 +3,18 @@ package software.amazon.ec2.transitgatewaymulticastgroupsource.workflow.create;
 import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.Filter;
+import software.amazon.awssdk.services.ec2.model.SearchTransitGatewayMulticastGroupsRequest;
+import software.amazon.awssdk.services.ec2.model.SearchTransitGatewayMulticastGroupsResponse;
 import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
+import software.amazon.cloudformation.exceptions.ResourceNotFoundException;
 import software.amazon.cloudformation.proxy.*;
 import software.amazon.ec2.transitgatewaymulticastgroupsource.CallbackContext;
 import software.amazon.ec2.transitgatewaymulticastgroupsource.ResourceModel;
 import software.amazon.ec2.transitgatewaymulticastgroupsource.workflow.ExceptionMapper;
 import software.amazon.ec2.transitgatewaymulticastgroupsource.workflow.read.Read;
+
+import java.util.ArrayList;
 
 public class CreatePrecheck {
     AmazonWebServicesClientProxy proxy;
@@ -54,7 +60,19 @@ public class CreatePrecheck {
             ResourceModel current = this.makeRequest();
 
             if(current != null) {
-                return this.failedRequest();
+                try{
+                    return this.failedRequest();
+                } catch (ResourceNotFoundException e) {
+                    // If function not exists, response a IN_PROGRESS to indicate resource not exists.
+                    //It will ensure if any failure happen afterward, it will initial rollback to clean up resource to avoid resource leak
+                    logger.log("[CREATE][IN PROGRESS] Initial check for the Function succeeded");
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .callbackContext(callbackContext)
+                            .status(OperationStatus.IN_PROGRESS)
+                            .resourceModel(current)
+                            .callbackDelaySeconds(1)
+                            .build();
+                }
             } else {
                 return this.progress;
             }
@@ -62,6 +80,8 @@ public class CreatePrecheck {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> failedRequest() {
+        SearchTransitGatewayMulticastGroupsRequest request = this.translateModelToRequest(model);
+        this.proxy.injectCredentialsAndInvokeV2(request, this.client.client()::searchTransitGatewayMulticastGroups);
         CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "Cannot be modified by ACTION: CREATE. A resource with the primary identifier already exists");
         return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.AlreadyExists);
     }
@@ -81,5 +101,16 @@ public class CreatePrecheck {
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(Exception exception) {
         System.out.println(exception.toString());
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
+    }
+
+    private SearchTransitGatewayMulticastGroupsRequest translateModelToRequest(ResourceModel model) {
+        java.util.List<Filter> filters = new ArrayList<>();
+        filters.add(Filter.builder().name("group-ip-address").values(model.getGroupIpAddress()).build());
+        filters.add(Filter.builder().name("network-interface-id").values(model.getNetworkInterfaceId()).build());
+        filters.add(Filter.builder().name("is-group-source").values("true").build());
+        return SearchTransitGatewayMulticastGroupsRequest.builder()
+                .transitGatewayMulticastDomainId(model.getTransitGatewayMulticastDomainId())
+                .filters(filters)
+                .build();
     }
 }
