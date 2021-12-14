@@ -66,9 +66,19 @@ public class Create {
         CallbackContext context
     ) {
         model.setTransitGatewayAttachmentId(awsResponse.transitGatewayPeeringAttachment().transitGatewayAttachmentId());
-        ResourceModel currentResourceModel = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
-        if(currentResourceModel == null) return false;
-        boolean isStable = (TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentResourceModel.getState()) || TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentResourceModel.getState()));
+        ResourceModel currentResourceModel;
+        try {
+            currentResourceModel = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
+        } catch (Exception e) {
+            // If we got this far, this means CREATION was successful, and any failures to READ are most
+            // likely due to failures unrelated to the integrity of the attachment (EX eventual consistency of read).
+            // We should not suddenly get validation errors (EX malformed request) because create would have failed.
+            currentResourceModel = null;
+        }
+        boolean isStable = currentResourceModel != null && (
+                TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentResourceModel.getState())
+                        || TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentResourceModel.getState())
+        );
         if (isStable) {
             this.stableResponse = currentResourceModel;
         }
