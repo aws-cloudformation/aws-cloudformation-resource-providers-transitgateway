@@ -51,7 +51,13 @@ public class CreatePrecheck {
         } else {
             ResourceModel current = this.makeRequest();
             if(current != null) {
-                return this.failedRequest();
+                CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "Cannot be modified by ACTION: CREATE. A resource with the primary identifier already exists");
+                return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                        .resourceModel(model)
+                        .status(OperationStatus.FAILED)
+                        .errorCode(HandlerErrorCode.AlreadyExists)
+                        .message(exception.getMessage())
+                        .build();
             } else {
                 return this.progress;
             }
