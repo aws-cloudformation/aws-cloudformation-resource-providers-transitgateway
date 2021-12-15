@@ -60,19 +60,13 @@ public class CreatePrecheck {
             ResourceModel current = this.makeRequest();
 
             if(current != null) {
-                try{
-                    return this.failedRequest();
-                } catch (ResourceNotFoundException e) {
-                    // If function not exists, response a IN_PROGRESS to indicate resource not exists.
-                    //It will ensure if any failure happen afterward, it will initial rollback to clean up resource to avoid resource leak
-                    logger.log("[CREATE][IN PROGRESS] Initial check for the Function succeeded");
-                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                            .callbackContext(callbackContext)
-                            .status(OperationStatus.IN_PROGRESS)
-                            .resourceModel(current)
-                            .callbackDelaySeconds(1)
-                            .build();
-                }
+                CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "Cannot be modified by ACTION: CREATE. A resource with the primary identifier already exists");
+                return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                        .resourceModel(model)
+                        .status(OperationStatus.FAILED)
+                        .errorCode(HandlerErrorCode.AlreadyExists)
+                        .message(exception.getMessage())
+                        .build();
             } else {
                 return this.progress;
             }

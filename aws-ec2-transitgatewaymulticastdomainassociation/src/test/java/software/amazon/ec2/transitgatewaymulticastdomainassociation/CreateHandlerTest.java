@@ -83,7 +83,7 @@ public class CreateHandlerTest extends AbstractTestBase {
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModel()).isEqualTo(model);
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage().contains("be modified by ACTION: CREATE.")).isTrue();
         assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.AlreadyExists);
