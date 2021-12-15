@@ -61,9 +61,14 @@ public class Delete {
         ResourceModel model,
         CallbackContext context
     ) {
-        //model.setTransitGatewayAttachmentId(response.transitGatewayPeeringAttachment().{{Config.SdkModel.PrimaryIdentifierMethod}}());
-        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getState();
-        return currentState.equals(TransitGatewayAttachmentState.DELETED.toString());
+        try {
+            ResourceModel resourceModel = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
+            // If nothing is returned, the item is deleted.
+            return resourceModel == null || resourceModel.getState().equals(TransitGatewayAttachmentState.DELETED.toString()) || resourceModel.getState().equals(TransitGatewayAttachmentState.FAILED.toString());
+        } catch (Exception e) {
+            // If NotFound is returned, the item is deleted.
+            return ExceptionMapper.mapToHandlerErrorCode(e).equals(HandlerErrorCode.NotFound);
+        }
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DeleteTransitGatewayPeeringAttachmentRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {

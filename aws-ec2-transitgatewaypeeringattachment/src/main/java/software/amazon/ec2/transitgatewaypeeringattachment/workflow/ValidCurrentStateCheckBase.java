@@ -84,7 +84,11 @@ public class ValidCurrentStateCheckBase {
         if(this._currentState != null) {
             return this._currentState;
         } else {
-            return this._currentState = this.makeRequest().getState();
+            ResourceModel model = this.makeRequest();
+            // Nothing returned implies that the model was deleted.
+            // This leaves us with a (valid) null state. We can use
+            // the null state to handle deleted/failed modes.
+            return model == null ? null : model.getState();
         }
     }
 

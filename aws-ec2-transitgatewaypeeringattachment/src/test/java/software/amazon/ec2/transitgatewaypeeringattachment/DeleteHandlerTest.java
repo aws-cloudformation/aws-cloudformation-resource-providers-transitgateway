@@ -11,6 +11,7 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayPeeringAttachmentRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayPeeringAttachmentsRequest;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayPeeringAttachmentsResponse;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.cloudformation.proxy.*;
 
@@ -111,4 +112,85 @@ public class DeleteHandlerTest extends AbstractTestBase {
         assertThat(response.getErrorCode()).isNull();
     }
 
+    @Test
+    public void handleRequest_AlreadyDeletedWithEmptyDescribeResponse() {
+        AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
+        AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
+        when(proxyClient.client().deleteTransitGatewayPeeringAttachment(any(DeleteTransitGatewayPeeringAttachmentRequest.class))).thenThrow(exception);
+
+        final List<Tag> tags = new ArrayList<>();
+        tags.add(MOCKS.tag());
+        when(proxyClient.client().describeTransitGatewayPeeringAttachments(any(DescribeTransitGatewayPeeringAttachmentsRequest.class)))
+                .thenReturn(DescribeTransitGatewayPeeringAttachmentsResponse.builder().build());
+
+        ResourceModel model = MOCKS.model(tags);
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+    }
+
+    @Test
+    public void handleRequest_AlreadyDeletedWithDescribeNotFoundException() {
+        AwsErrorDetails errorDetails = AwsErrorDetails.builder().errorMessage("Something went wrong").errorCode("NotFound").build();
+        AwsServiceException exception = AwsServiceException.builder().awsErrorDetails(errorDetails).build();
+        when(proxyClient.client().deleteTransitGatewayPeeringAttachment(any(DeleteTransitGatewayPeeringAttachmentRequest.class))).thenThrow(exception);
+
+        final List<Tag> tags = new ArrayList<>();
+        tags.add(MOCKS.tag());
+        when(proxyClient.client().describeTransitGatewayPeeringAttachments(any(DescribeTransitGatewayPeeringAttachmentsRequest.class)))
+                .thenThrow(exception);
+
+        ResourceModel model = MOCKS.model(tags);
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+    }
+
+    @Test
+    public void handleRequest_AlreadyDeletedSuccess() {
+
+        when(proxyClient.client().deleteTransitGatewayPeeringAttachment(any(DeleteTransitGatewayPeeringAttachmentRequest.class))).thenReturn(MOCKS.deleteResponse());
+        when(proxyClient.client().describeTransitGatewayPeeringAttachments(any(DescribeTransitGatewayPeeringAttachmentsRequest.class))).thenReturn(MOCKS.describeResponse("deleted"));
+        ResourceModel model = MOCKS.model();
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+    }
+
+    @Test
+    public void handleRequest_AlreadyFailedSuccess() {
+
+        when(proxyClient.client().deleteTransitGatewayPeeringAttachment(any(DeleteTransitGatewayPeeringAttachmentRequest.class))).thenReturn(MOCKS.deleteResponse());
+        when(proxyClient.client().describeTransitGatewayPeeringAttachments(any(DescribeTransitGatewayPeeringAttachmentsRequest.class))).thenReturn(MOCKS.describeResponse("failed"));
+        ResourceModel model = MOCKS.model();
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isNull();
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+    }
 }

@@ -23,6 +23,9 @@ public class ValidCurrentStateCheck extends ValidCurrentStateCheckBase {
         list.add(TransitGatewayAttachmentState.AVAILABLE.toString());
         list.add(TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString());
         list.add(TransitGatewayAttachmentState.DELETING.toString());
+        list.add(TransitGatewayAttachmentState.DELETED.toString());
+        list.add(TransitGatewayAttachmentState.FAILED.toString());
+        list.add(null); // Deleted long ago and no longer visible.
         return list;
     }
 
