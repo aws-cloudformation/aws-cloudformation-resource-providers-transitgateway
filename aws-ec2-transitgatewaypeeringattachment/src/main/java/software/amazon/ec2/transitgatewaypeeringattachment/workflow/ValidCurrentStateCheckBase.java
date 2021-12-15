@@ -52,7 +52,8 @@ public class ValidCurrentStateCheckBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
-        if((this.invalidStates().isEmpty() && this.validStates().contains(this.currentState())) || (this.validStates().isEmpty() && !this.invalidStates().contains(this.currentState()))) {
+        String state = this.currentState();
+        if((this.invalidStates().isEmpty() && this.validStates().contains(state)) || (this.validStates().isEmpty() && !this.invalidStates().contains(state))) {
             return this.progress;
         } else {
             return this.failure();
@@ -66,8 +67,9 @@ public class ValidCurrentStateCheckBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> failure() {
-        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "STATE: \"" + this.currentState() + "\" cannot be modified by ACTION: \"" + this.action().toUpperCase() + "\"");
-        if(this.currentState().equals("deleted")) {
+        String state = this.currentState();
+        CfnResourceConflictException exception =  new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString().replace("/properties/", ""), "STATE: \"" + state + "\" cannot be modified by ACTION: \"" + this.action().toUpperCase() + "\"");
+        if(state == null || state.equals("deleted")) {
             return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.NotFound);
         } else {
             return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.ResourceConflict);
@@ -84,7 +86,18 @@ public class ValidCurrentStateCheckBase {
         if(this._currentState != null) {
             return this._currentState;
         } else {
-            ResourceModel model = this.makeRequest();
+
+            ResourceModel model;
+            try{
+                model = this.makeRequest();
+            } catch (Exception exception){
+                if (!ExceptionMapper.mapToHandlerErrorCode(exception).equals(HandlerErrorCode.NotFound)){
+                    // NotFound is equivalent to deleted. Any other error we don't know how to handle properly.
+                    throw exception;
+                } else {
+                    model = null;
+                }
+            }
             // Nothing returned implies that the model was deleted.
             // This leaves us with a (valid) null state. We can use
             // the null state to handle deleted/failed modes.

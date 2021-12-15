@@ -66,7 +66,7 @@ public class ValidCurrentStateCheckTest extends AbstractTestBase {
     }
 
     @Test
-    public void failedForDeletedCurrentState() {
+    public void validForDeletedCurrentState() {
         final List<Tag> tags = new ArrayList<>();
         tags.add(MOCKS.tag());
 
@@ -75,11 +75,29 @@ public class ValidCurrentStateCheckTest extends AbstractTestBase {
         CallbackContext context =  new CallbackContext();
         ProgressEvent<ResourceModel, CallbackContext> response = new ValidCurrentStateCheck(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
         assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isEqualTo(model);
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+    }
+
+    @Test
+    public void failedForPendingCurrentState() {
+        final List<Tag> tags = new ArrayList<>();
+        tags.add(MOCKS.tag());
+
+        when(proxyClient.client().describeTransitGatewayPeeringAttachments(any(DescribeTransitGatewayPeeringAttachmentsRequest.class))).thenReturn(MOCKS.describeResponse(tags, "pending"));
+        ResourceModel model = MOCKS.model(tags);
+        CallbackContext context =  new CallbackContext();
+        ProgressEvent<ResourceModel, CallbackContext> response = new ValidCurrentStateCheck(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
+        assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
         assertThat(response.getResourceModel()).isNull();
         assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.NotFound);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.ResourceConflict);
         assertThat(response.getMessage().contains("DELETE")).isTrue();
     }
 }
