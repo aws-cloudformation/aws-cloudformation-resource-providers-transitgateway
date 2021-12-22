@@ -1,5 +1,7 @@
 package software.amazon.ec2.transitgatewayroutetablepropagation.workflow.create;
 
+import com.aws.ec2.transitgatewayvpcattachment.CallbackContext;
+import com.aws.ec2.transitgatewayvpcattachment.ResourceModel;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
 import software.amazon.cloudformation.proxy.*;
@@ -55,7 +57,12 @@ public class CreatePreCheck {
     protected ProgressEvent<ResourceModel, CallbackContext> failedRequest() {
         CfnResourceConflictException exception = new CfnResourceConflictException(ResourceModel.TYPE_NAME, model.getPrimaryIdentifier().toString()
                 .replace("/properties/", ""), "Cannot be modified by ACTION: CREATE. A resource with the primary identifier already exists");
-        return ProgressEvent.defaultFailureHandler(exception, HandlerErrorCode.AlreadyExists);
+        return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                .resourceModel(model)
+                .status(OperationStatus.FAILED)
+                .errorCode(HandlerErrorCode.AlreadyExists)
+                .message(exception.getMessage())
+                .build();
     }
 
     private ResourceModel makeRequest() {
