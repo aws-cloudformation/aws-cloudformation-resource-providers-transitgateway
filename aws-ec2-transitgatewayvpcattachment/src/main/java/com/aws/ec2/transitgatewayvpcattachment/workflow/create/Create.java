@@ -73,7 +73,6 @@ public class Create {
                 dnsSupport = model.getOptions().getDnsSupport();
             }
         }
-        logger.log("-----Inside Options"+ipv6Support+","+applianceModeSupport+","+dnsSupport);
           return CreateTransitGatewayVpcAttachmentRequestOptions.builder()
                 .ipv6Support(ipv6Support)
                 .applianceModeSupport(applianceModeSupport)
