@@ -75,4 +75,3 @@ public class CreatePreCheck {
         System.out.println(exception.toString());
         return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
-
