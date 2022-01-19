@@ -78,13 +78,6 @@
         "ec2:DescribeTags"
       ]
     },
-    "update": {
-      "permissions": [
-        "ec2:DescribeTransitGatewayAttachments",
-        "ec2:DeleteTags",
-        "ec2:CreateTags"
-      ]
-    },
     "delete": {
       "permissions": [
         "ec2:DeleteTransitGatewayVpcAttachment",
