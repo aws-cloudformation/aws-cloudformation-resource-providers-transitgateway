@@ -1,4 +1,4 @@
-# AWS::EC2::TransitGatewayVpcAttachment Tag
+# AWS::EC2::TransitGatewayAttachment Tag
 
 ## Syntax
 
