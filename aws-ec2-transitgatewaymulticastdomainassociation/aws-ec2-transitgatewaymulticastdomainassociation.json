@@ -28,11 +28,16 @@
       "type": "string"
     }
   },
+  "required": [
+    "TransitGatewayMulticastDomainId",
+    "TransitGatewayAttachmentId",
+    "SubnetId"
+  ],
   "additionalProperties": false,
   "readOnlyProperties": [
     "/properties/ResourceId",
     "/properties/ResourceType",
-    "/properties/Subnet"
+    "/properties/State"
   ],
   "createOnlyProperties": [
     "/properties/TransitGatewayMulticastDomainId",

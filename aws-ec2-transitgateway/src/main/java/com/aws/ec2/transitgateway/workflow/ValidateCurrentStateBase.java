@@ -3,9 +3,7 @@ package com.aws.ec2.transitgateway.workflow;
 import com.aws.ec2.transitgateway.CallbackContext;
 import com.aws.ec2.transitgateway.ResourceModel;
 import com.aws.ec2.transitgateway.workflow.read.Read;
-import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
 import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
 import software.amazon.cloudformation.proxy.*;
@@ -25,11 +23,11 @@ public class ValidateCurrentStateBase {
     String _currentState;
 
     public ValidateCurrentStateBase(
-            AmazonWebServicesClientProxy proxy,
-            ResourceHandlerRequest<ResourceModel> request,
-            CallbackContext callbackContext,
-            ProxyClient<Ec2Client> client,
-    Logger logger
+        AmazonWebServicesClientProxy proxy,
+        ResourceHandlerRequest<ResourceModel> request,
+        CallbackContext callbackContext,
+        ProxyClient<Ec2Client> client,
+        Logger logger
     ) {
         this.model = request.getDesiredResourceState();
         this.proxy = proxy;
@@ -73,7 +71,6 @@ public class ValidateCurrentStateBase {
         return new ArrayList<>();
     }
 
-
     protected String currentState() {
         if(this._currentState != null) {
             return this._currentState;
@@ -83,14 +80,6 @@ public class ValidateCurrentStateBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(Exception exception) {
-
-            if (exception instanceof AwsServiceException) {
-            AwsServiceException awsServiceException = (AwsServiceException) exception;
-            String errorCode = awsServiceException.awsErrorDetails().errorCode();
-             }
-            return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
-
+        return ProgressEvent.defaultFailureHandler(exception, ExceptionMapper.mapToHandlerErrorCode(exception));
     }
-
-
 }

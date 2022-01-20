@@ -1,18 +1,19 @@
 package com.aws.ec2.transitgateway.workflow.create;
 
 import com.aws.ec2.transitgateway.CallbackContext;
-import com.aws.ec2.transitgateway.ClientBuilder;
 import com.aws.ec2.transitgateway.ResourceModel;
+import com.aws.ec2.transitgateway.Tag;
 import com.aws.ec2.transitgateway.workflow.ExceptionMapper;
-import com.aws.ec2.transitgateway.workflow.OptionUtils;
 import com.aws.ec2.transitgateway.workflow.TagUtils;
 import com.aws.ec2.transitgateway.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRequest;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayResponse;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRequestOptions;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayState;
-import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.*;
+
+import java.util.List;
 
 public class Create {
     AmazonWebServicesClientProxy proxy;
@@ -46,11 +47,37 @@ public class Create {
     }
 
     private CreateTransitGatewayRequest translateModelToRequest(ResourceModel model) {
+        List<Tag> tags = TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags());
+
         return CreateTransitGatewayRequest.builder()
             .description(model.getDescription())
-            .options(OptionUtils.transitGatewayRequestOptions(model))
-            .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
+            .options(getTransitGatewayRequestOptions(model))
+            .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(tags))
             .build();
+    }
+
+    private TransitGatewayRequestOptions getTransitGatewayRequestOptions(ResourceModel model){
+        if(model.getTransitGatewayCidrBlocks() != null){
+            return TransitGatewayRequestOptions.builder()
+                    .amazonSideAsn(model.getAmazonSideAsn().longValue())
+                    .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                    .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                    .defaultRouteTablePropagation(model.getDefaultRouteTablePropagation())
+                    .dnsSupport(model.getDnsSupport())
+                    .multicastSupport(model.getMulticastSupport())
+                    .vpnEcmpSupport(model.getVpnEcmpSupport())
+                    .transitGatewayCidrBlocks(model.getTransitGatewayCidrBlocks())
+                    .build();
+        }
+        else return TransitGatewayRequestOptions.builder()
+                .amazonSideAsn(model.getAmazonSideAsn().longValue())
+                .autoAcceptSharedAttachments(model.getAutoAcceptSharedAttachments())
+                .defaultRouteTableAssociation(model.getDefaultRouteTableAssociation())
+                .defaultRouteTablePropagation(model.getDefaultRouteTablePropagation())
+                .dnsSupport(model.getDnsSupport())
+                .multicastSupport(model.getMulticastSupport())
+                .vpnEcmpSupport(model.getVpnEcmpSupport())
+                .build();
     }
 
     private CreateTransitGatewayResponse makeServiceCall(CreateTransitGatewayRequest request, ProxyClient<Ec2Client> client) {

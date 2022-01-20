@@ -29,6 +29,8 @@ Resources:
                 - "ec2:DeleteTransitGateway"
                 - "ec2:DescribeTags"
                 - "ec2:DescribeTransitGateways"
+                - "ec2:ModifyTransitGateway"
+                - "ec2:ModifyTransitGatewayOptions"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:

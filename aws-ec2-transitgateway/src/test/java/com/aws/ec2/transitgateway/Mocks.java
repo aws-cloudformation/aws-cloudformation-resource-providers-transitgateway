@@ -13,11 +13,13 @@ public class Mocks {
     public String primaryIdentifier;
     public Instant currentTime;
     public Integer counter;
+    public List<String> cidrBlock = new ArrayList<>();
     public Mocks(
     ) {
         this.primaryIdentifier = "tgw-0d88d2d0d5EXAMPLE";;
         this.currentTime = Instant.now();
         this.counter = 0;
+        this.cidrBlock.add("1.2.3.2/24");
     }
     public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model) {
         return ResourceHandlerRequest.<ResourceModel>builder()
@@ -37,6 +39,7 @@ public class Mocks {
                 .dnsSupport("enable")
                 .multicastSupport("disable")
                 .vpnEcmpSupport("disable")
+                .transitGatewayCidrBlocks(cidrBlock)
                 .build();
     }
 
@@ -68,6 +71,7 @@ public class Mocks {
                 .dnsSupport("enable")
                 .multicastSupport("disable")
                 .vpnEcmpSupport("enable")
+                .transitGatewayCidrBlocks(cidrBlock)
             .tags(TagUtils.sdkTagsToCfnTags(tags))
             .build();
     }
@@ -117,6 +121,7 @@ public class Mocks {
                 .multicastSupport("disable")
                 .vpnEcmpSupport("enable")
                 .propagationDefaultRouteTableId("rout-table-123")
+                .transitGatewayCidrBlocks(cidrBlock)
                 .build();
 
     }

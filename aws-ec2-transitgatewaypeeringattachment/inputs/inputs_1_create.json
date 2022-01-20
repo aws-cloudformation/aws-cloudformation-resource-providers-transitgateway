@@ -1,0 +1,6 @@
+{
+  "TransitGatewayId": "{{ContractTestTransitGatewayForPeeringAttachment}}",
+  "PeerTransitGatewayId": "{{ContractTestPeerTransitGatewayId}}",
+  "PeerAccountId": "{{ContractTestPeerAccountId}}",
+  "PeerRegion": "{{ContractTestPeerRegion}}"
+}

@@ -1,0 +1,7 @@
+{
+  "TransitGatewayRouteTableId": "tgw-rtb-03ec5da0490fa75e5",
+  "TransitGatewayAttachmentId": null,
+  "State": "enabled",
+  "ResourceType": "vpc",
+  "ResourceId": "vpc-abc123"
+}

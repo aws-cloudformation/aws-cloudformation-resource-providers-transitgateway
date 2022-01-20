@@ -1,0 +1,12 @@
+{
+  "TransitGatewayId": "{{ContractTestTransitGatewayForPeeringAttachment}}",
+  "PeerTransitGatewayId": "{{ContractTestPeerTransitGatewayId}}",
+  "PeerAccountId": "{{ContractTestPeerAccountId}}",
+  "PeerRegion": "{{ContractTestPeerRegion}}",
+  "Tags": [
+    {
+      "Key": "KEY_1",
+      "Value": "VALUE_1"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "TransitGatewayRouteTableId": "{{ContractTestTGWRouteTableForRouteTablePropagation}}",
+  "TransitGatewayAttachmentId": "{{ContractTestTGWAttachmentForRouteTablePropagation}}"
+}

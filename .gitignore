@@ -4,3 +4,14 @@ node_modules/
 package-lock.json
 package.json
 rpdk.log
+cfn-cli-integration-test-config.yaml
+.integration-test-logs
+gradle/
+gradlew.bat
+gradlew/
+build/
+gradlew
+build
+*.zip
+.gradle/
+*.log

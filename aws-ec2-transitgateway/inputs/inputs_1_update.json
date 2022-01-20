@@ -1,3 +1,9 @@
 {
-  "Description": "my-tgw-updated"
+  "Description": "abc",
+  "Tags": [
+    {
+      "Key": "keyx",
+      "Value": "valuex"
+    }
+  ]
 }

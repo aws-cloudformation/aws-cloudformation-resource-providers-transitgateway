@@ -31,14 +31,27 @@
     "AmazonSideAsn": {
       "type": "integer"
     },
+    "TransitGatewayCidrBlocks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "Tags": {
       "type": "array",
       "uniqueItems": false,
       "items": {
         "$ref": "#/definitions/Tag"
       }
+    },
+    "AssociationDefaultRouteTableId": {
+      "type": "string"
+    },
+    "PropagationDefaultRouteTableId": {
+      "type": "string"
     }
   },
+  "taggable": true,
   "definitions": {
     "Tag": {
       "type": "object",
@@ -64,14 +77,7 @@
     "/properties/Id"
   ],
   "createOnlyProperties": [
-    "/properties/DnsSupport",
-    "/properties/DefaultRouteTableAssociation",
-    "/properties/DefaultRouteTablePropagation",
-    "/properties/Tags",
-    "/properties/AutoAcceptSharedAttachments",
     "/properties/AmazonSideAsn",
-    "/properties/Description",
-    "/properties/VpnEcmpSupport",
     "/properties/MulticastSupport"
   ],
   "handlers": {
@@ -91,6 +97,14 @@
       "permissions": [
         "ec2:DeleteTransitGateway",
         "ec2:DeleteTags"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:ModifyTransitGateway",
+        "ec2:DeleteTags",
+        "ec2:CreateTags",
+        "ec2:ModifyTransitGatewayOptions"
       ]
     },
     "list": {

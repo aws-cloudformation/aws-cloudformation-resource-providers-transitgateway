@@ -1,0 +1,70 @@
+{
+  "typeName": "AWS::EC2::TransitGatewayRouteTablePropagation",
+  "description": "AWS::EC2::TransitGatewayRouteTablePropagation Type",
+  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-transitgateway/aws-ec2-transitgatewayroutetablepropagation",
+  "properties": {
+    "TransitGatewayRouteTableId": {
+      "description": "The ID of transit gateway route table.",
+      "type": "string"
+    },
+    "TransitGatewayAttachmentId": {
+      "description": "The ID of transit gateway attachment.",
+      "type": "string"
+    },
+    "ResourceId": {
+      "description": "The ID of transit gateway attachment resource.",
+      "type": "string"
+    },
+    "ResourceType": {
+      "description": "The type of transit gateway attachment resource",
+      "type": "string"
+    },
+    "State": {
+      "description": "The state of the transit gateway route table propagation.",
+      "type": "string"
+    }
+  },
+  "definitions": {},
+  "additionalProperties": false,
+  "required": [
+    "TransitGatewayRouteTableId",
+    "TransitGatewayAttachmentId"
+  ],
+  "createOnlyProperties": [
+    "/properties/TransitGatewayAttachmentId",
+    "/properties/TransitGatewayRouteTableId"
+  ],
+  "readOnlyProperties": [
+    "/properties/ResourceId",
+    "/properties/ResourceType",
+    "/properties/State"
+  ],
+  "primaryIdentifier": [
+    "/properties/TransitGatewayRouteTableId",
+    "/properties/TransitGatewayAttachmentId"
+  ],
+  "handlers": {
+    "create": {
+      "permissions": [
+        "ec2:GetTransitGatewayRouteTablePropagations",
+        "ec2:EnableTransitGatewayRouteTablePropagation"
+      ]
+    },
+    "read": {
+      "permissions": [
+        "ec2:GetTransitGatewayRouteTablePropagations"
+      ]
+    },
+    "delete": {
+      "permissions": [
+        "ec2:GetTransitGatewayRouteTablePropagations",
+        "ec2:DisableTransitGatewayRouteTablePropagation"
+      ]
+    },
+    "list": {
+      "permissions": [
+        "ec2:GetTransitGatewayRouteTablePropagations"
+      ]
+    }
+  }
+}

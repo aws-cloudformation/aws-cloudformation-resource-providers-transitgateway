@@ -1,6 +1,1 @@
-{
-  "AmazonSideAsn": 65514,
-  "DefaultRouteTablePropagation": "enable",
-  "AutoAcceptSharedAttachments": "disable",
-  "DefaultRouteTableAssociation": "enable"
-}
+{}
