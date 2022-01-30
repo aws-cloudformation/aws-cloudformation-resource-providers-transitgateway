@@ -66,25 +66,18 @@ public class Read {
     }
 
     private ResourceModel translateResponseToModel(DescribeTransitGatewayVpcAttachmentsResponse awsResponses) {
-        this.logger.log("AWS RESPONSE");
-        this.logger.log(awsResponses.toString());
-        if(awsResponses.transitGatewayVpcAttachments().isEmpty()) {
-            this.logger.log("NO RESPONSE");
-            return null;
-        }else{
-            TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
-            //System.out.println("this"+response.subnetIds());
+        TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
+        //System.out.println("this"+response.subnetIds());
 
-            Options options = Options.builder().ipv6Support(response.options().ipv6SupportAsString()).applianceModeSupport(response.options().applianceModeSupportAsString()).dnsSupport(response.options().dnsSupportAsString()).build();
-            return ResourceModel.builder()
-                    .id(response.transitGatewayAttachmentId())
-                    .subnetIds(response.subnetIds())
-                    .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
-                    .transitGatewayId(response.transitGatewayId())
-                    .vpcId(response.vpcId())
-                    .options(options)
-                    .build();
-        }
+        Options options = Options.builder().ipv6Support(response.options().ipv6SupportAsString()).applianceModeSupport(response.options().applianceModeSupportAsString()).dnsSupport(response.options().dnsSupportAsString()).build();
+        return ResourceModel.builder()
+                .id(response.transitGatewayAttachmentId())
+                .subnetIds(response.subnetIds())
+                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
+                .transitGatewayId(response.transitGatewayId())
+                .vpcId(response.vpcId())
+                .options(options)
+                .build();
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
