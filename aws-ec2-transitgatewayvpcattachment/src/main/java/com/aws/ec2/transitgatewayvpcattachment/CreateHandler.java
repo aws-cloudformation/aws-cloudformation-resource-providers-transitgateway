@@ -14,7 +14,7 @@ public class CreateHandler extends BaseHandlerStd {
         final CallbackContext callbackContext,
         final ProxyClient<Ec2Client> proxyClient,
         final Logger logger) {
-        
+
         if(callbackContext.getAttempts() == 1 &&  (request.getDesiredResourceState().getId() != null)) throw new CfnInvalidRequestException("Attempting to set a ReadOnly Property.");
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
             .then(new Create(proxy, request, callbackContext, proxyClient, logger)::run)
