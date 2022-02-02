@@ -67,7 +67,6 @@ public class Read {
 
     private ResourceModel translateResponseToModel(DescribeTransitGatewayVpcAttachmentsResponse awsResponses) {
         TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
-        //System.out.println("this"+response.subnetIds());
 
         Options options = Options.builder().ipv6Support(response.options().ipv6SupportAsString()).applianceModeSupport(response.options().applianceModeSupportAsString()).dnsSupport(response.options().dnsSupportAsString()).build();
         return ResourceModel.builder()
