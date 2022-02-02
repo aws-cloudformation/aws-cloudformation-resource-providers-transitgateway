@@ -132,10 +132,4 @@ public class Mocks {
     public CreateTransitGatewayVpcAttachmentResponse createResponse(List<Tag> tags) {
         return this.createResponse(tags, "available");
     }
-
-    public DescribeTransitGatewayVpcAttachmentsResponse emptyReadResponse() {
-        return DescribeTransitGatewayVpcAttachmentsResponse.builder()
-                .transitGatewayVpcAttachments(new ArrayList<>())
-                .build();
-    }
 }

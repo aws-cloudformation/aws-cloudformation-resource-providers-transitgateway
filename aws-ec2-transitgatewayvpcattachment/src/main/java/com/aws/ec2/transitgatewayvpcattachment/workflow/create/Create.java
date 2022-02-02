@@ -20,6 +20,7 @@ public class Create {
     ProxyClient<Ec2Client> client;
     Logger logger;
     ProgressEvent<ResourceModel, com.aws.ec2.transitgatewayvpcattachment.CallbackContext>  progress;
+    ResourceModel stableResponse;
 
     public Create(
         AmazonWebServicesClientProxy proxy,
@@ -73,6 +74,7 @@ public class Create {
                 dnsSupport = model.getOptions().getDnsSupport();
             }
         }
+        logger.log("Options: "+ipv6Support+","+applianceModeSupport+","+dnsSupport);
           return CreateTransitGatewayVpcAttachmentRequestOptions.builder()
                 .ipv6Support(ipv6Support)
                 .applianceModeSupport(applianceModeSupport)
@@ -94,7 +96,20 @@ public class Create {
     ) {
         model.setId(awsResponse.transitGatewayVpcAttachment().transitGatewayAttachmentId());
         String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(model).toString();
-        return TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
+        ResourceModel currentResourceModel;
+        try {
+            currentResourceModel = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
+        } catch (Exception e) {
+            // If we got this far, this means CREATION was successful, and any failures to READ are most
+            // likely due to failures unrelated to the integrity of the attachment (EX eventual consistency of read).
+            // We should not suddenly get validation errors (EX malformed request) because create would have failed.
+            currentResourceModel = null;
+        }
+        boolean isStable = currentResourceModel != null && TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
+        if (isStable) {
+            this.stableResponse = currentResourceModel;
+        }
+        return isStable;
     }
 
     protected ProgressEvent<ResourceModel, com.aws.ec2.transitgatewayvpcattachment.CallbackContext>  handleError(CreateTransitGatewayVpcAttachmentRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
