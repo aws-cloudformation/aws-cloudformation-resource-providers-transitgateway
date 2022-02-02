@@ -1,7 +1,6 @@
 package software.amazon.ec2.transitgatewayroutetablepropagation.workflow.create;
 
-import com.aws.ec2.transitgatewayvpcattachment.CallbackContext;
-import com.aws.ec2.transitgatewayvpcattachment.ResourceModel;
+
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.cloudformation.exceptions.CfnResourceConflictException;
 import software.amazon.cloudformation.proxy.*;
