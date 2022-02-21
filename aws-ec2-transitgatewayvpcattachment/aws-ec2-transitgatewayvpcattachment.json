@@ -62,12 +62,7 @@
           "type": "string"
         }
       },
-      "additionalProperties": false,
-      "required": [
-        "SubnetIds",
-        "VpcId",
-        "TransitGatewayId"
-      ]
+      "additionalProperties": false
     }
   },
   "definitions": {
@@ -94,9 +89,9 @@
     "/properties/VpcId"
   ],
   "required": [
-    "/properties/SubnetIds",
-    "/properties/VpcId",
-    "/properties/TransitGatewayId"
+    "SubnetIds",
+    "VpcId",
+    "TransitGatewayId"
   ],
   "taggable": true,
   "readOnlyProperties": [

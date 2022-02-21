@@ -1,4 +1,9 @@
 {
+  "TransitGatewayId": "{{ContractTestTransitGatewayForVpcAttachment}}",
+  "VpcId": "{{ContracTestVpcForVpcAttachment}}",
+  "SubnetIds": [
+    "{{ContractTestSubnetforVpcAttachment}}"
+  ],
   "Tags": [
     {
       "Key": "key1",
