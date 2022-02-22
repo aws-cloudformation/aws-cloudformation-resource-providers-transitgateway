@@ -24,7 +24,7 @@ public class ModelAdapter {
         final String vpnEcmpSupport = model.getVpnEcmpSupport();
         final String dnsSupport = model.getDnsSupport();
         final String multicastSupport = model.getMulticastSupport();
-        final Integer amazonSideAsn = model.getAmazonSideAsn();
+        final Long amazonSideAsn = model.getAmazonSideAsn();
 
 
         model.setDefaultRouteTableAssociation(defaultRouteTableAssociation == null ? DEFAULT_ROUTE_TABLE_ASSOCIATION : defaultRouteTableAssociation);

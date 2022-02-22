@@ -73,7 +73,7 @@ public class Read {
         TransitGateway response = awsResponses.transitGateways().get(0);
         return ResourceModel.builder()
                 .id(response.transitGatewayId())
-                .amazonSideAsn(response.options().amazonSideAsn().intValue())
+                .amazonSideAsn(response.options().amazonSideAsn())
                 .autoAcceptSharedAttachments(response.options().autoAcceptSharedAttachmentsAsString())
                 .defaultRouteTableAssociation(response.options().defaultRouteTableAssociationAsString())
                 .defaultRouteTablePropagation(response.options().defaultRouteTablePropagationAsString())
