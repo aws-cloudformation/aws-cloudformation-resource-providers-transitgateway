@@ -31,7 +31,7 @@ public class Mocks {
         return ResourceModel.builder()
                 .id(this.primaryIdentifier)
                 .tags(TagUtils.sdkTagsToCfnTags(tags))
-                .amazonSideAsn(6541)
+                .amazonSideAsn(Long.valueOf(6541))
                 .autoAcceptSharedAttachments("enable")
                 .defaultRouteTableAssociation("enable")
                 .defaultRouteTablePropagation("enable")
@@ -64,7 +64,7 @@ public class Mocks {
     public  ResourceModel model(List<Tag> tags, String state) {
         return ResourceModel.builder()
             .id(this.primaryIdentifier)
-                .amazonSideAsn(6541)
+                .amazonSideAsn(Long.valueOf(6541))
                 .autoAcceptSharedAttachments("enable")
                 .defaultRouteTableAssociation("enable")
                 .defaultRouteTablePropagation("enable")
