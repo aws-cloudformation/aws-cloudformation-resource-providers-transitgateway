@@ -15,6 +15,7 @@
     },
     "SubnetIds": {
       "type": "array",
+      "insertionOrder": false,
       "uniqueItems": false,
       "items": {
         "type": "string"
@@ -22,6 +23,7 @@
     },
     "Tags": {
       "type": "array",
+      "insertionOrder": false,
       "uniqueItems": false,
       "items": {
         "$ref": "#/definitions/Tag"
@@ -51,6 +53,13 @@
     "SubnetIds",
     "TransitGatewayId"
   ],
+  "tagging": {
+    "taggable": true,
+    "tagOnCreate": true,
+    "tagUpdatable": false,
+    "cloudFormationSystemTags": false,
+    "tagProperty": "/properties/Tags"
+  },
   "createOnlyProperties": [
     "/properties/Tags",
     "/properties/TransitGatewayId",
