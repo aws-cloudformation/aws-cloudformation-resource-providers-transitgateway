@@ -66,17 +66,23 @@ public class Read {
     }
 
     private ResourceModel translateResponseToModel(DescribeTransitGatewayVpcAttachmentsResponse awsResponses) {
-        TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
 
-        Options options = Options.builder().ipv6Support(response.options().ipv6SupportAsString()).applianceModeSupport(response.options().applianceModeSupportAsString()).dnsSupport(response.options().dnsSupportAsString()).build();
-        return ResourceModel.builder()
-                .id(response.transitGatewayAttachmentId())
-                .subnetIds(response.subnetIds())
-                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
-                .transitGatewayId(response.transitGatewayId())
-                .vpcId(response.vpcId())
-                .options(options)
-                .build();
+        if(awsResponses.transitGatewayVpcAttachments().isEmpty()) {
+            return null;
+        } else {
+            TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
+            //System.out.println("this"+response.subnetIds());
+
+            Options options = Options.builder().ipv6Support(response.options().ipv6SupportAsString()).applianceModeSupport(response.options().applianceModeSupportAsString()).dnsSupport(response.options().dnsSupportAsString()).build();
+            return ResourceModel.builder()
+                    .id(response.transitGatewayAttachmentId())
+                    .subnetIds(response.subnetIds())
+                    .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
+                    .transitGatewayId(response.transitGatewayId())
+                    .vpcId(response.vpcId())
+                    .options(options)
+                    .build();
+        }
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {

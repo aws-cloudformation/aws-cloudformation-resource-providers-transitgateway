@@ -8,10 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.ec2.model.Tag;
-import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
-import software.amazon.cloudformation.proxy.OperationStatus;
-import software.amazon.cloudformation.proxy.ProgressEvent;
-import software.amazon.cloudformation.proxy.ProxyClient;
+import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -51,7 +48,7 @@ public class CreateHandlerTest extends AbstractTestBase {
         ResourceModel model = MOCKS.model(newTags);
 
         when(proxyClient.client().createTransitGatewayVpcAttachment(any(CreateTransitGatewayVpcAttachmentRequest.class))).thenReturn(MOCKS.createResponse(newTags));
-        when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.describeResponse(newTags));
+	 when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.describeResponse(newTags));
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -66,7 +63,21 @@ public class CreateHandlerTest extends AbstractTestBase {
         assertThat(response.getErrorCode()).isNull();
     }
 
+    @Test
+    public void handleRequest_Duplicates() {
+        when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.describeResponse());
 
+        ResourceModel model = MOCKS.model();
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isEqualTo(model);
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.AlreadyExists);
+    }
 
 
 }
