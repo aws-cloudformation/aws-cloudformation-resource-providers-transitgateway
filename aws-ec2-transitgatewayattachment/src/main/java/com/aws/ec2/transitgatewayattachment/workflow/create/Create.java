@@ -1,15 +1,19 @@
 package com.aws.ec2.transitgatewayattachment.workflow.create;
 
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
-import com.aws.ec2.transitgatewayattachment.ClientBuilder;
 import com.aws.ec2.transitgatewayattachment.ResourceModel;
+import com.aws.ec2.transitgatewayattachment.Tag;
 import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
 import com.aws.ec2.transitgatewayattachment.workflow.TagUtils;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.*;
-import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
+import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayVpcAttachmentRequest;
+import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayVpcAttachmentResponse;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
 import software.amazon.cloudformation.proxy.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Create {
     AmazonWebServicesClientProxy proxy;
@@ -43,6 +47,10 @@ public class Create {
     }
 
     private CreateTransitGatewayVpcAttachmentRequest translateModelToRequest(ResourceModel model) {
+        List<Tag> tags = (model.getTags() != null) ? com.aws.ec2.transitgatewayattachment.workflow.TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags())
+                : new ArrayList<Tag>();
+        logger.log("request parameters"+model.getSubnetIds()+","+model.getTransitGatewayId()+","+model.getVpcId()+"+"+TagUtils.cfnTagsToSdkTagSpecifications(tags));
+
         return CreateTransitGatewayVpcAttachmentRequest.builder()
             .subnetIds(model.getSubnetIds())
             .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))

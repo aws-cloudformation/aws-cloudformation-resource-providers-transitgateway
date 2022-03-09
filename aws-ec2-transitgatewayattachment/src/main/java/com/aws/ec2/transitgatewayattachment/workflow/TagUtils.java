@@ -1,16 +1,15 @@
 package com.aws.ec2.transitgatewayattachment.workflow;
 
-import com.google.common.collect.Sets;
-import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.awssdk.services.ec2.model.TagSpecification;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TagUtils {
     public static List<com.aws.ec2.transitgatewayattachment.Tag> sdkTagsToCfnTags(final List<Tag> tags) {
@@ -59,5 +58,32 @@ public class TagUtils {
             .tags(newTags).build());
     }
 
-
+    public static List<com.aws.ec2.transitgatewayattachment.Tag> mergeResourceModelAndStackTags(List<com.aws.ec2.transitgatewayattachment.Tag> modelTags, Map<String, String> stackTags) {
+        if(modelTags == null || modelTags.isEmpty()) {
+            modelTags = new ArrayList<com.aws.ec2.transitgatewayattachment.Tag>();
+        }
+        List<com.aws.ec2.transitgatewayattachment.Tag> tags = new ArrayList<com.aws.ec2.transitgatewayattachment.Tag>();
+        if(stackTags!= null)
+            for (Map.Entry<String, String> entry : stackTags.entrySet()) {
+                com.aws.ec2.transitgatewayattachment.Tag tag = com.aws.ec2.transitgatewayattachment.Tag.builder().key(entry.getKey()).value(entry.getValue()).build();
+                boolean isPresent = false;
+                for (com.aws.ec2.transitgatewayattachment.Tag t : modelTags) {
+                    if (t.getKey().equals(entry.getKey())) {
+                        isPresent = true;
+                        break;
+                    }
+                }
+                if(!isPresent)
+                    tags.add(tag);
+                tags.add(tag);
+            }
+        if(tags.isEmpty()) {
+            return modelTags;
+        } else if(modelTags == null || modelTags.isEmpty()) {
+            return tags;
+        } else {
+            return Stream.concat(modelTags.stream(), tags.stream())
+                    .collect(Collectors.toList());
+        }
+    }
 }
