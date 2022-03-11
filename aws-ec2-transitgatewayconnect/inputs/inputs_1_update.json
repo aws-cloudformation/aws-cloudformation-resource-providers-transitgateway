@@ -7,8 +7,7 @@
       "Value": "VALUE_1"
     }
   ],
-  "Options":
-  {
+  "Options": {
     "Protocol": "gre"
   }
 }
