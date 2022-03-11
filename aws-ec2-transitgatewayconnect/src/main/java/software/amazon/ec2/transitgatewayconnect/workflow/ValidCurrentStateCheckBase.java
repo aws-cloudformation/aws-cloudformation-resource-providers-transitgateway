@@ -77,7 +77,7 @@ public class ValidCurrentStateCheckBase {
     protected List<String> validStates() {
         return new ArrayList<>();
     }
-    
+
 
     protected String currentState() {
         if(this._currentState != null) {
