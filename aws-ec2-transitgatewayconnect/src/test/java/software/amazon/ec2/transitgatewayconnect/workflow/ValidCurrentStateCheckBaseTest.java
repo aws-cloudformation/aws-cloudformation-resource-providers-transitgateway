@@ -43,12 +43,7 @@ public class ValidCurrentStateCheckBaseTest extends AbstractTestBase {
             super(proxy, request, callbackContext, client, logger);
         }
 
-        @Override
-        protected List<String> invalidStates() {
-            List<String> list = new ArrayList<>();
-            list.add(TransitGatewayAttachmentState.DELETED.toString());
-            return list;
-        }
+
     }
 
     public class ValidAvailableState extends ValidCurrentStateCheckBase {
@@ -85,23 +80,6 @@ public class ValidCurrentStateCheckBaseTest extends AbstractTestBase {
         verifyNoMoreInteractions(sdkClient);
     }
 
-    @Test
-    public void validForInvalidDeleteState() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
-
-        when(proxyClient.client().describeTransitGatewayConnects(any(DescribeTransitGatewayConnectsRequest.class))).thenReturn(MOCKS.describeResponse(tags));
-        ResourceModel model = MOCKS.model(tags);
-        CallbackContext context =  new CallbackContext();
-        ProgressEvent<ResourceModel, CallbackContext> response = new InvalidDeleteState(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
-        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isEqualTo(model);
-        assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage()).isNull();
-        assertThat(response.getErrorCode()).isNull();
-    }
 
     @Test
     public void failedForInvalidDeleteState() {
@@ -122,23 +100,6 @@ public class ValidCurrentStateCheckBaseTest extends AbstractTestBase {
 
     }
 
-    @Test
-    public void validForEmptyState() {
-        final List<Tag> tags = new ArrayList<>();
-        tags.add(MOCKS.tag());
-
-        when(proxyClient.client().describeTransitGatewayConnects(any(DescribeTransitGatewayConnectsRequest.class))).thenReturn(MOCKS.describeResponse(tags));
-        ResourceModel model = MOCKS.model(tags);
-        CallbackContext context =  new CallbackContext();
-        ProgressEvent<ResourceModel, CallbackContext> response = new EmptyState(proxy, MOCKS.request(model), context, proxyClient, logger).run(ProgressEvent.defaultInProgressHandler(context, 0, model));
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
-        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
-        assertThat(response.getResourceModel()).isEqualTo(model);
-        assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage()).isNull();
-        assertThat(response.getErrorCode()).isNull();
-    }
 
     @Test
     public void validForValidAvailableState() {

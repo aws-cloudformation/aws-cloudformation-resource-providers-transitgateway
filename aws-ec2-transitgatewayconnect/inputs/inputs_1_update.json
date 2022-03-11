@@ -1,8 +1,14 @@
 {
+  "TransportTransitGatewayAttachmentId": "{{ContractTestTransportTGWAttachmentIdForTgwConnect}}",
+  "TransitGatewayId": "{{ContractTestTgwForTgwConnect}}",
   "Tags": [
     {
       "Key": "KEY_1",
       "Value": "VALUE_1"
     }
-  ]
+  ],
+  "Options":
+  {
+    "Protocol": "gre"
+  }
 }
