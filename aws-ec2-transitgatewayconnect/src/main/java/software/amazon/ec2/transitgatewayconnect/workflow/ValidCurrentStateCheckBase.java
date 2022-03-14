@@ -52,7 +52,7 @@ public class ValidCurrentStateCheckBase {
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
-        if(this.validStates().contains(this.currentState())) {
+        if((this.invalidStates().isEmpty() && this.validStates().contains(this.currentState())) || (this.validStates().isEmpty() && !this.invalidStates().contains(this.currentState()))) {
             return this.progress;
         } else {
             return this.failure();
@@ -78,6 +78,7 @@ public class ValidCurrentStateCheckBase {
         return new ArrayList<>();
     }
 
+    protected List<String> invalidStates() {return new ArrayList<>(); }
 
     protected String currentState() {
         if(this._currentState != null) {
