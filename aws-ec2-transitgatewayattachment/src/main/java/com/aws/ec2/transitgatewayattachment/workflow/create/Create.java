@@ -22,6 +22,7 @@ public class Create {
     ProxyClient<Ec2Client> client;
     Logger logger;
     ProgressEvent<ResourceModel, CallbackContext>  progress;
+    ResourceModel stableResponse;
 
     public Create(
         AmazonWebServicesClientProxy proxy,
@@ -64,15 +65,30 @@ public class Create {
     }
 
     private boolean stabilize(
-        CreateTransitGatewayVpcAttachmentRequest awsRequest,
-        CreateTransitGatewayVpcAttachmentResponse awsResponse,
-        ProxyClient<Ec2Client> client,
-        ResourceModel model,
-        CallbackContext context
+            CreateTransitGatewayVpcAttachmentRequest awsRequest,
+            CreateTransitGatewayVpcAttachmentResponse awsResponse,
+            ProxyClient<Ec2Client> client,
+            ResourceModel model,
+            CallbackContext context
     ) {
         model.setId(awsResponse.transitGatewayVpcAttachment().transitGatewayAttachmentId());
-        String currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(model).toString();
-        return TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
+        String currentState;
+        ResourceModel currentResourceModel;
+        try {
+            currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(model).toString();
+            currentResourceModel = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
+        } catch (Exception e) {
+            // If we got this far, this means CREATION was successful, and any failures to READ are most
+            // likely due to failures unrelated to the integrity of the attachment (EX eventual consistency of read).
+            // We should not suddenly get validation errors (EX malformed request) because create would have failed.
+            currentResourceModel = null;
+            currentState = null;
+        }
+        boolean isStable = currentState != null && currentResourceModel != null && TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
+        if (isStable) {
+            this.stableResponse = currentResourceModel;
+        }
+        return isStable;
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext>  handleError(CreateTransitGatewayVpcAttachmentRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
