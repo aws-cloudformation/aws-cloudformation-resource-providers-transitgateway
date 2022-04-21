@@ -17,6 +17,9 @@ public class ValidateCurrentState extends ValidateCurrentStateBase {
 
     @Override
     protected ProgressEvent<ResourceModel, CallbackContext> validate() {
+        if(this.currentState().equals(TransitGatewayAttachmentState.DELETED)) {
+            return ProgressEvent.defaultSuccessHandler(null);
+        }
         if(this.validStates().contains(this.currentState()) || this.callbackContext.getAttempts() > 1) {
             return this.progress;
         } else {
