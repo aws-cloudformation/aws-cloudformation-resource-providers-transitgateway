@@ -1,8 +1,8 @@
 {
-  "TransitGatewayId": "{{ContractTestTransitGatewayForVpcAttachment}}",
-  "VpcId": "{{ContracTestVpcForVpcAttachment}}",
+  "TransitGatewayId": "tgw-0d735d3b3d5232cc0",
+  "VpcId": "vpc-0ecbe65983beb59fc",
   "SubnetIds": [
-    "{{ContractTestSubnetforVpcAttachment}}"
+    "subnet-0d9c1092bec4a817c"
   ],
   "Tags": [
     {
