@@ -6,10 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayRequest;
 import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayVpcAttachmentRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayVpcAttachmentsRequest;
-import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewaysRequest;
 import software.amazon.cloudformation.proxy.*;
 
 import java.time.Duration;
@@ -42,12 +40,6 @@ public class DeleteHandlerTest extends AbstractTestBase {
         sdkClient = mock(Ec2Client.class);
         proxyClient = MOCK_PROXY(proxy, sdkClient);
     }
-
-//    @AfterEach
-//    public void tear_down() {
-//        verify(sdkClient, atLeastOnce()).serviceName();
-//        verifyNoMoreInteractions(sdkClient);
-//    }
 
     @Test
     public void handleRequest_SimpleSuccess() {

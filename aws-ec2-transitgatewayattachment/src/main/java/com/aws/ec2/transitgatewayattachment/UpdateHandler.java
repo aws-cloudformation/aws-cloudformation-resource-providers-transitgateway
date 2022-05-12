@@ -1,13 +1,11 @@
 package com.aws.ec2.transitgatewayattachment;
 
-import com.aws.ec2.transitgatewayattachment.workflow.create.Create;
-import com.aws.ec2.transitgatewayattachment.workflow.create.CreatePreCheck;
+import com.aws.ec2.transitgatewayattachment.workflow.modify.*;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.*;
 
-public class CreateHandler extends BaseHandlerStd {
+public class UpdateHandler extends BaseHandlerStd {
 
     protected ProgressEvent<com.aws.ec2.transitgatewayattachment.ResourceModel, CallbackContext> handleRequest(
             final AmazonWebServicesClientProxy proxy,
@@ -16,10 +14,15 @@ public class CreateHandler extends BaseHandlerStd {
             final ProxyClient<Ec2Client> proxyClient,
             final Logger logger) {
 
-        if(callbackContext.getAttempts() == 1 &&  (request.getDesiredResourceState().getId() != null)) throw new CfnInvalidRequestException("Attempting to set a ReadOnly Property.");
+
+        logger.log("Got Update Req:");
+
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
-                .then(new CreatePreCheck(proxy, request, callbackContext, proxyClient, logger):: run)
-                .then(new Create(proxy, request, callbackContext, proxyClient, logger)::run)
+                .then(new ValidateCurrentState(proxy, request, callbackContext, proxyClient, logger)::run)
+                .then(new ValidatePropertiesCheck(proxy, request, callbackContext, proxyClient, logger)::run)
+                .then(new CreateTags(proxy, request, callbackContext, proxyClient, logger)::run)
+                .then(new DeleteTags(proxy, request, callbackContext, proxyClient, logger)::run)
+                .then(new Update(proxy, request, callbackContext, proxyClient, logger)::run)
                 .then(new Read(proxy, request, callbackContext, proxyClient, logger)::run);
     }
 }

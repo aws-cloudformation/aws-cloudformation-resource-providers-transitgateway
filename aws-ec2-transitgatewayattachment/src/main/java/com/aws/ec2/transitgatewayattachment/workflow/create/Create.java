@@ -8,6 +8,7 @@ import com.aws.ec2.transitgatewayattachment.workflow.TagUtils;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayVpcAttachmentRequest;
+import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayVpcAttachmentRequestOptions;
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayVpcAttachmentResponse;
 import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
 import software.amazon.cloudformation.proxy.*;
@@ -55,8 +56,32 @@ public class Create {
             .subnetIds(model.getSubnetIds())
             .tagSpecifications(TagUtils.cfnTagsToSdkTagSpecifications(model.getTags()))
             .transitGatewayId(model.getTransitGatewayId())
-            .vpcId(model.getVpcId())
+            .vpcId(model.getVpcId()).options(this.translateModelToOptions(model))
             .build();
+    }
+
+    private CreateTransitGatewayVpcAttachmentRequestOptions translateModelToOptions(ResourceModel model) {
+        //DEFAULT OPTIONS
+        String ipv6Support = "disable";
+        String applianceModeSupport = "disable";
+        String dnsSupport = "disable";
+        if(model.getOptions() != null) {
+            if(model.getOptions().getIpv6Support() != null) {
+                ipv6Support = model.getOptions().getIpv6Support() ;
+            }
+            if(model.getOptions().getApplianceModeSupport() != null) {
+                applianceModeSupport = model.getOptions().getApplianceModeSupport();
+            }
+            if(model.getOptions().getDnsSupport() != null) {
+                dnsSupport = model.getOptions().getDnsSupport();
+            }
+        }
+        logger.log("Options: "+ipv6Support+","+applianceModeSupport+","+dnsSupport);
+        return CreateTransitGatewayVpcAttachmentRequestOptions.builder()
+                .ipv6Support(ipv6Support)
+                .applianceModeSupport(applianceModeSupport)
+                .dnsSupport(dnsSupport)
+                .build();
     }
 
     private CreateTransitGatewayVpcAttachmentResponse makeServiceCall(CreateTransitGatewayVpcAttachmentRequest request, ProxyClient<Ec2Client> client) {

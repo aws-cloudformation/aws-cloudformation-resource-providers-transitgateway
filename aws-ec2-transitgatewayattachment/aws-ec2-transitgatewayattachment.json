@@ -21,6 +21,22 @@
         "type": "string"
       }
     },
+    "AddSubnetIds": {
+      "type": "array",
+      "uniqueItems": false,
+      "insertionOrder": false,
+      "items": {
+        "type": "string"
+      }
+    },
+    "RemoveSubnetIds": {
+      "type": "array",
+      "uniqueItems": false,
+      "insertionOrder": false,
+      "items": {
+        "type": "string"
+      }
+    },
     "Tags": {
       "type": "array",
       "insertionOrder": false,
@@ -28,6 +44,25 @@
       "items": {
         "$ref": "#/definitions/Tag"
       }
+    },
+    "Options": {
+      "description": "The options for the transit gateway vpc attachment.",
+      "type": "object",
+      "properties": {
+        "DnsSupport": {
+          "description": "Indicates whether to enable DNS Support for Vpc Attachment. Valid Values: enable | disable",
+          "type": "string"
+        },
+        "Ipv6Support": {
+          "description": "Indicates whether to enable Ipv6 Support for Vpc Attachment. Valid Values: enable | disable",
+          "type": "string"
+        },
+        "ApplianceModeSupport": {
+          "description": "Indicates whether to enable Ipv6 Support for Vpc Attachment. Valid Values: enable | disable",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "definitions": {
@@ -56,12 +91,11 @@
   "tagging": {
     "taggable": true,
     "tagOnCreate": true,
-    "tagUpdatable": false,
+    "tagUpdatable": true,
     "cloudFormationSystemTags": false,
     "tagProperty": "/properties/Tags"
   },
   "createOnlyProperties": [
-    "/properties/Tags",
     "/properties/TransitGatewayId",
     "/properties/VpcId",
     "/properties/SubnetIds"
@@ -97,6 +131,14 @@
         "ec2:DescribeTransitGatewayAttachments",
         "ec2:DescribeTransitGatewayVpcAttachments",
         "ec2:DescribeTags"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:ModifyTransitGatewayVpcAttachment",
+        "ec2:DescribeTransitGatewayVpcAttachments",
+        "ec2:DeleteTags",
+        "ec2:CreateTags"
       ]
     }
   }

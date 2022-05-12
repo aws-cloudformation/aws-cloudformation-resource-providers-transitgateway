@@ -16,57 +16,33 @@ public class Mocks {
     public List<String> subnetId;
     public Instant currentTime;
     public Integer counter;
+    public  TransitGatewayVpcAttachmentOptions opt;
     public Mocks(
     ) {
-        this.primaryIdentifier = "tgw-0d88d2d0d5EXAMPLE";
-        this.TGW_ID = "tgw-123abc";
-        this.VPC_ID = "vpc-123-abc";
+        this.primaryIdentifier = "tgw-attach-02bb79002EXAMPLE";
+        this.TGW_ID = "tgw-0d88d2d0d5EXAMPLEx";
+        this.VPC_ID = "vpc-123";
         this.subnetId = new ArrayList<>();
-        subnetId.add("subnet-123-abc");
+        subnetId.add("subnet-e4f648c5");
         this.currentTime = Instant.now();
         this.counter = 0;
+        this.opt = TransitGatewayVpcAttachmentOptions.builder().dnsSupport("disable").applianceModeSupport("disable").ipv6Support("disable").build();
+
     }
     public  ResourceHandlerRequest<ResourceModel> request(ResourceModel model) {
         return ResourceHandlerRequest.<ResourceModel>builder()
-            .desiredResourceState(model)
-            .build();
+                .desiredResourceState(model)
+                .build();
     }
 
-    public  ResourceModel modelWithoutCreateOnlyProperties(List<Tag> tags, String state) {
+    public  ResourceModel model(List<Tag> tags, String state) {
         return ResourceModel.builder()
                 .id(this.primaryIdentifier)
                 .vpcId(this.VPC_ID)
                 .transitGatewayId(this.TGW_ID)
                 .subnetIds(this.subnetId)
+                .tags(TagUtils.sdkTagsToCfnTags(tags)).options(Options.builder().ipv6Support("disable").applianceModeSupport("disable").dnsSupport("disable").build())
                 .build();
-    }
-
-
-
-
-    public ResourceModel modelWithoutCreateOnlyProperties() {
-        final List<Tag> tags = new ArrayList<>();
-        return this.modelWithoutCreateOnlyProperties(tags, "available");
-    }
-
-    public ResourceModel modelWithoutCreateOnlyProperties(String state) {
-        final List<Tag> tags = new ArrayList<>();
-        return this.modelWithoutCreateOnlyProperties(tags, state);
-    }
-
-    public ResourceModel modelWithoutCreateOnlyProperties(List<Tag> tags) {
-        return this.modelWithoutCreateOnlyProperties(tags, "available");
-    }
-
-
-    public  ResourceModel model(List<Tag> tags, String state) {
-        return ResourceModel.builder()
-            .id(this.primaryIdentifier)
-            .vpcId(this.VPC_ID)
-            .transitGatewayId(this.TGW_ID)
-            .subnetIds(this.subnetId)
-            .tags(TagUtils.sdkTagsToCfnTags(tags))
-            .build();
     }
 
 
@@ -99,21 +75,17 @@ public class Mocks {
                 .transitGatewayAttachmentId(this.primaryIdentifier)
                 .vpcId(this.VPC_ID)
                 .transitGatewayId(this.TGW_ID)
-                .subnetIds(this.subnetId)
+                .subnetIds(this.subnetId).tags(tags)
                 .state(state)
                 .tags(tags)
+                .options(this.opt)
                 .build();
     }
-
-
     public TransitGatewayVpcAttachment sdkModel(String state) {
         final List<Tag> tags = new ArrayList<>();
         return this.sdkModel(tags, state);
     }
 
-    public TransitGatewayVpcAttachment sdkModel(List<Tag> tags) {
-        return this.sdkModel(tags, "available");
-    }
 
     public TransitGatewayVpcAttachment sdkModel() {
         return this.sdkModel(new ArrayList<>(), "available");
@@ -121,10 +93,10 @@ public class Mocks {
 
     public DescribeTransitGatewayVpcAttachmentsResponse describeResponse(List<Tag> tags, String state) {
         return DescribeTransitGatewayVpcAttachmentsResponse.builder()
-            .transitGatewayVpcAttachments(
-               this.sdkModel(tags, state)
-            )
-            .build();
+                .transitGatewayVpcAttachments(
+                        this.sdkModel(tags, state)
+                )
+                .build();
     }
 
 
@@ -141,20 +113,10 @@ public class Mocks {
         return this.describeResponse(new ArrayList<>(), "available");
     }
 
-
-
-    public CreateTagsResponse createTagsResponse() {
-        return CreateTagsResponse.builder().build();
-    }
-
-    public DeleteTagsResponse deleteTagsResponse() {
-        return DeleteTagsResponse.builder().build();
-    }
-
     public DeleteTransitGatewayVpcAttachmentResponse deleteResponse() {
         return DeleteTransitGatewayVpcAttachmentResponse.builder()
-            .transitGatewayVpcAttachment(this.sdkModel())
-            .build();
+                .transitGatewayVpcAttachment(this.sdkModel())
+                .build();
     }
 
 
@@ -166,21 +128,14 @@ public class Mocks {
                 .build();
     }
 
-
-    public CreateTransitGatewayVpcAttachmentResponse createResponse(String state) {
-        final List<Tag> tags = new ArrayList<>();
-        return this.createResponse(tags, state);
-    }
-
     public CreateTransitGatewayVpcAttachmentResponse createResponse(List<Tag> tags) {
         return this.createResponse(tags, "available");
     }
 
-    public CreateTransitGatewayVpcAttachmentResponse createResponse() {
-        return this.createResponse(new ArrayList<>(), "available");
+    public DescribeTransitGatewayVpcAttachmentsResponse emptyReadResponse() {
+        return DescribeTransitGatewayVpcAttachmentsResponse.builder()
+                .transitGatewayVpcAttachments(new ArrayList<>())
+                .build();
     }
-
-
-
 
 }
