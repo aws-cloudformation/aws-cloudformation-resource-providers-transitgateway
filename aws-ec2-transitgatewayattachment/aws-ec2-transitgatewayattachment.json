@@ -21,22 +21,6 @@
         "type": "string"
       }
     },
-    "AddSubnetIds": {
-      "type": "array",
-      "uniqueItems": false,
-      "insertionOrder": false,
-      "items": {
-        "type": "string"
-      }
-    },
-    "RemoveSubnetIds": {
-      "type": "array",
-      "uniqueItems": false,
-      "insertionOrder": false,
-      "items": {
-        "type": "string"
-      }
-    },
     "Tags": {
       "type": "array",
       "insertionOrder": false,

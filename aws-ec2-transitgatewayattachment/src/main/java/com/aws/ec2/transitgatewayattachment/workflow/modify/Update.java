@@ -1,13 +1,22 @@
 package com.aws.ec2.transitgatewayattachment.workflow.modify;
 
-import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
+import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
 import com.aws.ec2.transitgatewayattachment.workflow.read.Read;
+import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.*;
+import software.amazon.awssdk.services.ec2.model.ModifyTransitGatewayVpcAttachmentRequest;
+import software.amazon.awssdk.services.ec2.model.ModifyTransitGatewayVpcAttachmentRequestOptions;
+import software.amazon.awssdk.services.ec2.model.ModifyTransitGatewayVpcAttachmentResponse;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayAttachmentState;
 import software.amazon.cloudformation.exceptions.ResourceNotFoundException;
 import software.amazon.cloudformation.proxy.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Update {
     AmazonWebServicesClientProxy proxy;
@@ -42,11 +51,22 @@ public class Update {
 
     }
 
+    private Set<String> listToSet(final List<String> subnets) {
+        return CollectionUtils.isEmpty(subnets) ? new HashSet<>() : new HashSet<>(subnets);
+    }
+
     private ModifyTransitGatewayVpcAttachmentRequest translateModelToRequest(ResourceModel model) {
+        List<String> oldSubnetIds = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getSubnetIds();
+        List<String> newSubnetIds = model.getSubnetIds();
+
+        List<String> subnetsToAdd = Sets.difference(listToSet(newSubnetIds), listToSet(oldSubnetIds)).immutableCopy().asList();
+        List<String> subnetsToRemove = Sets.difference(listToSet(oldSubnetIds), listToSet(newSubnetIds)).immutableCopy().asList();
+
+
         logger.log("Options"+model.getVpcId()+","+model.getTransitGatewayId()+","+model.getSubnetIds());
         return ModifyTransitGatewayVpcAttachmentRequest.builder()
-                .addSubnetIds(model.getAddSubnetIds())
-                .removeSubnetIds(model.getRemoveSubnetIds())
+                .addSubnetIds(subnetsToAdd)
+                .removeSubnetIds(subnetsToRemove)
                 .transitGatewayAttachmentId(model.getId())
                 .options(this.translateModelToOptions(model))
                 .build();
