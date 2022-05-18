@@ -51,25 +51,62 @@ public class Update {
 
     }
 
-    private Set<String> listToSet(final List<String> subnets) {
+    public static List<String> difference(List<String> subnets1, List<String> subnets2) {
+        return Sets.difference(listToSet(subnets1), listToSet(subnets2)).immutableCopy().asList();
+    }
+
+    public static Set<String> listToSet(final List<String> subnets) {
         return CollectionUtils.isEmpty(subnets) ? new HashSet<>() : new HashSet<>(subnets);
     }
 
+    private List<String> subnetsToAdd(ResourceModel model) {
+        final List<String> prevSubnetIds = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getSubnetIds();
+        List<String> currSubnetIds = model.getSubnetIds();
+
+        return difference(currSubnetIds, prevSubnetIds);
+    }
+
+    private List<String> subnetsToRemove(ResourceModel model) {
+        final List<String> prevSubnetIds = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getSubnetIds();
+        List<String> currSubnetIds = model.getSubnetIds();
+
+        return difference(prevSubnetIds, currSubnetIds);
+    }
+
     private ModifyTransitGatewayVpcAttachmentRequest translateModelToRequest(ResourceModel model) {
-        List<String> oldSubnetIds = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model).getSubnetIds();
-        List<String> newSubnetIds = model.getSubnetIds();
-
-        List<String> subnetsToAdd = Sets.difference(listToSet(newSubnetIds), listToSet(oldSubnetIds)).immutableCopy().asList();
-        List<String> subnetsToRemove = Sets.difference(listToSet(oldSubnetIds), listToSet(newSubnetIds)).immutableCopy().asList();
-
+        List<String> subnetsToAdd = subnetsToAdd(model);
+        List<String> subnetsToRemove = subnetsToRemove(model);
 
         logger.log("Options"+model.getVpcId()+","+model.getTransitGatewayId()+","+model.getSubnetIds());
-        return ModifyTransitGatewayVpcAttachmentRequest.builder()
-                .addSubnetIds(subnetsToAdd)
-                .removeSubnetIds(subnetsToRemove)
-                .transitGatewayAttachmentId(model.getId())
-                .options(this.translateModelToOptions(model))
-                .build();
+
+        if((subnetsToAdd == null || subnetsToAdd.isEmpty()) && (subnetsToRemove == null || subnetsToRemove.isEmpty())) {
+            return ModifyTransitGatewayVpcAttachmentRequest.builder()
+                    .transitGatewayAttachmentId(model.getId())
+                    .options(this.translateModelToOptions(model))
+                    .build();
+        }
+        else if((subnetsToAdd == null || subnetsToAdd.isEmpty()) && (subnetsToRemove != null || !subnetsToRemove.isEmpty())) {
+            return ModifyTransitGatewayVpcAttachmentRequest.builder()
+                    .removeSubnetIds(subnetsToRemove)
+                    .transitGatewayAttachmentId(model.getId())
+                    .options(this.translateModelToOptions(model))
+                    .build();
+        }
+        else if((subnetsToAdd != null || !subnetsToAdd.isEmpty()) && (subnetsToRemove == null || subnetsToRemove.isEmpty())) {
+            return ModifyTransitGatewayVpcAttachmentRequest.builder()
+                    .addSubnetIds(subnetsToAdd)
+                    .transitGatewayAttachmentId(model.getId())
+                    .options(this.translateModelToOptions(model))
+                    .build();
+        }
+        else {
+            return ModifyTransitGatewayVpcAttachmentRequest.builder()
+                    .addSubnetIds(subnetsToAdd)
+                    .removeSubnetIds(subnetsToRemove)
+                    .transitGatewayAttachmentId(model.getId())
+                    .options(this.translateModelToOptions(model))
+                    .build();
+        }
     }
 
     private ModifyTransitGatewayVpcAttachmentRequestOptions translateModelToOptions(ResourceModel model) {

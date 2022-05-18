@@ -81,8 +81,7 @@
   },
   "createOnlyProperties": [
     "/properties/TransitGatewayId",
-    "/properties/VpcId",
-    "/properties/SubnetIds"
+    "/properties/VpcId"
   ],
   "readOnlyProperties": [
     "/properties/Id"
