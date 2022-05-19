@@ -24,8 +24,8 @@ public class AbstractTestBase {
     logger = new LoggerProxy();
   }
   static ProxyClient<Ec2Client> MOCK_PROXY(
-    final AmazonWebServicesClientProxy proxy,
-    final Ec2Client sdkClient) {
+          final AmazonWebServicesClientProxy proxy,
+          final Ec2Client sdkClient) {
     return new ProxyClient<Ec2Client>() {
       @Override
       public <RequestT extends AwsRequest, ResponseT extends AwsResponse> ResponseT

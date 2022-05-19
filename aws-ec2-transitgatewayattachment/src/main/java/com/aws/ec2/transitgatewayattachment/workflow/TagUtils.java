@@ -1,13 +1,12 @@
 package com.aws.ec2.transitgatewayattachment.workflow;
 
+import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.awssdk.services.ec2.model.TagSpecification;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -85,5 +84,15 @@ public class TagUtils {
             return Stream.concat(modelTags.stream(), tags.stream())
                     .collect(Collectors.toList());
         }
+    }
+
+    public static Set<Tag> listToSet(final List<Tag> tags) {
+        return CollectionUtils.isEmpty(tags) ? new HashSet<>() : new HashSet<>(tags);
+    }
+
+    public static List<Tag> difference(List<com.aws.ec2.transitgatewayattachment.Tag> currTags, List<com.aws.ec2.transitgatewayattachment.Tag> prevTags) {
+        final List<Tag> sdkTags1 = TagUtils.cfnTagsToSdkTags(currTags);
+        final List<Tag> sdkTags2 = TagUtils.cfnTagsToSdkTags(prevTags);
+        return Sets.difference(TagUtils.listToSet(sdkTags1), TagUtils.listToSet(sdkTags2)).immutableCopy().asList();
     }
 }

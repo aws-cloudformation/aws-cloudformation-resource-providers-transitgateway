@@ -1,7 +1,7 @@
 package com.aws.ec2.transitgatewayattachment.workflow.read;
 
 import com.aws.ec2.transitgatewayattachment.CallbackContext;
-import com.aws.ec2.transitgatewayattachment.ClientBuilder;
+import com.aws.ec2.transitgatewayattachment.Options;
 import com.aws.ec2.transitgatewayattachment.ResourceModel;
 import com.aws.ec2.transitgatewayattachment.workflow.ExceptionMapper;
 import com.aws.ec2.transitgatewayattachment.workflow.TagUtils;
@@ -31,19 +31,20 @@ public class Read {
 
     public ProgressEvent<ResourceModel, CallbackContext>  run(ProgressEvent<ResourceModel, CallbackContext> progress) {
         this.progress = progress;
+
         return this.proxy.initiate(this.getClass().getSimpleName(), this.client, progress.getResourceModel(), progress.getCallbackContext())
-            .translateToServiceRequest(this::translateModelToRequest)
-            .makeServiceCall(this::makeServiceCall)
-            .handleError(this::handleError)
-            .done(this::done);
+                .translateToServiceRequest(this::translateModelToRequest)
+                .makeServiceCall(this::makeServiceCall)
+                .handleError(this::handleError)
+                .done(this::done);
     }
 
     public ResourceModel simpleRequest(final ResourceModel model) {
         return this.translateResponseToModel(
-            this.proxy.injectCredentialsAndInvokeV2(
-                this.translateModelToRequest(model),
-                this.client.client()::describeTransitGatewayVpcAttachments
-            )
+                this.proxy.injectCredentialsAndInvokeV2(
+                        this.translateModelToRequest(model),
+                        this.client.client()::describeTransitGatewayVpcAttachments
+                )
         );
     }
 
@@ -56,8 +57,8 @@ public class Read {
 
     private DescribeTransitGatewayVpcAttachmentsRequest translateModelToRequest(ResourceModel model) {
         return DescribeTransitGatewayVpcAttachmentsRequest.builder()
-            .transitGatewayAttachmentIds(model.getId())
-            .build();
+                .transitGatewayAttachmentIds(model.getId())
+                .build();
     }
 
     private DescribeTransitGatewayVpcAttachmentsResponse makeServiceCall(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, ProxyClient<Ec2Client> client) {
@@ -65,14 +66,23 @@ public class Read {
     }
 
     private ResourceModel translateResponseToModel(DescribeTransitGatewayVpcAttachmentsResponse awsResponses) {
-        TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
-        return ResourceModel.builder()
-                .id(response.transitGatewayAttachmentId())
-                .subnetIds(response.subnetIds())
-                .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
-                .transitGatewayId(response.transitGatewayId())
-                .vpcId(response.vpcId())
-                .build();
+
+        if(awsResponses.transitGatewayVpcAttachments().isEmpty()) {
+            return null;
+        } else {
+            TransitGatewayVpcAttachment response = awsResponses.transitGatewayVpcAttachments().get(0);
+            //System.out.println("this"+response.subnetIds());
+
+            Options options = Options.builder().ipv6Support(response.options().ipv6SupportAsString()).applianceModeSupport(response.options().applianceModeSupportAsString()).dnsSupport(response.options().dnsSupportAsString()).build();
+            return ResourceModel.builder()
+                    .id(response.transitGatewayAttachmentId())
+                    .subnetIds(response.subnetIds())
+                    .tags(TagUtils.sdkTagsToCfnTags(response.tags()))
+                    .transitGatewayId(response.transitGatewayId())
+                    .vpcId(response.vpcId())
+                    .options(options)
+                    .build();
+        }
     }
 
     private ProgressEvent<ResourceModel, CallbackContext>  handleError(DescribeTransitGatewayVpcAttachmentsRequest awsRequest, Exception exception, ProxyClient<Ec2Client> client, ResourceModel model, CallbackContext context) {
