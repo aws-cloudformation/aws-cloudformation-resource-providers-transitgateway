@@ -73,10 +73,13 @@ public class Read {
         TransitGateway response = awsResponses.transitGateways().get(0);
         return ResourceModel.builder()
                 .id(response.transitGatewayId())
+                .transitGatewayArn(response.transitGatewayArn())
                 .amazonSideAsn(response.options().amazonSideAsn())
                 .autoAcceptSharedAttachments(response.options().autoAcceptSharedAttachmentsAsString())
                 .defaultRouteTableAssociation(response.options().defaultRouteTableAssociationAsString())
                 .defaultRouteTablePropagation(response.options().defaultRouteTablePropagationAsString())
+                .associationDefaultRouteTableId(response.options().associationDefaultRouteTableId())
+                .propagationDefaultRouteTableId(response.options().propagationDefaultRouteTableId())
                 .description(response.description())
                 .dnsSupport(response.options().dnsSupportAsString())
                 .multicastSupport(response.options().multicastSupportAsString())
