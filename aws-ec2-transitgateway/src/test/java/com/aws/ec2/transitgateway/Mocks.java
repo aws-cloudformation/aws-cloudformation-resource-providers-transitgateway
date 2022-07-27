@@ -68,6 +68,8 @@ public class Mocks {
                 .autoAcceptSharedAttachments("enable")
                 .defaultRouteTableAssociation("enable")
                 .defaultRouteTablePropagation("enable")
+                .propagationDefaultRouteTableId("rout-table-123")
+                .associationDefaultRouteTableId("rout-table-123")
                 .dnsSupport("enable")
                 .multicastSupport("disable")
                 .vpnEcmpSupport("enable")
