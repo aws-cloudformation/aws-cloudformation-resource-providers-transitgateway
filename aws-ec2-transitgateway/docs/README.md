@@ -166,4 +166,3 @@ Returns the <code>Id</code> value.
 #### TransitGatewayArn
 
 Returns the <code>TransitGatewayArn</code> value.
-
