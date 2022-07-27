@@ -7,6 +7,9 @@
     "DefaultRouteTablePropagation": {
       "type": "string"
     },
+    "TransitGatewayArn": {
+      "type": "string"
+    },
     "Description": {
       "type": "string"
     },
@@ -75,7 +78,8 @@
     "/properties/Id"
   ],
   "readOnlyProperties": [
-    "/properties/Id"
+    "/properties/Id",
+    "/properties/TransitGatewayArn"
   ],
   "createOnlyProperties": [
     "/properties/AmazonSideAsn",
