@@ -48,7 +48,7 @@ public class Create {
     private CreateTransitGatewayVpcAttachmentRequest translateModelToRequest(ResourceModel model) {
         List<Tag> tags = (model.getTags() != null) ? com.aws.ec2.transitgatewayvpcattachment.workflow.TagUtils.mergeResourceModelAndStackTags(model.getTags(), this.request.getDesiredResourceTags())
                 : new ArrayList<Tag>();
-        logger.log("requset parameters"+model.getSubnetIds()+","+model.getTransitGatewayId()+","+model.getVpcId()+"+"+TagUtils.cfnTagsToSdkTagSpecifications(tags));
+        logger.log("Request parameters"+model.getSubnetIds()+","+model.getTransitGatewayId()+","+model.getVpcId()+"+"+TagUtils.cfnTagsToSdkTagSpecifications(tags));
 
         return CreateTransitGatewayVpcAttachmentRequest.builder()
                     .subnetIds(model.getSubnetIds())
@@ -98,7 +98,7 @@ public class Create {
         String currentState;
         ResourceModel currentResourceModel;
         try {
-	    currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(model).toString();
+            currentState = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).stateRequest(model).toString();
             currentResourceModel = new Read(this.proxy, this.request, this.callbackContext, this.client, this.logger).simpleRequest(model);
         } catch (Exception e) {
             // If we got this far, this means CREATION was successful, and any failures to READ are most
@@ -107,7 +107,8 @@ public class Create {
             currentResourceModel = null;
             currentState = null;
         }
-        boolean isStable = currentState != null && currentResourceModel != null && TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
+        boolean isStable = TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentState)
+                        || TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
         if (isStable) {
             this.stableResponse = currentResourceModel;
         }

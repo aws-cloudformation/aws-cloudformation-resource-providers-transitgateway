@@ -66,6 +66,19 @@ public class CreateHandlerTest extends AbstractTestBase {
     }
 
     @Test
+    public void handleRequest_SuccessForPendingAcceptance() {
+        final List<Tag> newTags = new ArrayList<>();
+        final String state = "pendingAcceptance";
+        ResourceModel model = MOCKS.model(newTags, state);
+
+        when(proxyClient.client().createTransitGatewayVpcAttachment(any(CreateTransitGatewayVpcAttachmentRequest.class))).thenReturn(MOCKS.createResponse(newTags, state));
+        when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.describeResponse(newTags, state));
+
+        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+    }
+
+    @Test
     public void handleRequest_Duplicates() {
         when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.describeResponse());
 
