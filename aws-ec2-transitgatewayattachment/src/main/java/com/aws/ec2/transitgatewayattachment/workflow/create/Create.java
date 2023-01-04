@@ -109,7 +109,10 @@ public class Create {
             currentResourceModel = null;
             currentState = null;
         }
-        boolean isStable = currentState != null && currentResourceModel != null && TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState);
+        boolean isStable = currentState != null && currentResourceModel != null && (
+                TransitGatewayAttachmentState.PENDING_ACCEPTANCE.toString().equals(currentState)
+                        || TransitGatewayAttachmentState.AVAILABLE.toString().equals(currentState)
+        );
         if (isStable) {
             this.stableResponse = currentResourceModel;
         }
