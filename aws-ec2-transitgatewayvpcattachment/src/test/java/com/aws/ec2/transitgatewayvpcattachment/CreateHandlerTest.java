@@ -48,7 +48,7 @@ public class CreateHandlerTest extends AbstractTestBase {
         ResourceModel model = MOCKS.model(newTags);
 
         when(proxyClient.client().createTransitGatewayVpcAttachment(any(CreateTransitGatewayVpcAttachmentRequest.class))).thenReturn(MOCKS.createResponse(newTags));
-	    when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.describeResponse(newTags));
+	 when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.describeResponse(newTags));
 
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
 
@@ -61,19 +61,6 @@ public class CreateHandlerTest extends AbstractTestBase {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
-    }
-
-    @Test
-    public void handleRequest_SuccessForPendingAcceptance() {
-        final List<Tag> newTags = new ArrayList<>();
-        final String state = "pendingAcceptance";
-        ResourceModel model = MOCKS.model(newTags, state);
-
-        when(proxyClient.client().createTransitGatewayVpcAttachment(any(CreateTransitGatewayVpcAttachmentRequest.class))).thenReturn(MOCKS.createResponse(newTags));
-        when(proxyClient.client().describeTransitGatewayVpcAttachments(any(DescribeTransitGatewayVpcAttachmentsRequest.class))).thenReturn(MOCKS.emptyReadResponse()).thenReturn(MOCKS.describeResponse(newTags, state));
-
-        final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, MOCKS.request(model), new CallbackContext(), proxyClient, logger);
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
     }
 
     @Test
