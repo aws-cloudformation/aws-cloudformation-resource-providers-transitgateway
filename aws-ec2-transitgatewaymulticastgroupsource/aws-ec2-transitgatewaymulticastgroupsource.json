@@ -60,7 +60,6 @@
     "/properties/ResourceType",
     "/properties/GroupSource",
     "/properties/GroupMember",
-    "/properties/MemberType",
     "/properties/SourceType",
     "/properties/TransitGatewayAttachmentId"
   ],
