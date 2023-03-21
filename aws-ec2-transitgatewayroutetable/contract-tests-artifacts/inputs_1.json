@@ -1,0 +1,16 @@
+{
+  "CreateInputs": {
+    "TransitGatewayId": "{{awsec2transitgatewayroutetablecto1}}",
+    "Tags": [
+      {
+        "Key": "test",
+        "Value": "value"
+      },
+      {
+        "Key": "test1",
+        "Value": "value1"
+      }
+    ]
+  },
+  "PatchInputs": []
+}
