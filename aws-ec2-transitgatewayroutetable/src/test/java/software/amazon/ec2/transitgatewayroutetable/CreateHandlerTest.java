@@ -105,8 +105,8 @@ public class CreateHandlerTest  extends AbstractTestBase{
         final ProgressEvent<ResourceModel, CallbackContext>  response_false = handler.handleRequest(proxy, request, callbackContext, proxyClient, logger);
 
         assertThat(response_false).isNotNull();
-        assertThat(response_false.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
-        assertThat(response_false.getCallbackDelaySeconds()).isEqualTo(15);
+        assertThat(response_false.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response_false.getCallbackDelaySeconds()).isEqualTo(0);
         tear_down();
     }
 
@@ -129,7 +129,7 @@ public class CreateHandlerTest  extends AbstractTestBase{
         assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.InvalidRequest);
         assertThat(response.getMessage()).isEqualTo("Transit Gateway ID cannot be empty");
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
-       // tear_down();
+        // tear_down();
     }
     @Test
     public void handleRequest_Throttle(){
@@ -152,7 +152,7 @@ public class CreateHandlerTest  extends AbstractTestBase{
 
 
 
-      AwsServiceException exception = AwsServiceException.builder()
+        AwsServiceException exception = AwsServiceException.builder()
                 .awsErrorDetails(AwsErrorDetails.builder().errorCode("RequestLimitExceeded").build())
                 .build();
 
@@ -176,11 +176,11 @@ public class CreateHandlerTest  extends AbstractTestBase{
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, request, callbackContext, proxyClient, logger);
 
         assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
         assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage()).isNull();
-        assertThat(response.getErrorCode()).isNull();
+        assertThat(response.getMessage()).isNotNull();
+        assertThat(response.getErrorCode()).isNotNull();
         tear_down();
     }
     @Test
@@ -205,7 +205,7 @@ public class CreateHandlerTest  extends AbstractTestBase{
 
 
         AwsServiceException exception = AwsServiceException.builder()
-                .awsErrorDetails(AwsErrorDetails.builder().errorCode(BaseHandlerStd.TRANSIT_GATEWAY_STATE_FAILED_STABILIZE).build())
+                .awsErrorDetails(AwsErrorDetails.builder().errorCode(BaseHandlerStd.INCORRECT_STATE).build())
                 .build();
 
 
@@ -228,11 +228,11 @@ public class CreateHandlerTest  extends AbstractTestBase{
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, request, callbackContext, proxyClient, logger);
 
         assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
         assertThat(response.getResourceModels()).isNull();
-        assertThat(response.getMessage()).isNull();
-        assertThat(response.getErrorCode()).isNull();
+        assertThat(response.getMessage()).isNotNull();
+        assertThat(response.getErrorCode()).isNotNull();
         tear_down();
     }
 

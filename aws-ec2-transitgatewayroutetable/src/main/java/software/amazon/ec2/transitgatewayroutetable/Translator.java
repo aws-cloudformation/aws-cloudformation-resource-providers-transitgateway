@@ -2,8 +2,14 @@ package software.amazon.ec2.transitgatewayroutetable;
 
 
 
-import software.amazon.awssdk.services.ec2.model.*;
-
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayRouteTablesResponse;
+import software.amazon.awssdk.services.ec2.model.DescribeTransitGatewayRouteTablesRequest;
+import software.amazon.awssdk.services.ec2.model.Filter;
+import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteTable;
+import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRouteTableRequest;
+import software.amazon.awssdk.services.ec2.model.TagSpecification;
+import software.amazon.awssdk.services.ec2.model.DeleteTransitGatewayRouteTableRequest;
+import software.amazon.awssdk.services.ec2.model.ResourceType;
 import software.amazon.awssdk.utils.CollectionUtils;
 import java.util.Map;
 import java.util.List;
@@ -19,8 +25,9 @@ import software.amazon.awssdk.services.ec2.model.TransitGatewayRouteTableState;
 public class Translator{
 
     static DescribeTransitGatewayRouteTablesRequest translateToReadRequest(final String transitGatewayRouteTableId){
-            return DescribeTransitGatewayRouteTablesRequest.builder().transitGatewayRouteTableIds(transitGatewayRouteTableId)
-                    .build();
+        return DescribeTransitGatewayRouteTablesRequest.builder().transitGatewayRouteTableIds(transitGatewayRouteTableId)
+                .filters(Filter.builder().name("state").values(TransitGatewayRouteTableState.AVAILABLE.toString()).build())
+                .build();
     }
 
 
@@ -95,7 +102,7 @@ public class Translator{
      */
     static DeleteTransitGatewayRouteTableRequest translateToDeleteRequest(final ResourceModel model) {
         return DeleteTransitGatewayRouteTableRequest.builder()
-                    .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId()).build();
+                .transitGatewayRouteTableId(model.getTransitGatewayRouteTableId().toLowerCase()).build();
 
     }
 

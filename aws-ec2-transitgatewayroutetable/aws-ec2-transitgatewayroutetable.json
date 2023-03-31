@@ -75,7 +75,9 @@
     "delete": {
       "permissions": [
         "ec2:DeleteTransitGatewayRouteTable",
-        "ec2:DescribeTransitGatewayRouteTables"
+        "ec2:DescribeTransitGatewayRouteTables",
+        "ec2:GetTransitGatewayRouteTableAssociations",
+        "ec2:DisassociateTransitGatewayRouteTable"
       ]
     },
     "list": {

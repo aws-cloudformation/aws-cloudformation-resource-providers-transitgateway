@@ -66,12 +66,12 @@ public class ReadHandler extends  BaseHandlerStd {
             return response;
         } catch (Exception e) {
             if (getErrorCode(e).equals(BaseHandlerStd.INVALID_ROUTE_TABLE_ID_NOT_FOUND) || getErrorCode(e).equals(
-                    BaseHandlerStd.INVALID_ROUTE_TABLE_ID_NOT_FOUND)) {
+                    BaseHandlerStd.INVALID_ROUTE_NOT_FOUND)) {
                 logger.log(String.format(" Read Handler Error Code %s", getErrorCode(e)));
                 throw new CfnNotFoundException(ResourceModel.TYPE_NAME, transitGatewayRouteTableId);
             }
             throw new CfnInvalidRequestException(e);
-      }
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package software.amazon.ec2.transitgatewayroutetable;
 
+import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRouteTableRequest;
 import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.ProxyClient;
@@ -19,7 +20,6 @@ import java.util.Collections;
 
 public class CreateHandler extends BaseHandlerStd {
     private final ReadHandler readHandler;
-    private int EVENTUAL_CONSISTENCY_DELAY_SECONDS = 15;
     private software.amazon.cloudformation.proxy.Logger logger;
 
     public CreateHandler() {
@@ -50,38 +50,25 @@ public class CreateHandler extends BaseHandlerStd {
         Map<String, String> mergedTags = Maps.newHashMap();
         mergedTags.putAll(Optional.ofNullable(request.getDesiredResourceTags()).orElse(Collections.emptyMap()));
         mergedTags.putAll(Optional.ofNullable(request.getSystemTags()).orElse(Collections.emptyMap()));
-
+        logger.log(String.format("[ClientRequestToken: %s] Calling Create Transit Gateway RouteTable", request.getClientRequestToken()));
         return ProgressEvent.progress(resourceModel, callbackContext)
                 .then(progress ->
                         proxy.initiate("AWS-EC2-TransitGatewayRouteTable::Create", proxyClient, progress.getResourceModel(), progress.getCallbackContext())
                                 .translateToServiceRequest(model -> Translator.translateToCreateRequest(mergedTags, model))
-                                .makeServiceCall((awsRequest, client) -> {
-                                    CreateTransitGatewayRouteTableResponse createTransitGatewayRouteTableResponse = proxyClient.injectCredentialsAndInvokeV2(awsRequest, client.client()::createTransitGatewayRouteTable);
-                                    resourceModel.setTransitGatewayRouteTableId(
-                                            createTransitGatewayRouteTableResponse.transitGatewayRouteTable().transitGatewayRouteTableId());
-                                    callbackContext.setResourceModel(resourceModel);
-                                    logger.log(String.format("Created Transit Gateway Route Table Id %s.", resourceModel.getTransitGatewayRouteTableId()));
-                                    return createTransitGatewayRouteTableResponse;
-                                })
+                                .makeServiceCall((awsRequest, client) -> createTransitGatewayRouteTable(awsRequest, proxyClient, callbackContext, resourceModel))
                                 .stabilize((awsRequest, awsResponse, client, model, context) -> stabilizeCreate(proxyClient, callbackContext, logger))
-                                .handleError((awsRequest, exception, client, model, context) -> handleError(awsRequest, exception, client, model, context, logger))
-                                .done((awsRequest, response, client, Model, context) -> {
-                                    resourceModel.setTransitGatewayRouteTableId(response.transitGatewayRouteTable().transitGatewayRouteTableId());
-                                    return ProgressEvent.progress(resourceModel, context);
+                                .handleError((awsRequest, exception, client, model, context) ->
+                                {
+                                    if(ACCESS_DENIED_ERROR_CODE.equals(getErrorCode(exception))) {
+                                        logger.log("Soft failing on Create Tags Call. Error: " + exception.getMessage());
+                                        return ProgressEvent.progress(model,callbackContext);
+                                    }
+                                    return handleError(awsRequest, exception,client, model,
+                                            context, logger);
                                 })
-                )
-                .then(progress -> {
-                   if (progress.getCallbackContext().isPropagationDelay()) {
-                        logger.log("Propagation delay completed");
-                        return ProgressEvent.progress(progress.getResourceModel(), progress.getCallbackContext());
-                    }
-                    progress.getCallbackContext().setPropagationDelay(true);
-                    callbackContext.setItFirstTime(false);
-                    logger.log("Setting propagation delay");
-                    return ProgressEvent.defaultInProgressHandler(progress.getCallbackContext(),
-                            EVENTUAL_CONSISTENCY_DELAY_SECONDS, progress.getResourceModel());
-                })
-                .then(progress -> readHandler.handleRequest(proxy, request, callbackContext, proxyClient, logger));
+                                .done(awsResponse -> ProgressEvent.defaultSuccessHandler(resourceModel)));
+
+
     }
     /**
      * Create Transit Gateway Route Table Call Chain. This method creates a Transit Gateway  Route Table and also waits for Stabilization
@@ -96,16 +83,47 @@ public class CreateHandler extends BaseHandlerStd {
             logger.log(String.format("Stabilizing Transit Gateway Route Table Id %s.", callbackContext.getResourceModel().getTransitGatewayRouteTableId()));
             DescribeTransitGatewayRouteTablesRequest describeTransitGatewayRouteTablesRequest= DescribeTransitGatewayRouteTablesRequest.builder().transitGatewayRouteTableIds(callbackContext.getResourceModel().getTransitGatewayRouteTableId()).build();
             DescribeTransitGatewayRouteTablesResponse describeTransitGatewayRouteTablesResponse  = proxyClient.injectCredentialsAndInvokeV2(describeTransitGatewayRouteTablesRequest, proxyClient.client()::describeTransitGatewayRouteTables);
-            if ("available".equals(describeTransitGatewayRouteTablesResponse.transitGatewayRouteTables().get(0).stateAsString())) {
+            final String state = describeTransitGatewayRouteTablesResponse.transitGatewayRouteTables().get(0).stateAsString();
+            if(state == null || describeTransitGatewayRouteTablesResponse.transitGatewayRouteTables() == null || describeTransitGatewayRouteTablesResponse.transitGatewayRouteTables().size() == 0)
+            {
+                return null;
+
+            }
+            if ("available".equals(state)) {
                 logger.log(String.format("Stabilized Transit Gateway Route Table Id %s.", callbackContext.getResourceModel().getTransitGatewayRouteTableId()));
                 return true;
             }
-        } catch(Exception e){
-            if (getErrorCode(e).equals(BaseHandlerStd.THROTTLING)) return false;
-            if (getErrorCode(e).equals(BaseHandlerStd.TRANSIT_GATEWAY_STATE_FAILED_STABILIZE)) return false; // stabilizing if not found
-            logger.log(getErrorCode(e));
-            throw e;
+        } catch(Exception e) {
+            if (!getErrorCode(e).equals(BaseHandlerStd.INVALID_ROUTE_TABLE_ID_NOT_FOUND)
+                    && !getErrorCode(e).equals(BaseHandlerStd.INVALID_ROUTE_TABLE_ID_MALFORMED))
+                throw e;
         }
         return false;
+    }
+
+
+    /**
+     * Create Transit Gateway Route Table Call Chain. This method creates a Transit Gateway  Route Table.
+     * @param awsRequest
+     * @param proxyClient
+     * @param callbackContext
+     * @param resourceModel
+     * @return Returns CreateTransitGatewayRouteTableResponse once the Transit Gateway  Route Table is created.
+     */
+    protected static CreateTransitGatewayRouteTableResponse createTransitGatewayRouteTable(final CreateTransitGatewayRouteTableRequest awsRequest, final ProxyClient<Ec2Client> proxyClient, final CallbackContext callbackContext, final ResourceModel resourceModel)
+    {
+        try
+        {
+            CreateTransitGatewayRouteTableResponse createTransitGatewayRouteTableResponse = proxyClient.injectCredentialsAndInvokeV2(awsRequest, proxyClient.client()::createTransitGatewayRouteTable);
+            resourceModel.setTransitGatewayRouteTableId(
+                    createTransitGatewayRouteTableResponse.transitGatewayRouteTable().transitGatewayRouteTableId());
+            callbackContext.setResourceModel(resourceModel);
+            return createTransitGatewayRouteTableResponse;
+        }
+        catch(Exception e) {
+            if(!getErrorCode(e).equals(BaseHandlerStd.INCORRECT_STATE))
+                throw e;
+        }
+        return null;
     }
 }
