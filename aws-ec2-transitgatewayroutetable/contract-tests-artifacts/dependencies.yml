@@ -1,0 +1,9 @@
+Resources:
+  rdeTransitGateway:
+    Type: AWS::EC2::TransitGateway
+Outputs:
+  odeTransitGatewayId:
+    Description: The Transit Gateway ID
+    Value: ! Ref rdeTransitGateway
+    Export:
+      Name: awsec2transitgatewayroutetablecto1

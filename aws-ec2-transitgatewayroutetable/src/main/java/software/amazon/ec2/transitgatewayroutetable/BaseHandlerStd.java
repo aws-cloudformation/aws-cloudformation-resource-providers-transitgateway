@@ -92,7 +92,7 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext> {
         if (UNAUTHORIZED_OPERATION.equals(getErrorCode(e)) || ACCESS_DENIED_ERROR_CODE.equals(getErrorCode(e))) {
             ex = new CfnAccessDeniedException(e);
         } else if (INVALID_TRANSIT_GATEWAY_STATE.equals(getErrorCode(e))
-                || INVALID_REQUEST.equals(getErrorCode(e))  || INVALID_PARAMETER_VALUE.equals(getErrorCode(e))) {
+                || INVALID_REQUEST.equals(getErrorCode(e))  || INVALID_PARAMETER_VALUE.equals(getErrorCode(e)) || INVALID_ROUTE_TABLE_ID_MALFORMED.equals(getErrorCode(e)) {
             ex = new CfnInvalidRequestException(e);
         }  else if (INVALID_TRANSIT_GATEWAY_ID.equals(getErrorCode(e)) || INVALID_TRANSIT_GATEWAY_ATTACHMENT_ID_NOT_FOUND.equals(getErrorCode(e)) || INVALID_ASSOCIATION_NOT_FOUND.equals(getErrorCode(e)) || INVALID_ID.equals(getErrorCode(e)) || INVALID_ROUTE_TABLE_ID_NOT_FOUND.equals(getErrorCode(e)) || INVALID_ROUTE_NOT_FOUND.equals(getErrorCode(e))) {
             ex = new CfnNotFoundException(e);
@@ -102,7 +102,7 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext> {
             ex = new CfnInvalidCredentialsException(e);
         } else if (THROTTLING.equals(getErrorCode(e))) {
             ex = new CfnThrottlingException(e);
-        } else if (INCORRECT_STATE.equals(getErrorCode(e)) || INVALID_ROUTE_TABLE_ID_MALFORMED.equals(getErrorCode(e))) {
+        } else if (INCORRECT_STATE.equals(getErrorCode(e)))) {
             ex = new CfnNotStabilizedException(e);
         }
         else {
