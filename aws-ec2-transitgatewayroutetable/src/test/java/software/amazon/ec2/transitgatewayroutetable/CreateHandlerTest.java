@@ -487,6 +487,5 @@ public class CreateHandlerTest  extends AbstractTestBase {
         assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getErrorCode()).isNotNull();
-
     }
 }
