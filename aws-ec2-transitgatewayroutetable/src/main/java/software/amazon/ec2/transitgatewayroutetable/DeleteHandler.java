@@ -41,6 +41,8 @@ public class DeleteHandler extends BaseHandlerStd {
         if (resourceModel == null || StringUtils.isNullOrEmpty(resourceModel.getTransitGatewayRouteTableId())) {
             return ProgressEvent.failed(resourceModel, callbackContext, HandlerErrorCode.InvalidRequest, "Transit Gateway Route Table ID cannot be empty");
         }
+        logger.log(String.format("[StackId %s ] Calling Delete Transit Gateway RouteTable", request.getStackId()));
+
         return ProgressEvent.progress(resourceModel, callbackContext)
                 .then(progress -> new ReadHandler().handleRequest(proxy, request, callbackContext, proxyClient, logger))
                 .onSuccess(progress ->
