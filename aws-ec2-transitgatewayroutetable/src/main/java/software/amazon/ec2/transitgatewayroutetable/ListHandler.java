@@ -20,6 +20,7 @@ public class ListHandler extends BaseHandlerStd {
 
 
         final ResourceModel resourceModel = request.getDesiredResourceState();
+        logger.log(String.format("[StackId %s ] Calling List Transit Gateway RouteTable", request.getStackId()));
 
         return proxy.initiate("AWS-EC2-TransitGatewayRouteTable::List", proxyClient, resourceModel, callbackContext)
                 .translateToServiceRequest(Translator::translateToListRequest)

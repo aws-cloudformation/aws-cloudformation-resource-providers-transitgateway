@@ -1,6 +1,7 @@
 package software.amazon.ec2.transitgatewayroutetable;
 
 import software.amazon.awssdk.services.ec2.model.CreateTransitGatewayRouteTableRequest;
+import software.amazon.cloudformation.exceptions.CfnUnauthorizedTaggingOperationException;
 import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.ProxyClient;
@@ -17,7 +18,7 @@ import com.google.common.annotations.VisibleForTesting;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Collections;
-
+import software.amazon.cloudformation.exceptions.CfnUnauthorizedTaggingOperationException;
 public class CreateHandler extends BaseHandlerStd {
     private final ReadHandler readHandler;
     private software.amazon.cloudformation.proxy.Logger logger;
@@ -50,7 +51,7 @@ public class CreateHandler extends BaseHandlerStd {
         Map<String, String> mergedTags = Maps.newHashMap();
         mergedTags.putAll(Optional.ofNullable(request.getDesiredResourceTags()).orElse(Collections.emptyMap()));
         mergedTags.putAll(Optional.ofNullable(request.getSystemTags()).orElse(Collections.emptyMap()));
-        logger.log(String.format("[ClientRequestToken: %s] Calling Create Transit Gateway RouteTable", request.getClientRequestToken()));
+        logger.log(String.format("[StackId %s ClientRequestToken: %s] Calling Create Transit Gateway RouteTable", request.getStackId(), request.getClientRequestToken()));
         return ProgressEvent.progress(resourceModel, callbackContext)
                 .then(progress ->
                         proxy.initiate("AWS-EC2-TransitGatewayRouteTable::Create", proxyClient, progress.getResourceModel(), progress.getCallbackContext())
@@ -60,8 +61,7 @@ public class CreateHandler extends BaseHandlerStd {
                                 .handleError((awsRequest, exception, client, model, context) ->
                                 {
                                     if(ACCESS_DENIED_ERROR_CODE.equals(getErrorCode(exception))) {
-                                        logger.log("Soft failing on Create Tags Call. Error: " + exception.getMessage());
-                                        return ProgressEvent.progress(model,callbackContext);
+                                        throw new CfnUnauthorizedTaggingOperationException();
                                     }
                                     return handleError(awsRequest, exception,client, model,
                                             context, logger);

@@ -34,6 +34,7 @@ public class ReadHandler extends  BaseHandlerStd {
             return ProgressEvent.failed(resourceModel, callbackContext, HandlerErrorCode.InvalidRequest,
                     "Transit Gateway Route Table ID cannot be empty");
         }
+        logger.log(String.format("[StackId %s ] Calling Read Transit Gateway RouteTable", request.getStackId()));
 
         return proxy.initiate("AWS-EC2-TransitGatewayRouteTable::Read", proxyClient, resourceModel, callbackContext)
                 .translateToServiceRequest((transitGatewayRouteTable) -> Translator.translateToReadRequest(
